@@ -13,3 +13,5 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install django gunicorn psycopg2-binary dj-database-url
 
+
+DEVELOPMENT_MODE=True python manage.py startapp polls
