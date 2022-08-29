@@ -134,8 +134,10 @@ USE_TZ = True
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
 STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR / "staticfiles",
+    BASE_DIR / 
+    "assets",
 ]
 
 # If you plan on storing static files in other locations outside
