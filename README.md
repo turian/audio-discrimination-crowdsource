@@ -13,6 +13,7 @@ mkdir .venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+pre-commit install
 ```
 
 ### Running locally
@@ -27,6 +28,7 @@ DEBUG=True python manage.py runserver
 ## FSD50K preprocess
 
 Preprocess FSD50k once, and upload as Digital Ocean space.
+(Don't worry about this, the lead dev does this.)
 
 Run this on your laptop or whatever:
 ```
@@ -49,3 +51,8 @@ instructions](https://www.digitalocean.com/community/questions/how-to-manage-dig
 s3cmd mb s3://fsd50k-preprocessed
 #s3cmd sync data/preprocessed/ s3://fsd50k-preprocessed
 s3cmd put -r data/preprocessed/FSD50K.* s3://fsd50k-preprocessed
+# Or
+#s3cmd sync data/preprocessed/FSD50K.* s3://fsd50k-preprocessed
+
+# We might not need this
+s3cmd setacl s3://fsd50k-preprocessed --acl-public --recursive
