@@ -71,7 +71,7 @@ def preprocess_file(f):
     # We use 48K since that is OpenL3's SR
     # TODO: Might be faster to use sox+ffmpeg?
     if sr != CONFIG["SAMPLE_RATE"]:
-#        print(f"Resampling {f}")
+        #        print(f"Resampling {f}")
         x = resampy.resample(x, sr, CONFIG["SAMPLE_RATE"])
         sr = CONFIG["SAMPLE_RATE"]
 

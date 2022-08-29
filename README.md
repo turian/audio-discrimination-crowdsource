@@ -12,14 +12,16 @@ Based upon https://docs.digitalocean.com/tutorials/app-deploy-django-app/
 mkdir .venv
 python3 -m venv .venv
 source .venv/bin/activate
-pip install django gunicorn psycopg2-binary dj-database-url
+pip install -r requirements.txt
 ```
 
 ### Running locally
 
 ```
+source .venv/bin/activate
 export DEVELOPMENT_MODE=True
 #python manage.py startapp polls
+DEBUG=True python manage.py runserver
 ```
 
 ## FSD50K preprocess
