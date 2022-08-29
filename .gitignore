@@ -131,3 +131,5 @@ dmypy.json
 *.sw?
 
 batch/data/
+
+.DS_Store
