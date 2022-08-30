@@ -2,7 +2,12 @@
 * Use https://startbootstrap.com/template/simple-sidebar
 * Root view /
 
-* Need a Dockerfile that apt installs `lame libsox-fmt-all sox
+* I want to have two apps on Digital Ocean apps, "dev" and "prod".
+"prod" is based upon "main" git branch. "dev" is based upon the
+"dev" git branch. This allows me to merge PRs into "dev" and test
+that they deploy, instead of maybe breaking the prod deploy.
+
+I also need a Dockerfile that apt installs `lame libsox-fmt-all sox
 ffmpeg unzip`. This is because Digital Ocean doesn't all apt on its
 app platform:
 https://www.digitalocean.com/community/questions/how-to-install-ffmpeg-on-app-platform
