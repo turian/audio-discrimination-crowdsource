@@ -1,13 +1,7 @@
+{% extends 'base.html' %}
 {% load static %}
-{# Load the tag library #}
-{% load bootstrap5 %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
-<img height="75" width="150" src="{% static 'audio-discrimination-crowdsource-logo.png'%}"/> <br/>
+{% block body-block %}
+<img height="75" width="150" src="{% static 'images/audio-discrimination-crowdsource-logo.png'%}"/> <br/>
 Hello, world. You're at the polls index.
+{% endblock %}
