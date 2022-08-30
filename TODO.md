@@ -19,3 +19,6 @@ https://www.digitalocean.com/community/tutorials/how-to-build-a-django-and-gunic
 
 * Create TOS and privacy policy
 * Setup allauth for Google OAuth
+
+* Set DEBUG=False for prod.
+* www domain
