@@ -22,3 +22,6 @@ https://www.digitalocean.com/community/tutorials/how-to-build-a-django-and-gunic
 
 * Set DEBUG=False for prod.
 * www domain
+
+* Slightly different color scheme or something for staging vs prod
+* Description of how to setup staging and prod
