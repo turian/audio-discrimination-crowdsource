@@ -31,6 +31,8 @@ export DEVELOPMENT_MODE=True
 DEBUG=True python manage.py runserver
 ```
 
+- Create a `.env` file in base directory and place secret keys related to google auth there.
+
 ### Theme App
 
 Theme app is a django app consisting of the main theme of the application.
