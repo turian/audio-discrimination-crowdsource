@@ -77,3 +77,14 @@ Now, for any new html page, we need to do the following:
 {% endblock %}
 
 ```
+
+### Google auth keys:
+- Visit this link : [Google Api](https://console.cloud.google.com/apis/dashboard)
+- Goto `OAuth consent screen` and setup
+- Go to `Credentials` and click on `CREATE CREDENTIALS` > `OAuth client ID` choose options
+    - for local:
+        - set `Authorized JS orignins` to `http://127.0.0.1:8000`
+        - set `Authorized redirect URIs` to `http://127.0.0.1:8000/accounts/google/login/callback/` and `http://localhost:8000/accounts/google/login/callback/`
+    - for production:
+        - set `Authorized JS orignins` to `https://yourdomain.com`
+        - set `Authorized redirect URIs` to `https://yourdomain.com/accounts/google/login/callback/`
