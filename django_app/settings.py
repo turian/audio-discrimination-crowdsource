@@ -91,7 +91,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # db id of the entry in 'Sites' table
-SITE_ID = 2
+SITE_ID = 1
+if DEVELOPMENT_MODE:
+    SITE_ID = 2
 
 LOGIN_REDIRECT_URL = '/polls/'
 LOGOUT_REDIRECT_URL = '/polls/'
