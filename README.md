@@ -27,11 +27,18 @@ pre-commit install
 ```
 source .venv/bin/activate
 export DEVELOPMENT_MODE=True
+python manage.py migrate
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
 
 - Create a `.env` file in base directory and place secret keys related to google auth there.
+- Go to `django admin`:
+    - Go to  `Sites` table and create a new entry with `127.0.0.1:8000` as value for both `Domain Name` and `Display Name`
+    - Go to `Social applications` table and create a new entry with following credentials:
+        - `Provider` select `Google`
+        - `Name` = `django-audio`
+        - Fill in the `Client id` and `Secret key` from `env` file
 
 ### Theme App
 
