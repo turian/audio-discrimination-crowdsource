@@ -43,6 +43,13 @@ INSTALLED_APPS = [
     "polls",
     "bootstrap5",
     "themeapp",
+
+    # django-allauth
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +81,33 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "django_app.wsgi.application"
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# db id of the entry in 'Sites' table
+SITE_ID = 1
+if DEVELOPMENT_MODE:
+    SITE_ID = 2
+
+LOGIN_REDIRECT_URL = '/polls/'
+LOGOUT_REDIRECT_URL = '/polls/'
+
+# Provider specific settings allauth
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
 
 
 # Database

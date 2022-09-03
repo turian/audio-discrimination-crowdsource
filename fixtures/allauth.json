@@ -1,0 +1,32 @@
+[
+    {
+        "model":"sites.site",
+        "pk":1,
+        "fields":{
+            "domain":"productionsite.com",
+            "name":"productionsite.com"
+        }
+    },
+    {
+        "model":"sites.site",
+        "pk":2,
+        "fields":{
+            "domain":"127.0.0.1:8000",
+            "name":"127.0.0.1:8000"
+        }
+    },
+    {
+        "model":"socialaccount.socialapp",
+        "pk":1,
+        "fields":{
+            "provider":"google",
+            "name":"django-audio",
+            "client_id":"put your google client id here",
+            "secret":"put your google client secret here",
+            "key":"",
+            "sites":[
+                
+            ]
+        }
+    }
+]
