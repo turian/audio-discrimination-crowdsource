@@ -9,7 +9,7 @@ sqlparse==0.4.2
 
 django-bootstrap-v5
 
-# For audio transforms
-sox
-pydub
-audiomentations[extras]
+## For audio transforms
+#sox
+#pydub
+#audiomentations[extras]
