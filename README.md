@@ -30,13 +30,17 @@ export DEVELOPMENT_MODE=True
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
-python manage.py loaddata fixtures/allauth.json
+
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
 
-- Go to Django `admin` > `SOCIAL ACCOUNTS` > `Social applications`
-    - update `django-audio` with your Google `client id` and `client secret`
+- Get your Google auth keys following [this](###Google auth keys) method
+- Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
+- For `development mode` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
+- Add your `client_id` and `secret_key`.
+- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
+- In production, add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` as environment variables
 
 ### Theme App
 
