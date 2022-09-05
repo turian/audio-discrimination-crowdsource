@@ -2,13 +2,14 @@ asgiref==3.5.2
 #backports.zoneinfo==0.2.1
 dj-database-url==1.0.0
 Django==4.1
+django-allauth==0.51.0
 gunicorn==20.1.0
 psycopg2-binary==2.9.3
 sqlparse==0.4.2
 
 django-bootstrap-v5
 
-# For audio transforms
-sox
-pydub
-audiomentations[extras]
+## For audio transforms
+#sox
+#pydub
+#audiomentations[extras]
