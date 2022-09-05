@@ -1,7 +1,22 @@
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+
+class SingletonModel(models.Model):
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
 
 class User(AbstractUser):
     first_task_of_this_session_performed_at = models.DateTimeField(null=True)
@@ -16,13 +31,17 @@ class Batch(models.Model):
         verbose_name_plural = "batches"
 
 
-class CurrentBatch(models.Model):
+class CurrentBatch(SingletonModel):
     current_batch_gold = models.ForeignKey(Batch,
                                            on_delete=models.CASCADE,
-                                           related_name="current_batch_gold")
+                                           related_name="current_batch_gold",
+                                           limit_choices_to={"is_gold": True},
+                                           blank=True, null=True)
     current_batch_eval = models.ForeignKey(Batch,
                                            on_delete=models.CASCADE,
-                                           related_name="current_batch_eval")
+                                           related_name="current_batch_eval",
+                                           limit_choices_to={"is_gold": False},
+                                           blank=True, null=True)
 
 class Task(models.Model):
     batch = models.ForeignKey(Batch,
@@ -52,3 +71,4 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
+
