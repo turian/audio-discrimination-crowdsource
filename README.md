@@ -35,7 +35,8 @@ python manage.py migrate
 DEBUG=True python manage.py runserver
 ```
 
-- Get your Google auth keys following [this](###Google auth keys) method
+### common for all environments
+- Get your Google auth keys following [this](#Google-auth-keys) method
 - Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
 - For `development mode` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
 - Add your `client_id` and `secret_key`.
@@ -90,5 +91,5 @@ Now, for any new html page, we need to do the following:
         - set `Authorized JS orignins` to `http://127.0.0.1:8000`
         - set `Authorized redirect URIs` to `http://127.0.0.1:8000/accounts/google/login/callback/` and `http://localhost:8000/accounts/google/login/callback/`
     - for production:
-        - set `Authorized JS orignins` to `https://yourdomain.com`
-        - set `Authorized redirect URIs` to `https://yourdomain.com/accounts/google/login/callback/`
+        - set `Authorized JS orignins` to `https://audiodiscrimination.com`
+        - set `Authorized redirect URIs` to `https://audiodiscrimination.com/accounts/google/login/callback/`
