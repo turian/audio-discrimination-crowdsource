@@ -31,12 +31,14 @@ class Batch(models.Model):
         verbose_name_plural = "batches"
 
 
-class CurrentBatch(SingletonModel):
+class CurrentBatchGold(SingletonModel):
     current_batch_gold = models.ForeignKey(Batch,
                                            on_delete=models.CASCADE,
                                            related_name="current_batch_gold",
                                            limit_choices_to={"is_gold": True},
                                            blank=True, null=True)
+
+class CurrentBatchEval(SingletonModel):
     current_batch_eval = models.ForeignKey(Batch,
                                            on_delete=models.CASCADE,
                                            related_name="current_batch_eval",
