@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "polls",
     "bootstrap5",
     "themeapp",
+    "django_extensions",
 
     # django-allauth
     "django.contrib.sites",
