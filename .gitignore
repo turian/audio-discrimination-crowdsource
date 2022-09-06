@@ -132,3 +132,6 @@ dmypy.json
 
 batch/data/
 .DS_Store
+
+# created one time for loading google auth settings
+allauth.json

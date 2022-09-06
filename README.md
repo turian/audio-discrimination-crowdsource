@@ -30,13 +30,24 @@ export DEVELOPMENT_MODE=True
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
-python manage.py loaddata fixtures/allauth.json
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
+- Load `fixtures` according to [these](#Common-for-all-environments) instructions
 
-- Go to Django `admin` > `SOCIAL ACCOUNTS` > `Social applications`
-    - update `django-audio` with your Google `client id` and `client secret`
+### Running in Production
+- Set environment variables `DEVELOPMENT_MODE`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `DEBUG`, `SECRET_KEY` & `DJANGO_ALLOWED_HOSTS`
+- Run `python manage.py migrate`
+- Load `fixtures` according to [these](#Common-for-all-environments) instructions
+
+### Common for all environments
+- Get your Google OAuth2 keys following [this](#Google-auth-keys) method
+- Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
+- In `fixtures/allauth.json`:
+    - For `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
+    - Set `client_id` to *Client ID* and `secret` to *Client secret* from google OAuth2 credentials.
+- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
+
 
 ### Theme App
 
@@ -86,5 +97,5 @@ Now, for any new html page, we need to do the following:
         - set `Authorized JS orignins` to `http://127.0.0.1:8000`
         - set `Authorized redirect URIs` to `http://127.0.0.1:8000/accounts/google/login/callback/` and `http://localhost:8000/accounts/google/login/callback/`
     - for production:
-        - set `Authorized JS orignins` to `https://yourdomain.com`
-        - set `Authorized redirect URIs` to `https://yourdomain.com/accounts/google/login/callback/`
+        - set `Authorized JS orignins` to `https://audiodiscrimination.com`
+        - set `Authorized redirect URIs` to `https://audiodiscrimination.com/accounts/google/login/callback/`
