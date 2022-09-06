@@ -30,10 +30,10 @@ export DEVELOPMENT_MODE=True
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
-
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
+- Load `fixtures` according to [these](#Common-for-all-environments) instructions
 
 ### Running in Production
 - Set environment variables `DEVELOPMENT_MODE`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `DEBUG`, `SECRET_KEY` & `DJANGO_ALLOWED_HOSTS`
