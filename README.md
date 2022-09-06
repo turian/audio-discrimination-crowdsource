@@ -35,13 +35,19 @@ python manage.py migrate
 DEBUG=True python manage.py runserver
 ```
 
-### common for all environments
-- Get your Google auth keys following [this](#Google-auth-keys) method
+### Running in Production
+- Set environment variables `DEVELOPMENT_MODE`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `DEBUG`, `SECRET_KEY` & `DJANGO_ALLOWED_HOSTS`
+- Run `python manage.py migrate`
+- Load `fixtures` according to [these](#Common-for-all-environments) instructions
+
+### Common for all environments
+- Get your Google OAuth2 keys following [this](#Google-auth-keys) method
 - Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
-- For `development mode` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
-- Add your `client_id` and `secret_key`.
+- In `fixtures/allauth.json`:
+    - For `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
+    - Set `client_id` to *Client ID* and `secret` to *Client secret* from google OAuth2 credentials.
 - Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
-- In production, add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` as environment variables
+
 
 ### Theme App
 
