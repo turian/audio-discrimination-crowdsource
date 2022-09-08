@@ -29,8 +29,41 @@ DEBUG=True python manage.py runserver
 
 ### Digital Ocean apps
 
-- Set environment variables `DEVELOPMENT_MODE`, `GOOGLE_CLIENT_ID`,
-`GOOGLE_CLIENT_SECRET`, `DEBUG`, `SECRET_KEY` & `DJANGO_ALLOWED_HOSTS`
+There is a production app and a staging app, set up separately.
+The staging app builds and deploys when there are pushed to `main` branch.
+The production app builds and deploys when there are pushed to
+`prod` branch. (We only selectively merge `main` into `prod`.)
+
+- Create Digital Ocean App
+  - Service Provider: Github
+  
+  - Run command should be:
+  ```
+  $(pyenv which gunicorn) gunicorn --worker-tmp-dir /dev/shm django_app.wsgi
+  ```
+  (This is slightly wrong but appears to work.)
+  - Use the bulk editor to set the values as follows. The last three
+  values should be encrypted.
+  ```
+  DATABASE_URL=${db.DATABASE_URL}
+  DJANGO_ALLOWED_HOSTS=${APP_DOMAIN}
+  DEBUG=[False|True]
+  DJANGO_SECRET_KEY=********************
+  GOOGLE_CLIENT_ID=********************
+  GOOGLE_CLIENT_SECRET=********************
+  ```
+  - $5.00/mo – Basic 512 MB RAM | 1 vCPU  x  1
+- Create a free static site.
+  - Add another app resource from the same github branch.
+  - Edit the resource type to 'static site'.
+  - HTTP route should be `/static`
+  - Output directory should be `staticfiles`
+- Create a dev postgres database for $7/mo.
+
+- After the first build + deploy
+  - Add domain name in app settings (should be the domain authorized
+  for Google OAuth).
+
 - Run `python manage.py migrate`
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
