@@ -1,15 +1,18 @@
-{% extends "account/base.html" %}
-
-{% load i18n %}
-
+{% extends "base.html" %}
 {% load socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block body-block %}
 
-{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-6 text-center">
+      <h3>Sign In</h3>
+      <a class="btn btn-primary mt-3" href="{% provider_login_url 'google' %}">SignIn Using Google</a>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
 
-<h1>{% trans "Sign In" %}</h1>
-
-<p>Please Sign In using <a href="{% provider_login_url 'google' %}">Google</a></p>
 
 {% endblock %}
