@@ -43,9 +43,7 @@ DEBUG=True python manage.py runserver
 ### Common for all environments
 - Get your Google OAuth2 keys following [this](#Google-auth-keys) method
 - Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
-- In `fixtures/allauth.json`:
-    - For `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
-    - Set `client_id` to *Client ID* and `secret` to *Client secret* from google OAuth2 credentials.
+- In `fixtures/allauth.json` for `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
 - Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
 
 
