@@ -9,8 +9,9 @@ class IndexView(TemplateView):
 
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
-    min_time = 900
-    max_time = 4500
+    minutes_after_should_rest = 15
+    minutes_after_can_continue = 75
+
     def get(self, request):
         if not request.user.first_task_of_this_session_performed_at:
             # if it's user's first time
@@ -22,10 +23,11 @@ class AuthFlowView(LoginRequiredMixin, View):
 
         current_time = timezone.now()
         time_diff = current_time - request.user.first_task_of_this_session_performed_at
-        time_diff_seconds = time_diff.total_seconds()
-        should_rest = time_diff_seconds > self.min_time and time_diff_seconds < self.max_time
-        can_continue = time_diff_seconds > self.max_time
-        rest_time = round((self.max_time - time_diff_seconds) / 60) + 1
+        time_diff_minutes = time_diff.total_seconds() / 60
+        should_rest = time_diff_minutes > self.minutes_after_should_rest and \
+                      time_diff_minutes < self.minutes_after_can_continue
+        can_continue = time_diff_minutes > self.minutes_after_can_continue
+        rest_time = round(self.minutes_after_can_continue - time_diff_minutes) + 1
         context = {
             "should_rest": should_rest,
             "can_continue": can_continue,
