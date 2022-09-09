@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body-block %}
+
+<div class="mt-5 text-center">
+  {% if user.is_locked %}
+    <h3>Thank You for contribution</h3>
+  {% elif should_rest %}
+    <h3>Please rest your ears and return in {{ rest_time }} minutes</h3>
+  {% else %}
+    <h3>Welcome {{ user.username }} !</h3>
+    <h5>Sample Instructions</h5>
+    <p>Instruction 1</p>
+    <p>Instruction 2</p>
+    <p>Instruction 3</p>
+    <a href="#" class="btn btn-primary">Begin Work</a>
+  {% endif %}
+</div>
+{% endblock %}

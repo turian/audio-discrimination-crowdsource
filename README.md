@@ -22,6 +22,7 @@ export DEVELOPMENT_MODE=True
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
+python manage.py createsuperuser
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
@@ -65,6 +66,7 @@ The production app builds and deploys when there are pushed to
   for Google OAuth).
 
 - Run `python manage.py migrate`
+- Run `python manage.py createsuperuser`
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
 ### OAuth Setup
@@ -84,13 +86,8 @@ One-time Google OAuth setup:
     	`https://audiodiscrimination.com/accounts/google/login/callback/`
 
 - Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
-- In `fixtures/allauth.json`:
-    - For `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000`
-    then replace `127.0.0.1:8000` with your domain.
-    - Set `client_id` to *Client ID* and `secret` to *Client secret*
-    from google OAuth2 credentials.
-- Run `python manage.py loaddata fixtures/allauth.json` to load
-fixtures.
+- In `fixtures/allauth.json` for `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
+- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
 
 
 ## Theme App
