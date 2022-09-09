@@ -22,6 +22,7 @@ export DEVELOPMENT_MODE=True
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
+python manage.py createsuperuser
 #python manage.py startapp polls
 DEBUG=True python manage.py runserver
 ```
@@ -65,6 +66,7 @@ The production app builds and deploys when there are pushed to
   for Google OAuth).
 
 - Run `python manage.py migrate`
+- Run `python manage.py createsuperuser`
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
 ### OAuth Setup
