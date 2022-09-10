@@ -4,6 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
+from .models import CurrentBatchEval, CurrentBatchGold, Batch, Task, Annotation
+from .utils import batch_selector
+
 class IndexView(TemplateView):
     template_name = "polls/index.html"
 
@@ -34,3 +37,12 @@ class AuthFlowView(LoginRequiredMixin, View):
             "rest_time": rest_time
         }
         return render(request, self.template_name, context)
+
+class TaskFlowView(LoginRequiredMixin, View):
+    def get(self, request):
+        if batch_selector():
+            # when probability lesss than 90%
+            batch = CurrentBatchEval.objects.first()
+        else:
+            batch = CurrentBatchGold.objects.first()
+        
