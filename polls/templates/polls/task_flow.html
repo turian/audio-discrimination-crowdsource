@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body-block %}
+
+<div class="container mt-5">
+  <div class="row text-center">
+    <div class="col"></div>
+    <div class="col-6">
+      {% if not task %}
+      <h3>Come back later for more work.</h3>
+      {% else %}
+      <h3>Task</h3>
+      <form method="POST">
+        
+      </form>
+      {% endif %}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+{% endblock %}
