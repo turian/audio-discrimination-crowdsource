@@ -96,8 +96,8 @@ SITE_ID = 1
 if DEVELOPMENT_MODE:
     SITE_ID = 2
 
-LOGIN_REDIRECT_URL = '/polls/'
-LOGOUT_REDIRECT_URL = '/polls/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'account_login'
 
 # Provider specific settings allauth
@@ -107,7 +107,12 @@ SOCIALACCOUNT_PROVIDERS = {
             'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
             'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
             'key': ''
-        }
+        },
+        # to capture email/profile data from google Oauth
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
     }
 }
 

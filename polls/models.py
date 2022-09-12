@@ -49,8 +49,9 @@ class Task(models.Model):
     batch = models.ForeignKey(Batch,
                               on_delete=models.CASCADE,
                               related_name="tasks")
-    reference = models.URLField()
-    transform = models.JSONField()
+    reference_url = models.URLField()
+    transform_url = models.URLField()
+    transform_metadata = models.JSONField()
 
 class Annotation(models.Model):
     TASK_PRESENTATION_OPTIONS = (
