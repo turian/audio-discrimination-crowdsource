@@ -98,6 +98,7 @@ if DEVELOPMENT_MODE:
 
 LOGIN_REDIRECT_URL = '/polls/'
 LOGOUT_REDIRECT_URL = '/polls/'
+LOGIN_URL = 'account_login'
 
 # Provider specific settings allauth
 SOCIALACCOUNT_PROVIDERS = {
