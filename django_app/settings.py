@@ -108,6 +108,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
             'key': ''
         },
+        # to capture email/profile data from google Oauth
         "SCOPE": [
             "profile",
             "email",

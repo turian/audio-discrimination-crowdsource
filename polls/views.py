@@ -67,4 +67,5 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect("task-flow")
 
     def test_func(self):
+        """Required by UserPassesTestMixin class"""
         return not self.request.user.is_locked
