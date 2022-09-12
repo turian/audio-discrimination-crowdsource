@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.utils import timezone
 
 from .models import CurrentBatchEval, CurrentBatchGold, Batch, Task, Annotation
-from .utils import batch_selector
+from .utils import batch_selector, present_task_for_user
 
 class IndexView(TemplateView):
     template_name = "polls/index.html"
@@ -39,10 +39,21 @@ class AuthFlowView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 class TaskFlowView(LoginRequiredMixin, View):
+    template_name = "polls/task_flow.html"
     def get(self, request):
         if batch_selector():
             # when probability lesss than 90%
-            batch = CurrentBatchEval.objects.first()
+            current_batch = CurrentBatchEval.objects.first().current_batch_eval
         else:
-            batch = CurrentBatchGold.objects.first()
+            current_batch = CurrentBatchGold.objects.first().current_batch_gold
+        all_tasks = current_batch.tasks.all()
+        tasks_for_user = all_tasks.exclude(annotation__user=request.user)
+        task = tasks_for_user.first()
+        context = { "task": task }
+        if not task:
+            return render(request, self.template_name, context)
+        url, task_presentation = present_task_for_user(task)
+        context["url"] = url
+        context["task_presentation"] = task_presentation        
+        return render(request, self.template_name, context)
         
