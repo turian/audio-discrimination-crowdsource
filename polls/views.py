@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from .models import CurrentBatchEval, CurrentBatchGold, Batch, Task, Annotation
+from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
 class IndexView(TemplateView):
@@ -12,8 +12,6 @@ class IndexView(TemplateView):
 
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
-    minutes_after_should_rest = 15
-    minutes_after_can_continue = 75
 
     def get(self, request):
         can_continue, should_rest, rest_time = check_user_work_permission(request.user)
@@ -63,7 +61,7 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
             task_presentation=task_presentation,
             annotations=annotation_choice
         )
-        return redirect("auth-flow")
+        return redirect("task-flow")
 
     def test_func(self):
         return not self.request.user.is_locked
