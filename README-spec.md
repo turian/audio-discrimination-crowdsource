@@ -102,8 +102,9 @@ CurrentBatch:
 
 Task:
     * batch: foreign key to Batch row.
-    * reference: URL string.
-    * transform: JSON.
+    * reference_url: URL string.
+    * transform_url: URL string.
+    * transform_metadata: JSON.
 
 Annotation:
     * user: foreign key to User row.

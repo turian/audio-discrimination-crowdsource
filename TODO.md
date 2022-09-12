@@ -2,12 +2,9 @@
 * Use https://startbootstrap.com/template/simple-sidebar
 * Root view /
 
-* I want to have two apps on Digital Ocean apps, "dev" and "prod".
-"prod" is based upon "main" git branch. "dev" is based upon the
-"dev" git branch. This allows me to merge PRs into "dev" and test
-that they deploy, instead of maybe breaking the prod deploy.
+* Public Google OAuth
 
-I also need a Dockerfile that apt installs `lame libsox-fmt-all sox
+* I need a Dockerfile that apt installs `lame libsox-fmt-all sox
 ffmpeg unzip`. This is because Digital Ocean doesn't all apt on its
 app platform:
 https://www.digitalocean.com/community/questions/how-to-install-ffmpeg-on-app-platform
@@ -18,10 +15,14 @@ Or perhaps it is this simple:
 https://www.digitalocean.com/community/tutorials/how-to-build-a-django-and-gunicorn-application-with-docker#step-6-writing-the-application-dockerfile
 
 * Create TOS and privacy policy
-* Setup allauth for Google OAuth
 
-* Set DEBUG=False for prod.
 * www domain
 
 * Slightly different color scheme or something for staging vs prod
 * Description of how to setup staging and prod
+
+* Email address of google users
+* Can we also add github login
+* Why does staging have four usernames? can you add multiple versions of the same user?
+
+* Different prod and dev passwords
