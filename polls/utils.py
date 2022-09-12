@@ -10,7 +10,9 @@ def present_task_for_user(task):
     return "www.example.com", "AAB"
 
 def check_user_work_permission(user):
-    print("checking user permission")
+    """Implements User Auth Flow
+    Checks if user can work or rest and calclulates resting time
+    """
     minutes_after_should_rest = 15
     minutes_after_can_continue = 75
     current_time = timezone.now()
