@@ -10,6 +10,9 @@ from .utils import batch_selector, present_task_for_user, check_user_work_permis
 class IndexView(TemplateView):
     template_name = "polls/index.html"
 
+class HomeView(TemplateView):
+    template_name = "polls/home.html"
+
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
 
