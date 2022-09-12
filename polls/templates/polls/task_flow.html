@@ -11,7 +11,29 @@
       {% else %}
       <h3>Task</h3>
       <form method="POST">
-        
+        {% csrf_token %}
+        <input type="hidden" value="{{ task.pk }}" name="taskPk">
+        <input type="hidden" value="{{ task_presentation }}" name="taskPresentation">
+        <h4>Some Static Text</h4>
+        <audio controls src="{{ url }}" class="mt-3">
+            Your browser does not support the
+            <code>audio</code> element.
+        </audio>
+
+        <div class="mt-2">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="type1"
+            name="annotationOption" value="XXY" checked>
+            <label class="form-check-label" for="type1">XXY</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="type2"
+            name="annotationOption" value="XYX">
+            <label class="form-check-label" for="type2">XYX</label>
+          </div>
+        </div>
+
+        <input type="submit" class="btn btn-primary mt-3" name="submit">
       </form>
       {% endif %}
     </div>

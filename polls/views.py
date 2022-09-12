@@ -1,5 +1,5 @@
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
@@ -40,6 +40,7 @@ class AuthFlowView(LoginRequiredMixin, View):
 
 class TaskFlowView(LoginRequiredMixin, View):
     template_name = "polls/task_flow.html"
+
     def get(self, request):
         if batch_selector():
             # when probability lesss than 90%
@@ -54,6 +55,18 @@ class TaskFlowView(LoginRequiredMixin, View):
             return render(request, self.template_name, context)
         url, task_presentation = present_task_for_user(task)
         context["url"] = url
-        context["task_presentation"] = task_presentation        
+        context["task_presentation"] = task_presentation      
         return render(request, self.template_name, context)
-        
+
+    def post(self, request):
+        annotation_choice = request.POST.get("annotationOption")
+        task_pk = request.POST.get("taskPk")
+        task_presentation = request.POST.get("taskPresentation")
+        Annotation.objects.create(
+            user=request.user,
+            task=Task.objects.get(pk=task_pk),
+            annotated_at=timezone.now(),
+            task_presentation=task_presentation,
+            annotations=annotation_choice
+        )
+        return redirect("auth-flow")
