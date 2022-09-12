@@ -135,3 +135,5 @@ batch/data/
 
 # created one time for loading google auth settings
 allauth.json
+
+.venv/

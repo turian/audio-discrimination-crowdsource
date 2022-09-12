@@ -14,3 +14,8 @@ django-bootstrap-v5
 #sox
 #pydub
 #audiomentations[extras]
+
+# Should only be for dev, not prod deploys
+black==22.6.0
+nbstripout==0.6.0
+jupytext==v1.14.1
