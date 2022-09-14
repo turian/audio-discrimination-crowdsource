@@ -30,6 +30,7 @@ class TaskFlowView(LoginRequiredMixin, View):
 
     def get(self, request):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
+        # TODO: create custom mixin or decorator to check if user.is_locked
         if should_rest or request.user.is_locked:
             return redirect("auth-flow")
         elif can_continue:
