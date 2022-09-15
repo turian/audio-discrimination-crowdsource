@@ -4,6 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import permissions
+
+
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
@@ -69,3 +76,10 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         """Required by UserPassesTestMixin class"""
         return not self.request.user.is_locked
+
+class AdminAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
+    def get(self, request):
+        return Response({"data": "hello"}, status.HTTP_200_OK)
