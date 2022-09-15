@@ -14,11 +14,14 @@ from rest_framework.authtoken.models import Token
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
+
 class IndexView(TemplateView):
     template_name = "polls/index.html"
 
+
 class HomeView(TemplateView):
     template_name = "polls/home.html"
+
 
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
@@ -28,9 +31,10 @@ class AuthFlowView(LoginRequiredMixin, View):
         context = {
             "can_continue": can_continue,
             "should_rest": should_rest,
-            "rest_time": rest_time
+            "rest_time": rest_time,
         }
         return render(request, self.template_name, context)
+
 
 class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = "polls/task_flow.html"
@@ -52,12 +56,12 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
         all_tasks = current_batch.tasks.all()
         tasks_for_user = all_tasks.exclude(annotation__user=request.user)
         task = tasks_for_user.first()
-        context = { "task": task }
+        context = {"task": task}
         if not task:
             return render(request, self.template_name, context)
         url, task_presentation = present_task_for_user(task)
         context["url"] = url
-        context["task_presentation"] = task_presentation      
+        context["task_presentation"] = task_presentation
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -69,7 +73,7 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
             task=Task.objects.get(pk=task_pk),
             annotated_at=timezone.now(),
             task_presentation=task_presentation,
-            annotations=annotation_choice
+            annotations=annotation_choice,
         )
         return redirect("task-flow")
 
@@ -77,10 +81,15 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
         """Required by UserPassesTestMixin class"""
         return not self.request.user.is_locked
 
-class TokenView(LoginRequiredMixin, View):
+
+class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         context = {"token": Token.objects.get(user=request.user)}
         return render(request, "polls/auth_token.html", context)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 class AdminAPIView(APIView):
     authentication_classes = [TokenAuthentication]
