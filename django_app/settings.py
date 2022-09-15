@@ -110,7 +110,6 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         # to capture email/profile data from google Oauth
         "SCOPE": [
-            "profile",
             "email",
         ],
     }

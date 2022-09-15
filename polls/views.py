@@ -1,6 +1,6 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
@@ -25,12 +25,13 @@ class AuthFlowView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
+class TaskFlowView(LoginRequiredMixin, View):
     template_name = "polls/task_flow.html"
 
     def get(self, request):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
-        if should_rest:
+        # TODO: create custom mixin or decorator to check if user.is_locked
+        if should_rest or request.user.is_locked:
             return redirect("auth-flow")
         elif can_continue:
             # Update user's session start time
@@ -65,7 +66,3 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
             annotations=annotation_choice
         )
         return redirect("task-flow")
-
-    def test_func(self):
-        """Required by UserPassesTestMixin class"""
-        return not self.request.user.is_locked
