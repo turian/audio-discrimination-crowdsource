@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-
+from rest_framework.authtoken.models import Token
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
@@ -76,6 +76,11 @@ class TaskFlowView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         """Required by UserPassesTestMixin class"""
         return not self.request.user.is_locked
+
+class TokenView(LoginRequiredMixin, View):
+    def get(self, request):
+        context = {"token": Token.objects.get(user=request.user)}
+        return render(request, "polls/auth_token.html", context)
 
 class AdminAPIView(APIView):
     authentication_classes = [TokenAuthentication]
