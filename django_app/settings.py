@@ -28,7 +28,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "local")
 
 
 # Application definition
@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "bootstrap5",
     "themeapp",
     "django_extensions",
-
     # django-allauth
     "django.contrib.sites",
     "allauth",
@@ -85,28 +84,30 @@ WSGI_APPLICATION = "django_app.wsgi.application"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
+    "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # db id of the entry in 'Sites' table
-SITE_ID = 1
-if DEVELOPMENT_MODE:
+if DEVELOPMENT_MODE == "production":
+    SITE_ID = 3
+elif DEVELOPMENT_MODE == "staging":
     SITE_ID = 2
+else:
+    SITE_ID = 1
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
-LOGIN_URL = 'account_login'
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+LOGIN_URL = "account_login"
 
 # Provider specific settings allauth
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
-            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
-            'key': ''
+    "google": {
+        "APP": {
+            "client_id": os.environ.get("GOOGLE_CLIENT_ID"),
+            "secret": os.environ.get("GOOGLE_CLIENT_SECRET"),
+            "key": "",
         },
         # to capture email/profile data from google Oauth
         "SCOPE": [
@@ -125,7 +126,7 @@ import sys
 
 import dj_database_url
 
-if DEVELOPMENT_MODE is True:
+if DEVELOPMENT_MODE == "local":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -169,7 +170,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = 'polls.User'
+AUTH_USER_MODEL = "polls.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -177,10 +178,9 @@ AUTH_USER_MODEL = 'polls.User'
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
-    BASE_DIR / 
-    "assets",
+    BASE_DIR / "assets",
 ]
 
 # If you plan on storing static files in other locations outside
