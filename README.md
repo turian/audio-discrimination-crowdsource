@@ -12,13 +12,14 @@ mkdir .venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+pip install pre-commit
 pre-commit install
 ```
 
 And this is how you run it locally:
 ```
 source .venv/bin/activate
-export DEVELOPMENT_MODE=True
+export DEVELOPMENT_MODE='local'
 export GOOGLE_CLIENT_ID='<your_client_id>'
 export GOOGLE_CLIENT_SECRET='<your_client_secret>'
 python manage.py migrate
@@ -49,6 +50,7 @@ The production app builds and deploys when there are pushed to
   DATABASE_URL=${db.DATABASE_URL}
   DJANGO_ALLOWED_HOSTS=${APP_DOMAIN}
   DEBUG=[False|True]
+  DEVELOPMENT_MODE=['staging'|'production']
   DJANGO_SECRET_KEY=********************
   GOOGLE_CLIENT_ID=********************
   GOOGLE_CLIENT_SECRET=********************
@@ -86,7 +88,6 @@ One-time Google OAuth setup:
     	`https://audiodiscrimination.com/accounts/google/login/callback/`
 
 - Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
-- In `fixtures/allauth.json` for `DEVELOPMENT_MODE = True` if not using `127.0.0.1:8000` then replace `127.0.0.1:8000` with your domain.
 - Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
 
 
