@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body-block %}
+
+<div class="container mt-5">
+  <div class="row text-center">
+    <div class="col"></div>
+    <div class="col-6">
+      <h3>API Token</h3>
+      <code>{{ token }}</code>
+      <p class="mt-3">Use this token in headers like this</p>
+      <code>"Authorization": "Token {{ token }}"</code>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+{% endblock %}
