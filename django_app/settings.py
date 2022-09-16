@@ -94,8 +94,10 @@ if DEVELOPMENT_MODE == "production":
     SITE_ID = 3
 elif DEVELOPMENT_MODE == "staging":
     SITE_ID = 2
-else:
+elif DEVELOPMENT_MODE == "local":
     SITE_ID = 1
+else:
+    raise Exception("DEVELOPMENT_MODE environment variable is not correct")
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
