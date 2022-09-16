@@ -81,7 +81,7 @@ class TaskFlowView(LoginRequiredMixin, View):
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        admin_api_url = request.build_absolute_uri("/api/v1/admin-api/")
+        admin_api_url = request.build_absolute_uri("/polls/api/v1/admin-api/")
         token, _ = Token.objects.get_or_create(user=request.user)
         context = {"token": token, "admin_api_url": admin_api_url}
         return render(request, "polls/auth_token.html", context)
