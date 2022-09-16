@@ -81,7 +81,8 @@ class TaskFlowView(LoginRequiredMixin, View):
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        context = {"token": Token.objects.get(user=request.user)}
+        token, _ = Token.objects.get_or_create(user=request.user)
+        context = {"token": token}
         return render(request, "polls/auth_token.html", context)
 
     def test_func(self):
