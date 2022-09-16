@@ -1,6 +1,6 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
@@ -77,10 +77,6 @@ class TaskFlowView(LoginRequiredMixin, View):
             annotations=annotation_choice,
         )
         return redirect("task-flow")
-
-    def test_func(self):
-        """Required by UserPassesTestMixin class"""
-        return not self.request.user.is_locked
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
