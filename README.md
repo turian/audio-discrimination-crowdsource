@@ -68,7 +68,7 @@ The production app builds and deploys when there are pushed to
 
 - Run `python manage.py migrate`
 - Run `python manage.py createsuperuser`
-- Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
+- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
 
 ### OAuth Setup
 
@@ -85,9 +85,6 @@ One-time Google OAuth setup:
         - set `Authorized JS origins` to `https://audiodiscrimination.com`
 	    - set `Authorized redirect URIs` to
     	`https://audiodiscrimination.com/accounts/google/login/callback/`
-
-- Copy `fixtures/allauth.json.tmpl` to `fixtures/allauth.json`
-- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
 
 
 ## Theme App
