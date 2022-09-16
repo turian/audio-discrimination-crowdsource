@@ -28,7 +28,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "local")
 
 
 # Application definition
@@ -92,9 +92,14 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # db id of the entry in 'Sites' table
-SITE_ID = 1
-if DEVELOPMENT_MODE:
+if DEVELOPMENT_MODE == "production":
+    SITE_ID = 3
+elif DEVELOPMENT_MODE == "staging":
     SITE_ID = 2
+elif DEVELOPMENT_MODE == "local":
+    SITE_ID = 1
+else:
+    raise Exception("DEVELOPMENT_MODE environment variable is not correct")
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
@@ -124,7 +129,7 @@ import sys
 
 import dj_database_url
 
-if DEVELOPMENT_MODE is True:
+if DEVELOPMENT_MODE == "local":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
