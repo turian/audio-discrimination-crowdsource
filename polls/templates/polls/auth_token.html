@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block css-block %}
+<style>
+  pre code {
+    background-color: #eee;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block body-block %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+      <div class="text-center">
+        <h3>API Token</h3>
+        <code>{{ token }}</code>
+      </div>
+      <p class="mt-3">
+        Use following code snippet to make request to admin api endpoint.
+      </p>
+      <pre>
+        <code>
+import requests
+headers = {
+    "Authorization": "Token {{ token.key }}"
+    }
+url = "{{ admin_api_url }}"
+response = requests.get(url, headers=headers)
+print(response.json())
+print(response.status_code)
+        </code>
+      </pre>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+{% endblock %}

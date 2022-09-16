@@ -1,17 +1,27 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
+
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import permissions
+from rest_framework.authtoken.models import Token
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
+
 class IndexView(TemplateView):
     template_name = "polls/index.html"
 
+
 class HomeView(TemplateView):
     template_name = "polls/home.html"
+
 
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
@@ -21,9 +31,10 @@ class AuthFlowView(LoginRequiredMixin, View):
         context = {
             "can_continue": can_continue,
             "should_rest": should_rest,
-            "rest_time": rest_time
+            "rest_time": rest_time,
         }
         return render(request, self.template_name, context)
+
 
 class TaskFlowView(LoginRequiredMixin, View):
     template_name = "polls/task_flow.html"
@@ -46,12 +57,12 @@ class TaskFlowView(LoginRequiredMixin, View):
         all_tasks = current_batch.tasks.all()
         tasks_for_user = all_tasks.exclude(annotation__user=request.user)
         task = tasks_for_user.first()
-        context = { "task": task }
+        context = {"task": task}
         if not task:
             return render(request, self.template_name, context)
         url, task_presentation = present_task_for_user(task)
         context["url"] = url
-        context["task_presentation"] = task_presentation      
+        context["task_presentation"] = task_presentation
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -63,6 +74,25 @@ class TaskFlowView(LoginRequiredMixin, View):
             task=Task.objects.get(pk=task_pk),
             annotated_at=timezone.now(),
             task_presentation=task_presentation,
-            annotations=annotation_choice
+            annotations=annotation_choice,
         )
         return redirect("task-flow")
+
+
+class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        admin_api_url = request.build_absolute_uri("/api/v1/admin-api/")
+        token, _ = Token.objects.get_or_create(user=request.user)
+        context = {"token": token, "admin_api_url": admin_api_url}
+        return render(request, "polls/auth_token.html", context)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
+
+    def get(self, request):
+        return Response({"data": "hello"}, status.HTTP_200_OK)

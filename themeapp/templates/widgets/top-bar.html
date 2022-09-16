@@ -6,6 +6,9 @@
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                 <li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
                 <li class="nav-item active"><a class="nav-link" href="{% url 'auth-flow' %}">Begin Task</a></li>
+                {% if user.is_superuser %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'auth-token' %}">API Token</a></li>
+                {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Log Out</a></li>
                 {% else %}
