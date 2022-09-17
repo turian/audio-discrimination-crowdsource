@@ -1,18 +1,29 @@
+---
 repos:
--   repo: https://github.com/kynan/nbstripout
-    rev: 0.6.0
-    hooks:
-    -   id: nbstripout
--   repo: https://github.com/mwouts/jupytext
-    rev: v1.14.1
-    hooks:
-    -   id: jupytext
-        args: [--sync, --pipe, black]
-        additional_dependencies:
-            - black==22.6.0 # Matches hook
--   repo: https://github.com/psf/black
-    rev: 22.6.0
-    hooks:
-    -   id: black
-        exclude: ^migrations/
-        language_version: python3
+    - repo: https://github.com/kynan/nbstripout
+      rev: 0.6.0
+      hooks:
+          - id: nbstripout
+    - repo: https://github.com/mwouts/jupytext
+      rev: v1.14.1
+      hooks:
+          - id: jupytext
+            args: [--sync, --pipe, black]
+            additional_dependencies:
+                - black==22.6.0     # Matches hook
+    - repo: https://github.com/psf/black
+      rev: 22.6.0
+      hooks:
+          - id: black
+            exclude: ^migrations/
+            language_version: python3
+    - repo: https://github.com/adrienverge/yamllint.git
+      rev: v1.28.0  # or higher tag
+      hooks:
+          - id: yamllint
+            args: [--format, parsable, --strict]
+
+    - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+      rev: 0.2.2    # or other specific tag
+      hooks:
+          - id: yamlfmt
