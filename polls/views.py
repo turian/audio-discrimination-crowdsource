@@ -4,14 +4,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import mixins
+from rest_framework import generics
 from rest_framework import status
 from rest_framework import permissions
+
 from rest_framework.authtoken.models import Token
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
+from .serializers import AnnotationSerializer
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
 
@@ -91,8 +95,13 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
-
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
+
+
+class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
