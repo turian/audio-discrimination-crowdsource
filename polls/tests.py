@@ -9,6 +9,11 @@ from .models import Batch, Task, Annotation
 
 
 class LockUserAnnotationListTest(APITestCase):
+    """This class sets up the test db and tests
+    - 'lock-users-api' endpoint
+    - 'annotation-api' endpoint
+    """
+
     def setUp(self):
         self.user = get_user_model().objects.create(
             username="test_user", password="testpass"
@@ -38,3 +43,20 @@ class LockUserAnnotationListTest(APITestCase):
         response = self.client.post(url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {"users_not_found": [5, 10]})
+
+    def test_annotation_list(self):
+        url = reverse("annotation-api")
+        expected_output = [
+            {
+                "id": 1,
+                "user": 1,
+                "task": 1,
+                "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "task_presentation": "AAB",
+                "annotations": "XXY",
+            }
+        ]
+        self.client.force_authenticate(user=self.admin_user)
+        response = self.client.get(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), expected_output)
