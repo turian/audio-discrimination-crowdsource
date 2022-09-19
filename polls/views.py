@@ -1,17 +1,15 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from django.utils import timezone
 
-# from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import status
-from rest_framework import permissions
-
 from rest_framework.authtoken.models import Token
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
@@ -105,3 +103,17 @@ class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class UserLockAPIView(APIView):
+    def post(self, request):
+        user_ids = request.data.get("users", list())
+        user_not_found = list()
+        for id in user_ids:
+            try:
+                user = get_user_model().objects.get(id=id)
+                user.is_locked = True
+                user.save()
+            except get_user_model().DoesNotExist:
+                user_not_found.append(id)
+        return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
