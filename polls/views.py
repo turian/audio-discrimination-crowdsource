@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from django.utils import timezone
+from django.urls import reverse
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -83,9 +84,16 @@ class TaskFlowView(LoginRequiredMixin, View):
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        admin_api_url = request.build_absolute_uri("/polls/api/v1/admin-api/")
+        admin_api = request.build_absolute_uri(reverse("admin-api"))
+        annotation_api = request.build_absolute_uri(reverse("annotation-api"))
+        lock_users_api = request.build_absolute_uri(reverse("lock-users-api"))
         token, _ = Token.objects.get_or_create(user=request.user)
-        context = {"token": token, "admin_api_url": admin_api_url}
+        context = {
+            "token": token,
+            "admin_api": admin_api,
+            "annotation_api": annotation_api,
+            "lock_users_api": lock_users_api,
+        }
         return render(request, "polls/auth_token.html", context)
 
     def test_func(self):
