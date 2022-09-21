@@ -23,6 +23,14 @@ class HomeView(TemplateView):
     template_name = "polls/home.html"
 
 
+class TOSView(TemplateView):
+    template_name = "polls/tos.html"
+
+
+class PrivacyView(TemplateView):
+    template_name = "polls/privacy_policy.html"
+
+
 class AuthFlowView(LoginRequiredMixin, View):
     template_name = "polls/auth_flow.html"
 
