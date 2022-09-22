@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
+from .custom_mixin import CheckUserLockMixin
 
 
 class IndexView(TemplateView):
@@ -23,7 +24,11 @@ class HomeView(TemplateView):
     template_name = "polls/home.html"
 
 
-class AuthFlowView(LoginRequiredMixin, View):
+class ThanksView(TemplateView):
+    template_name = "polls/thanks.html"
+
+
+class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
     template_name = "polls/auth_flow.html"
 
     def get(self, request):
@@ -35,14 +40,16 @@ class AuthFlowView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+    def check_user_is_locked(self):
+        return self.request.user.is_locked
 
-class TaskFlowView(LoginRequiredMixin, View):
+
+class TaskFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
     template_name = "polls/task_flow.html"
 
     def get(self, request):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
-        # TODO: create custom mixin or decorator to check if user.is_locked
-        if should_rest or request.user.is_locked:
+        if should_rest:
             return redirect("auth-flow")
         elif can_continue:
             # Update user's session start time
@@ -77,6 +84,9 @@ class TaskFlowView(LoginRequiredMixin, View):
             annotations=annotation_choice,
         )
         return redirect("task-flow")
+
+    def check_user_is_locked(self):
+        return self.request.user.is_locked
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
