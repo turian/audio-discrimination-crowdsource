@@ -12,9 +12,10 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny
 
-from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
-from .serializers import AnnotationSerializer
+from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation, Batch
+from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
 
@@ -125,3 +126,14 @@ class UserLockAPIView(APIView):
             except get_user_model().DoesNotExist:
                 user_not_found.append(id)
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
+
+
+class BatchTasksAPIView(APIView):
+    def post(self, request):
+        serializer = BatchTaskSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            batch = serializer.save()
+            return Response(
+                BatchTaskSerializer(batch).data, status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
