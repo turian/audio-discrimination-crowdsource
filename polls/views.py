@@ -88,12 +88,14 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         admin_api = request.build_absolute_uri(reverse("admin-api"))
         annotation_api = request.build_absolute_uri(reverse("annotation-api"))
         lock_users_api = request.build_absolute_uri(reverse("lock-users-api"))
+        batch_tasks_api = request.build_absolute_uri(reverse("batch-tasks-api"))
         token, _ = Token.objects.get_or_create(user=request.user)
         context = {
             "token": token,
             "admin_api": admin_api,
             "annotation_api": annotation_api,
             "lock_users_api": lock_users_api,
+            "batch_tasks_api": batch_tasks_api,
         }
         return render(request, "polls/auth_token.html", context)
 
@@ -133,7 +135,5 @@ class BatchTasksAPIView(APIView):
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             batch = serializer.save()
-            return Response(
-                BatchTaskSerializer(batch).data, status=status.HTTP_201_CREATED
-            )
+            return Response({"status": "success"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

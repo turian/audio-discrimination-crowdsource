@@ -15,5 +15,7 @@ urlpatterns = [
         name="annotation-api",
     ),
     path("api/v1/lock-users/", views.UserLockAPIView.as_view(), name="lock-users-api"),
-    path("api/v1/batch-tasks/", views.BatchTasksAPIView.as_view(), name="batch-tasks"),
+    path(
+        "api/v1/batch-tasks/", views.BatchTasksAPIView.as_view(), name="batch-tasks-api"
+    ),
 ]
