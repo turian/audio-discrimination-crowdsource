@@ -7,7 +7,7 @@ django-extensions==3.2.1
 gunicorn==20.1.0
 psycopg2-binary==2.9.3
 sqlparse==0.4.2
-djangorestframework==3.13.1
+djangorestframework==3.14.0
 
 django-bootstrap-v5
 pre-commit==2.20.0
