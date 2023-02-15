@@ -157,6 +157,11 @@ There are some options to deploy apps to servers/fly.io. from those options dock
 
  - launch to fly.io with appname, region and postgress configuration
 
+Install FlyCtl
+ - visit fly.io
+
+Authenticate your fly account
+ - Run "fly auth login"
 
 Useful fly commands
   
@@ -166,16 +171,16 @@ Useful fly commands
       fly launch # to launch the app to fly.io
       fly logs # to watch for logs
       flyctl auth login # to login to fly.io via ctl
-    
+      fly deploy # deploy the app
     ```
 
 Secrets
 
-- set the secrets  that we need
+- Set the secrets  that we need
       ```
         fly secrets set DEBUG="1"
         fly secrets set SECRET_KEY=""
-        fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 audio-discrimination-croudsource-dev"
+        fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 audio-discrimination-croudsource-dev.fly.dev" # the last parameter is app name
         fly secrets set CSRF_TRUSTED_ORIGINS="https://audio-discrimination-croudsource-dev"
       ```
     Or 
@@ -183,7 +188,8 @@ Secrets
       - RUN "flyctl secrets import -a audio-discrimination-croudsource-dev .env"  # it will import secrets from .env file/
         
 
-
+Deploy
+  - Run "fly deploy"
 
 
 
