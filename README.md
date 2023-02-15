@@ -171,7 +171,6 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
   - Run the following from the root of your project
     ```
     python3 generate_key.py
-    
     ```
     Get your key and update in .env file SECRET_KEY='<your-key>'
   
@@ -217,15 +216,14 @@ Import Secrets
     flyctl secrets import -a audio-discrimination-croudsource-dev .env
     ```
 
-# Deploy
+Deploy
 
-To deploy the app to the FLY platform.
+- To deploy the app to the FLY platform.
   ```
     fly deploy
   ```
 
-
-Open App in browser
+- Open App in browser
     ```  
      fly open
     ```
