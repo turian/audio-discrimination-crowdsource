@@ -16,7 +16,8 @@ class CheckUserLockMixin:
         redirect_url = self.redirect_url
         if not redirect_url:
             raise ImproperlyConfigured(
-                "{0} is missing the redirect_url attribute. Define {0}.redirect_url or override "
+                "{0} is missing the redirect_url attribute. "
+                "Define {0}.redirect_url or override "
                 "{0}.get_redirect_url().".format(self.__class__.__name__)
             )
         return str(redirect_url)
