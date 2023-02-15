@@ -5,20 +5,20 @@ repos:
       hooks:
           - id: nbstripout
     - repo: https://github.com/mwouts/jupytext
-      rev: v1.14.1
+      rev: v1.14.4
       hooks:
           - id: jupytext
             args: [--sync, --pipe, black]
             additional_dependencies:
-                - black==22.6.0     # Matches hook
+                - black==23.1.0     # Matches hook
     - repo: https://github.com/psf/black
-      rev: 22.6.0
+      rev: 23.1.0
       hooks:
           - id: black
             exclude: ^migrations/
             language_version: python3
     - repo: https://github.com/adrienverge/yamllint.git
-      rev: v1.28.0  # or higher tag
+      rev: v1.29.0  # or higher tag
       hooks:
           - id: yamllint
             args: [--format, parsable, --strict]
