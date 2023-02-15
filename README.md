@@ -133,6 +133,14 @@ Now, for any new html page, we need to do the following:
   - add python-dotenv>=0.21.0 to requirements
   - install requirements.txt or pip python-dotenv
 
+- Doeckerization
+   - create docker file
+   - create .dockerignore
+
+
+ - launch to fly.io with appname, region and postgress configuration
+
+
 
 
 

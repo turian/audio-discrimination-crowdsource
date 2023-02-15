@@ -1,0 +1,10 @@
+databse information
+
+
+Postgres cluster audio-discrimination-croudsource-dev-db created
+  Username:    postgres
+  Password:    RJFNaMUctMdNGcm
+  Hostname:    audio-discrimination-croudsource-dev-db.internal
+  Proxy port:  5432
+  Postgres port:  5433
+  Connection string: postgres://postgres:RJFNaMUctMdNGcm@audio-discrimination-croudsource-dev-db.internal:5432 
