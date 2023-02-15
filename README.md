@@ -132,19 +132,19 @@ Now, for any new html page, we need to do the following:
 ## Install FlyCtl
 
 To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
-- Linux:
-  ```  
-    curl  -L https://fly.io/install.sh | sh
-  ```
-- OSX:
-  ```
-  brew install flyctl
-  ```
-- Windows:
-  ```
+  - Linux:
+    ```  
+      curl  -L https://fly.io/install.sh | sh
+    ```
+  - OSX:
+    ```
+    brew install flyctl
+    ```
+  - Windows:
+    ```
     iwr https://fly.io/install.ps1 -useb
-  ```  
-  Visit `https://fly.io/` if you need installation guide
+    ```  
+    Visit `https://fly.io/` if you need installation guide
 
 
 - Next authenticate with your fly.io account:
