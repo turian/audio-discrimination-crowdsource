@@ -127,33 +127,37 @@ Now, for any new html page, we need to do the following:
 
 ```
 
-## pre deployment to fly.io
+## Deployment to Fly.io
 
 
-Install FlyCtl
+# Install FlyCtl
 
 To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
 
-- To install it on Linux
-    RUN `curl  -L https:fly.io/install.sh | sh`
+  - To install it on Linux
+
+    ```  
+      curl  -L https:fly.io/install.sh | sh`
+    ```
 
 - To install it on windows
-    Run `iwr https://fly.io/install.ps1 -useb` from windows powershell
-
-  # visit `https://fly.io/` if you need installation guide
+    ```
+       `iwr https://fly.io/install.ps1 -useb` 
+    ```
+    
+    Visit `https://fly.io/` if you need installation guide
   
 
 Next authenticate with your fly.io account:
-   Run `fly auth login`
-   # in case you don't have an account yet: goto fly.io and signup
+  `fly auth login`
 
 
 To make sure everything is working well:
-  Run `fly apps list`
-  # the output of the above command will be empty table since you have no apps launched yet
+  `fly apps list`
+  The output of the above command will be empty table since you have no apps launched yet
 
 
-Configure the Project
+# Configure the Project
 
   Environment Variables
 
@@ -161,66 +165,47 @@ Configure the Project
 
   a. Generate SECRET_KEY 
       # Run the following from the root of your project
-      Run `python generate_key.py`
+      `python generate_key.py`
       # Get your key and update in .env file SECRET_KEY='<your-key>'
 
-Deploy App
+  # Deploy App
 
-In this step the app is going to be launched to fly.io.
+  In this step the app is going to be launched to fly.io.
   
-  To create and configure new app
-  # It will ask for app name, region annd if you need Postgresql database 
-    - Run `fly launch`
-  Notes: 
-    1. write custom app name or leave it blank to get random name
-    2. Choose the region for deployment: Closest to you
-    3. Say 'Yes' for the question Would you like to setup Postgresql database now
-    4. Database configuration: Development
-    5. would like to deploy now: NO  # some other configurations are not done yet  
-  
+   Create and configure new app
+    `fly launch`
+    
   This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root.
 
   To make sure the app is created successfully:
-   # This command prints 3 apps: 
-   # 1. your app, 
-   # 2. database instance and 
-   # 3. Fly builders: to build docker images
+  `fly apps list`
 
-   Run `fly apps list`
+    This command prints 3 apps: 
+    1. your app, 
+    2. database instance and 
+    3. Fly builders: to build docker images
 
 Secrets
 
 - Set the secrets  that you used in settings.py
-      
-    - Run `fly secrets set DEBUG="1"`
-    - Run `fly secrets set SECRET_KEY="<your-key>"`
-    - Run `fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>"` # the last parameter is app name which you got from fly launch
-    - Run `fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"`
     
-    Or Simply sectets can be loaded from .env 
-    - Run `flyctl secrets import -a audio-discrimination-croudsource-dev .env`  # it will import secrets from .env file/
+    ```
+    fly secrets set DEBUG="1"
+    fly secrets set SECRET_KEY="<your-key>"
+    fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
+    fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"
+    ```
+    
+    Or Simply  import from .env 
+    `flyctl secrets import -a audio-discrimination-croudsource-dev .env`
 
-Deploy
+# Deploy
 
-To deploy the app ti the FLY platform 
-  - Run `fly deploy`
+To deploy the app to the FLY platform 
+  `fly deploy`
 
 This command will use the Fly builder to build the Docker image , push it to the container registery and use it to deploy your application.
 
 
-Everything looks great. Make sure the app works by opening browser:
-  - Run `fly open`
-  # this will open the app in browser with it's host name
-
-Usefull Fly commands
-  
-    ```
-      fly apps list # to see list of apps
-      fly status # to check the status of the app
-      fly launch # to launch the app to fly.io
-      fly logs # to watch for logs
-      flyctl auth login # to login to fly.io via ctl
-      fly deploy # deploy the app
-    ```
-
-
+This will open the app in browser with it's host name
+  `fly open`
