@@ -6,6 +6,8 @@ from rest_framework.test import APITestCase
 
 from .models import Annotation, Batch, Task
 
+# from django.test import TestCase
+
 
 class LockUserAnnotationListTest(APITestCase):
     """This class sets up the test db and tests
