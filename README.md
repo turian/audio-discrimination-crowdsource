@@ -185,11 +185,10 @@ To make sure everything is working well:
     2. database instance and 
     3. Fly builders: to build docker images
 
-Secrets
 
-- Set the secrets  that you used in settings.py
-    
-    ```
+Import Secrets
+
+   ```
     fly secrets set DEBUG="1"
     fly secrets set SECRET_KEY="<your-key>"
     fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
