@@ -147,7 +147,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     Visit `https://fly.io/` if you need installation guide
 
 
-- Next authenticate with your fly.io account:
+Next authenticate with your fly.io account:
   ```
   fly auth login
   ```
