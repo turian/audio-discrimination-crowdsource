@@ -191,15 +191,14 @@ In this step the app is going to be launched to fly.io.
 Secrets
 
 - Set the secrets  that you used in settings.py
-      ```
-        fly secrets set DEBUG="1"
-        fly secrets set SECRET_KEY=""
-        fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" # the last parameter is app name which you got from fly launch
-        fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"
-      ```
-    Or 
-      Simply sectets can be loaded from .env 
-      - RUN `flyctl secrets import -a audio-discrimination-croudsource-dev .env`  # it will import secrets from .env file/
+      
+    - Run `fly secrets set DEBUG="1"`
+    - Run `fly secrets set SECRET_KEY="<your-key>"`
+    - Run `fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>"` # the last parameter is app name which you got from fly launch
+    - Run `fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"`
+    
+    Or Simply sectets can be loaded from .env 
+    - Run `flyctl secrets import -a audio-discrimination-croudsource-dev .env`  # it will import secrets from .env file/
 
 Deploy
 
@@ -209,10 +208,9 @@ To deploy the app ti the FLY platform
 This command will use the Fly builder to build the Docker image , push it to the container registery and use it to deploy your application.
 
 
-
 Everything looks great. Make sure the app works by opening browser:
   - Run `fly open`
-
+  # this will open the app in browser with it's host name
 
 Usefull Fly commands
   
