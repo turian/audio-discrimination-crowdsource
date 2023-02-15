@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Batch, CurrentBatchGold, CurrentBatchEval, Task, Annotation, User
+
+from .models import Annotation, Batch, CurrentBatchEval, CurrentBatchGold, Task, User
 
 admin.site.register(Batch)
 admin.site.register(Task)

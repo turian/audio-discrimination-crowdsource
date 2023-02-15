@@ -1,4 +1,5 @@
 import random
+
 from django.utils import timezone
 
 random.seed()

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("polls", "0003_rename_reference_task_reference_url_and_more"),
     ]
