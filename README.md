@@ -134,7 +134,7 @@ Now, for any new html page, we need to do the following:
 To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
   - Linux:
     ```  
-      curl  -L https://fly.io/install.sh | sh
+    curl  -L https://fly.io/install.sh | sh
     ```
   - OSX:
     ```
@@ -155,7 +155,6 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
 - To make sure everything is working well:    
   ```
   fly apps list
-  
   ```
 The output of the above command will be empty table since you have no apps launched yet
 
@@ -196,17 +195,16 @@ and Update DATABASE_URL in .env file.
 
 #### Import Secrets
  - This is neccassary step
-
-  ```
-  flyctl secrets import -a audio-discrimination-croudsource-dev .env
-  ```
-  Or you can add one at a time
-  ```
-  fly secrets set DEBUG="1"
-  fly secrets set SECRET_KEY="<your-key>"
-  fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
-  fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"    
-  ```
+    ```
+    flyctl secrets import -a audio-discrimination-croudsource-dev .env
+    ```
+    Or you can add one at a time
+    ```
+    fly secrets set DEBUG="1"
+    fly secrets set SECRET_KEY="<your-key>"
+    fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
+    fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"    
+    ```
 
 #### Deploy
 
