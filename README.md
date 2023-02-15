@@ -1,49 +1,5 @@
 # audio-discrimination-crowdsource
 
-Web service to crowd-source audio discrimination data.
-
-Users are given instructions about the kind of audio they will be
-listening to, and what kind of annotation they should make.
-
-When they begin work, they are presented with a listening task.
-They are presented with an MP3 to listen to (from an S3 endpoint
-probably) in a JS audio player. Later we might switch to FLAC or
-OGG (quality 10). They listen to the audio and must select a radio
-box choosing their annotation.
-
-For v1, they hear audio that is under 20 seconds long and is three
-sounds. "AAB", "ABA", "BBA", or "BAB". They are asked to choose
-whether the first and second sound are the same ("XXY"), or the
-first and third sound are the same ("XYX").
-
-10% of the time, they are given "gold" tasks so we know the right
-answer. This allows us to discard the work of annotators that are
-just clicking randomly.
-
-After 15 minutes of work, the annotators are told to take a break
-for an hour. This is so they don't get fatigued and start making
-mistakes.
-
-We want an admin interface to see the quality of the work each
-annotator is doing. It should also track time worked, so annotators
-can be paid properly. Lastly, it would be interesting to see how
-long it takes before the quality of their work goes down, so we can
-adjust the 15 minute time limit per session.
-
-V2: We will want several different kinds of audio experiments, each
-of which has a different name in the database. Each different audio
-experiment will have:
-* A different set of initial instructions.
-* A different list of audio file S3 paths.
-* (Possibly) more than one audio file to listen to, but we can also
-do one audio file and add silence in between.
-* A different set of radio options to choose between.
-For example, in a second kind of audio experiment, they might listen
-to two audio compression algorithms and pick the one with fewer
-artifacts.
-
-## Usage
-
 Web service to crowd-source audio discrimination data
 
 ## Getting Started
@@ -171,109 +127,95 @@ Now, for any new html page, we need to do the following:
 
 ```
 
-#Deployment to Fly.io
-
+# Deployment to Fly.io
 
 ## Install FlyCtl
 
-To work with the Fly platform, you first need to install Flyctl, 
-a command line interface that allows tou to do everything from creating an account to deploy to Fly.
+To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
+- Linux:
+  ```  
+    curl  -L https://fly.io/install.sh | sh
+  ```
+- OSX:
+  ```
+  brew install flyctl
+  ```
+- Windows:
+  ```
+    iwr https://fly.io/install.ps1 -useb
+  ```  
+  Visit `https://fly.io/` if you need installation guide
 
-  - To install it on Linux
-
-    ```  
-      curl  -L https:fly.io/install.sh | sh`
-    ```
-
-- To install it on windows
-    ```
-      iwr https://fly.io/install.ps1 -useb
-    ```
-    
-    Visit `https://fly.io/` if you need installation guide
-  
 
 - Next authenticate with your fly.io account:
-    ```
-     fly auth login`
-    ```
+  ```
+  fly auth login
+  ```
 
-
-- To make sure everything is working well:
-    ```
-     fly apps list
-    ```
-  The output of the above command will be empty table since you have no apps launched yet
+- To make sure everything is working well:    
+  ```
+  fly apps list
+  
+  ```
+The output of the above command will be empty table since you have no apps launched yet
 
 
 ## Configure the Project
 
-  Environment Variables
+### Environment Variables
 
-  We shouldn't store secrets in source code, so utilizing environmental variables is needed.
+We shouldn't store secrets in source code, so utilizing environmental variables is needed.
+Generate SECRET_KEY (if change needed)
+- Run the following from the root of your project
+  ```
+  python3 generate_key.py
+  ```
+  Get your key and update in .env file SECRET_KEY='<your-key>'
 
-  Generate SECRET_KEY (if change needed)
-  - Run the following from the root of your project
-    ```
-    python3 generate_key.py
-    ```
-    Get your key and update in .env file SECRET_KEY='<your-key>'
-  
+### Deploy App
 
-  ### Deploy App
-
-  In this step the app is going to be launched to fly.io.
-  
-  - Create and configure new app
-    ```
-    fly launch
-    ```
+In this step the app is going to be launched to fly.io.
+- Create and configure the app  
+  ```
+  fly launch
+  ```
     
-  This command will create you an app on Fly.io , spin up a postgres instance, 
-  and create an app configuration named fly.toml in your project root. 
-  fly.toml file contains all app details.
-   
-  Copy the DATABASE_URL from the termial output of the above process(fly launch)
-    and Update DATABASE_URL in .env file.
-
+This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
   
+Copy the DATABASE_URL from the termial output of the above process(fly launch)
+and Update DATABASE_URL in .env file.
+
 - To make sure the app is created successfully:
-
-    ```
-     fly apps list
-    ```
-
-    This command prints 3 apps: 
-    1. your app
-    2. database instance and 
-    3. Fly builders: to build docker images
+  ```
+  fly apps list
+  ```
+  This command prints 3 apps: 
+  1. your app
+  2. database instance and 
+  3. Fly builders: to build docker images
 
 #### Import Secrets
+ - This is neccassary step
 
   ```
-    fly secrets set DEBUG="1"
-    fly secrets set SECRET_KEY="<your-key>"
-    fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
-    fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"
-    
+  flyctl secrets import -a audio-discrimination-croudsource-dev .env
   ```
-    
-  Or Simply  import from .env 
-    
-    ```
-    flyctl secrets import -a audio-discrimination-croudsource-dev .env
-    
-    ```
+  Or you can add one at a time
+  ```
+  fly secrets set DEBUG="1"
+  fly secrets set SECRET_KEY="<your-key>"
+  fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
+  fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"    
+  ```
 
 #### Deploy
 
 - To deploy the app to the FLY platform.
   ```
-    fly deploy
+  fly deploy
   ```
 
-- Open App in browser
-    ```  
-     fly open
-    ```
-
+- Open the app in browser
+  ```  
+  fly open
+  ```
