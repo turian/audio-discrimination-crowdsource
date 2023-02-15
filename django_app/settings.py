@@ -32,11 +32,11 @@ from django.core.management.utils import get_random_secret_key
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-CSRF_TRUSTED_ORIGINS = ['https://audio-discrimination-croudsource-dev.fly.dev']
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(' ')
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','audio-discrimination-croudsource-dev','audio-discrimination-croudsource-dev.fly.dev'] # os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(' ')
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
 
@@ -196,7 +196,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
 STATIC_URL = "/static/"
+
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [
     BASE_DIR / "assets",
 ]

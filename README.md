@@ -181,7 +181,7 @@ To make sure everything is working well:
   `fly apps list`
 
     This command prints 3 apps: 
-    1. your app, 
+    1. your app
     2. database instance and 
     3. Fly builders: to build docker images
 
@@ -201,11 +201,8 @@ Secrets
 
 # Deploy
 
-To deploy the app to the FLY platform 
+To deploy the app to the FLY platform.
   `fly deploy`
 
-This command will use the Fly builder to build the Docker image , push it to the container registery and use it to deploy your application.
-
-
-This will open the app in browser with it's host name
+Open App in browser
   `fly open`
