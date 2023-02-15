@@ -196,7 +196,7 @@ and Update DATABASE_URL in .env file.
 #### Import Secrets
  - This is neccassary step
     ```
-    flyctl secrets import -a audio-discrimination-croudsource-dev .env
+    flyctl secrets import -a <app-name> .env
     ```
     Or you can add one at a time
     ```
