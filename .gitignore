@@ -135,4 +135,5 @@ batch/data/
 
 .venv/
 
-*.toml
+fly.toml
+
