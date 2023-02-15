@@ -32,11 +32,11 @@ from django.core.management.utils import get_random_secret_key
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-CSRF_TRUSTED_ORIGINS = ['https://audio-discrimination-croudsource-dev']
+CSRF_TRUSTED_ORIGINS = ['https://audio-discrimination-croudsource-dev.fly.dev']
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','audio-discrimination-croudsource-dev'] # os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ['127.0.0.1','localhost','audio-discrimination-croudsource-dev','audio-discrimination-croudsource-dev.fly.dev'] # os.getenv("ALLOWED_HOSTS")
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
 

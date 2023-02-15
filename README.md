@@ -129,16 +129,59 @@ Now, for any new html page, we need to do the following:
 
 ## pre deployment to fly.io
 
-- Setting environmental variables
-  - add python-dotenv>=0.21.0 to requirements
-  - install requirements.txt or pip python-dotenv
 
+- Setting Up environmental variables
+
+  - Add `python-dotenv>=0.21.0` to requirements.txt
+  - Run `pip install -r requirements.txt`
+
+  -  create new .env file
+      add the following informations in it
+          SECRET_KEY
+          DATABASE_URL
+          DEBUG
+
+      NB for Secret key generate random variable of length 60
+      ```
+       import secrets
+       import string
+       ''.join(secrets.choice(string.printable) for i in range(60))
+       # random string will be generated and used as secret key for the app
+      ```
+
+There are some options to deploy apps to servers/fly.io. from those options docker is the one and good option to deploy with proper environment and it's easy to update and scalable
 - Doeckerization
-   - create docker file
+  * To dockerize the app the following 2 files will be created on the root of the project
+   - create Docker file
    - create .dockerignore
 
-
  - launch to fly.io with appname, region and postgress configuration
+
+
+Useful fly commands
+  
+    ```
+      fly apps list # to see list of apps
+      fly status # to check the status of the app
+      fly launch # to launch the app to fly.io
+      fly logs # to watch for logs
+      flyctl auth login # to login to fly.io via ctl
+    
+    ```
+
+Secrets
+
+- set the secrets  that we need
+      ```
+        fly secrets set DEBUG="1"
+        fly secrets set SECRET_KEY=""
+        fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 audio-discrimination-croudsource-dev"
+        fly secrets set CSRF_TRUSTED_ORIGINS="https://audio-discrimination-croudsource-dev"
+      ```
+    Or 
+      Simply sectets can be loaded from .env 
+      - RUN "flyctl secrets import -a audio-discrimination-croudsource-dev .env"  # it will import secrets from .env file/
+        
 
 
 

@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [deploy]
-  release_command = "python manage.py migrate"
+  release_command = "python manage.py migrate --noinput"
 
 [env]
   PORT = "8000"
@@ -43,6 +43,4 @@ processes = []
 [[statics]]
   guest_path = "/app/public"
   url_prefix = "/static/"
-[[deploy]]
-  release_command = "python manage.py migrate --noinput"
 
