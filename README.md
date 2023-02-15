@@ -148,12 +148,16 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     Visit `https://fly.io/` if you need installation guide
   
 
-Next authenticate with your fly.io account:
-  `fly auth login`
+- Next authenticate with your fly.io account:
+    ```
+     fly auth login`
+    ```
 
 
-To make sure everything is working well:
-  `fly apps list`
+- To make sure everything is working well:
+    ```
+     fly apps list
+    ```
   The output of the above command will be empty table since you have no apps launched yet
 
 
@@ -164,48 +168,65 @@ To make sure everything is working well:
   We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 
   Generate SECRET_KEY (if change needed)
-    # Run the following from the root of your project
-    `python3 generate_key.py`
-    # Get your key and update in .env file SECRET_KEY='<your-key>'
+  - Run the following from the root of your project
+    ```
+    python3 generate_key.py
+    
+    ```
+    Get your key and update in .env file SECRET_KEY='<your-key>'
   
 
   # Deploy App
 
   In this step the app is going to be launched to fly.io.
   
-   Create and configure new app
-    `fly launch`
+  - Create and configure new app
+    ```
+    fly launch
+    ```
     
   This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root.
    
   Copy the DATABASE_URL from the termial output of the above process(fly launch) and Update DATABASE_URL in .env file.
 
   
-  To make sure the app is created successfully:
-  `fly apps list`
+- To make sure the app is created successfully:
+
+    ```
+     fly apps list
+    ```
 
     This command prints 3 apps: 
     1. your app
     2. database instance and 
     3. Fly builders: to build docker images
 
-
 Import Secrets
 
-   ```
+  ```
     fly secrets set DEBUG="1"
     fly secrets set SECRET_KEY="<your-key>"
     fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
     fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"
-    ```
     
-    Or Simply  import from .env 
-    `flyctl secrets import -a audio-discrimination-croudsource-dev .env`
+  ```
+    
+  Or Simply  import from .env 
+    
+    ```
+    flyctl secrets import -a audio-discrimination-croudsource-dev .env
+    ```
 
 # Deploy
 
 To deploy the app to the FLY platform.
-  `fly deploy`
+  ```
+    fly deploy
+  ```
+
 
 Open App in browser
-  `fly open`
+    ```  
+     fly open
+    ```
+
