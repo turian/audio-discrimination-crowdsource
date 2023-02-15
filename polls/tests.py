@@ -1,11 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils import timezone
-
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Batch, Task, Annotation
+from .models import Annotation, Batch, Task
 
 
 class LockUserAnnotationListTest(APITestCase):

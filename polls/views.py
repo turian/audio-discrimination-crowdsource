@@ -1,21 +1,19 @@
-from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
-from django.views.generic import TemplateView
-from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, render
 from django.urls import reverse
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import mixins
-from rest_framework import generics
-from rest_framework import status
+from django.utils import timezone
+from django.views import View
+from django.views.generic import TemplateView
+from rest_framework import generics, mixins, permissions, status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
+from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
 from .serializers import AnnotationSerializer
-from .utils import batch_selector, present_task_for_user, check_user_work_permission
+from .utils import batch_selector, check_user_work_permission, present_task_for_user
 
 
 class IndexView(TemplateView):
