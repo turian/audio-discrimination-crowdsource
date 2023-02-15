@@ -32,11 +32,11 @@ from django.core.management.utils import get_random_secret_key
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['https://audio-discrimination-croudsource-dev']
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost'] # os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ['127.0.0.1','localhost','audio-discrimination-croudsource-dev'] # os.getenv("ALLOWED_HOSTS")
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    # 'whitenoise.runserver_nonstatic',
     "django.contrib.staticfiles",
     "polls",
     "bootstrap5",
@@ -66,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -187,6 +189,9 @@ AUTH_USER_MODEL = "polls.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
