@@ -161,7 +161,7 @@ Install FlyCtl
  - visit fly.io
 
 Authenticate your fly account
- - Run "fly auth login"
+ - Run `fly auth login`
 
 Useful fly commands
   
@@ -185,11 +185,12 @@ Secrets
       ```
     Or 
       Simply sectets can be loaded from .env 
-      - RUN "flyctl secrets import -a audio-discrimination-croudsource-dev .env"  # it will import secrets from .env file/
+      - RUN `flyctl secrets import -a audio-discrimination-croudsource-dev .env`  # it will import secrets from .env file/
         
 
 Deploy
-  - Run "fly deploy"
+  - Run `fly deploy`
+
 
 
 
