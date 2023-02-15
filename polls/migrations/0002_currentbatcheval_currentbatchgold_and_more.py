@@ -7,31 +7,67 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('polls', '0001_initial'),
+        ("polls", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CurrentBatchEval',
+            name="CurrentBatchEval",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('current_batch_eval', models.ForeignKey(blank=True, limit_choices_to={'is_gold': False}, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='current_batch_eval', to='polls.batch')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "current_batch_eval",
+                    models.ForeignKey(
+                        blank=True,
+                        limit_choices_to={"is_gold": False},
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="current_batch_eval",
+                        to="polls.batch",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='CurrentBatchGold',
+            name="CurrentBatchGold",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('current_batch_gold', models.ForeignKey(blank=True, limit_choices_to={'is_gold': True}, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='current_batch_gold', to='polls.batch')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "current_batch_gold",
+                    models.ForeignKey(
+                        blank=True,
+                        limit_choices_to={"is_gold": True},
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="current_batch_gold",
+                        to="polls.batch",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.DeleteModel(
-            name='CurrentBatch',
+            name="CurrentBatch",
         ),
     ]

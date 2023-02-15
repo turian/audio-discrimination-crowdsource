@@ -132,7 +132,8 @@ Now, for any new html page, we need to do the following:
 
 ## Install FlyCtl
 
-To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
+To work with the Fly platform, you first need to install Flyctl, 
+a command line interface that allows tou to do everything from creating an account to deploy to Fly.
 
   - To install it on Linux
 
@@ -184,9 +185,12 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     fly launch
     ```
     
-  This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
+  This command will create you an app on Fly.io , spin up a postgres instance, 
+  and create an app configuration named fly.toml in your project root. 
+  fly.toml file contains all app details.
    
-  Copy the DATABASE_URL from the termial output of the above process(fly launch) and Update DATABASE_URL in .env file.
+  Copy the DATABASE_URL from the termial output of the above process(fly launch)
+    and Update DATABASE_URL in .env file.
 
   
 - To make sure the app is created successfully:

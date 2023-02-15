@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
 
+
 class SingletonModel(models.Model):
     class Meta:
         abstract = True
@@ -18,9 +19,11 @@ class SingletonModel(models.Model):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
 
+
 class User(AbstractUser):
     first_task_of_this_session_performed_at = models.DateTimeField(null=True)
     is_locked = models.BooleanField(default=False)
+
 
 class Batch(models.Model):
     created_at = models.DateTimeField()
@@ -32,46 +35,51 @@ class Batch(models.Model):
 
 
 class CurrentBatchGold(SingletonModel):
-    current_batch_gold = models.ForeignKey(Batch,
-                                           on_delete=models.CASCADE,
-                                           related_name="current_batch_gold",
-                                           limit_choices_to={"is_gold": True},
-                                           blank=True, null=True)
+    current_batch_gold = models.ForeignKey(
+        Batch,
+        on_delete=models.CASCADE,
+        related_name="current_batch_gold",
+        limit_choices_to={"is_gold": True},
+        blank=True,
+        null=True,
+    )
+
 
 class CurrentBatchEval(SingletonModel):
-    current_batch_eval = models.ForeignKey(Batch,
-                                           on_delete=models.CASCADE,
-                                           related_name="current_batch_eval",
-                                           limit_choices_to={"is_gold": False},
-                                           blank=True, null=True)
+    current_batch_eval = models.ForeignKey(
+        Batch,
+        on_delete=models.CASCADE,
+        related_name="current_batch_eval",
+        limit_choices_to={"is_gold": False},
+        blank=True,
+        null=True,
+    )
+
 
 class Task(models.Model):
-    batch = models.ForeignKey(Batch,
-                              on_delete=models.CASCADE,
-                              related_name="tasks")
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name="tasks")
     reference_url = models.URLField()
     transform_url = models.URLField()
     transform_metadata = models.JSONField()
+
 
 class Annotation(models.Model):
     TASK_PRESENTATION_OPTIONS = (
         ("AAB", "AAB"),
         ("ABA", "ABA"),
         ("BBA", "BBA"),
-        ("BAB", "BAB")
+        ("BAB", "BAB"),
     )
-    ANNOTATION_OPTIONS = (
-        ("XXY", "XXY"),
-        ("XYX", "XYX")
+    ANNOTATION_OPTIONS = (("XXY", "XXY"), ("XYX", "XYX"))
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="annotations"
     )
-    user = models.ForeignKey(get_user_model(),
-                             on_delete=models.CASCADE,
-                             related_name="annotations")
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     annotated_at = models.DateTimeField()
-    task_presentation = models.CharField(max_length=3, choices=TASK_PRESENTATION_OPTIONS)
+    task_presentation = models.CharField(
+        max_length=3, choices=TASK_PRESENTATION_OPTIONS
+    )
     annotations = models.CharField(max_length=3, choices=ANNOTATION_OPTIONS)
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
-
