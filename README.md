@@ -163,10 +163,11 @@ To make sure everything is working well:
 
   We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 
-  a. Generate SECRET_KEY 
-      # Run the following from the root of your project
-      `python generate_key.py`
-      # Get your key and update in .env file SECRET_KEY='<your-key>'
+  Generate SECRET_KEY (if change needed)
+    # Run the following from the root of your project
+    `python3 generate_key.py`
+    # Get your key and update in .env file SECRET_KEY='<your-key>'
+  
 
   # Deploy App
 
@@ -176,7 +177,10 @@ To make sure everything is working well:
     `fly launch`
     
   This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root.
+   
+  Copy the DATABASE_URL from the termial output of the above process(fly launch) and Update DATABASE_URL in .env file.
 
+  
   To make sure the app is created successfully:
   `fly apps list`
 
