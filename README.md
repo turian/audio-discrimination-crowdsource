@@ -127,10 +127,10 @@ Now, for any new html page, we need to do the following:
 
 ```
 
-## Deployment to Fly.io
+#Deployment to Fly.io
 
 
-# Install FlyCtl
+## Install FlyCtl
 
 To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
 
@@ -142,7 +142,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
 
 - To install it on windows
     ```
-       `iwr https://fly.io/install.ps1 -useb` 
+      iwr https://fly.io/install.ps1 -useb
     ```
     
     Visit `https://fly.io/` if you need installation guide
@@ -161,7 +161,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
   The output of the above command will be empty table since you have no apps launched yet
 
 
-# Configure the Project
+## Configure the Project
 
   Environment Variables
 
@@ -175,7 +175,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     Get your key and update in .env file SECRET_KEY='<your-key>'
   
 
-  # Deploy App
+  ### Deploy App
 
   In this step the app is going to be launched to fly.io.
   
@@ -200,7 +200,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     2. database instance and 
     3. Fly builders: to build docker images
 
-Import Secrets
+#### Import Secrets
 
   ```
     fly secrets set DEBUG="1"
@@ -214,9 +214,10 @@ Import Secrets
     
     ```
     flyctl secrets import -a audio-discrimination-croudsource-dev .env
+    
     ```
 
-Deploy
+#### Deploy
 
 - To deploy the app to the FLY platform.
   ```
