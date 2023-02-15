@@ -184,7 +184,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     fly launch
     ```
     
-  This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root.
+  This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
    
   Copy the DATABASE_URL from the termial output of the above process(fly launch) and Update DATABASE_URL in .env file.
 
