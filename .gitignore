@@ -133,5 +133,4 @@ dmypy.json
 batch/data/
 .DS_Store
 
-tmp
 .venv/
