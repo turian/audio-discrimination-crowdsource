@@ -13,8 +13,16 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+
+from dotenv import load_dotenv 
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR/ '.env') 
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -22,13 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 from django.core.management.utils import get_random_secret_key
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS')
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+DEBUG = os.getenv("DEBUG")
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "local")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
 
 
 # Application definition

@@ -126,3 +126,14 @@ Now, for any new html page, we need to do the following:
 {% endblock %}
 
 ```
+
+## pre deployment to fly.io
+
+- Setting environmental variables
+  - add python-dotenv>=0.21.0 to requirements
+  - install requirements.txt or pip python-dotenv
+
+
+
+
+
