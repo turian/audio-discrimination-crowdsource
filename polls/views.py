@@ -122,6 +122,7 @@ class UserLockAPIView(APIView):
                 user = get_user_model().objects.get(id=id)
                 user.is_locked = True
                 user.save()
+                return Response(status.HTTP_200_OK)
             except get_user_model().DoesNotExist:
                 user_not_found.append(id)
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
