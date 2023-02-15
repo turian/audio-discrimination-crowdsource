@@ -32,11 +32,11 @@ from django.core.management.utils import get_random_secret_key
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS')
+CSRF_TRUSTED_ORIGINS = []
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+ALLOWED_HOSTS = ['127.0.0.1','localhost'] # os.getenv("ALLOWED_HOSTS")
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
 
