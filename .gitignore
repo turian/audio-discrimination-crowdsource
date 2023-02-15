@@ -135,4 +135,4 @@ batch/data/
 
 .venv/
 
-.toml
+*.toml
