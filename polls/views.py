@@ -100,7 +100,7 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
 class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
-    
+
     def test_func(self):
         return self.request.user.is_superuser
 
