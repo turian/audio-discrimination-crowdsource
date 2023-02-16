@@ -75,10 +75,12 @@ class FlyHelper:
 
     # Import secrets to fly.io
     def import_secrets(self, mode="staging"):
+
         # import secrets to fly.io
         template = dotenv_values(".env.tmpl")
 
         for key, value in template.items():
+
             if key == "DEVELOPMENT_MODE":
                 command = "flyctl secrets set " + key + "=" + mode
             else:
@@ -86,6 +88,7 @@ class FlyHelper:
                 process = subprocess.run(command, shell=True)
 
     def open(self, app_name):
+
         # open app on browser with app_name
         command = "fly open -app {app_name}"
         process = subprocess.run(command, shell=True)

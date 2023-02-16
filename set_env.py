@@ -10,10 +10,11 @@ class EnvironmentVarSetting:
         # Load the template and get the placeholders
         template = dotenv_values(".env.tmpl")
         # Replace the placeholders with actual values
-        actual = {}
-        actual["DEBUG"] = True
-        actual["DEVELOPMENT_MODE"] = "local"
-        actual["ALLOWED_HOSTS"] = "localhost 127.0.0.1"
+        actual = {
+            "DEBUG": True,
+            "DEVELOPMENT_MODE": "local",
+            "ALLOWED_HOSTS": "localhost 127.0.0.1",
+        }
 
         for key, value in template.items():
             if key == "SECRET_KEY":
@@ -26,7 +27,6 @@ class EnvironmentVarSetting:
         return
 
     def update_env_variable(self, database_url, hostName, domain):
-        print(database_url, hostName, domain)
         # Load the template and get the placeholders
 
         ll = {
@@ -39,10 +39,8 @@ class EnvironmentVarSetting:
         }
         # Write the actual values to a .env file
         with open(".env", "w") as f:
-            print("writting")
             for key, value in ll.items():
-                print(key, value)
                 f.write(f"{key}={value}\n")
 
 
-# EnvironmentVarSetting().execute()
+EnvironmentVarSetting().execute()
