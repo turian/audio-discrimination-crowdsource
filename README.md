@@ -210,7 +210,7 @@ The output of the above command will be empty table since you have no apps launc
 We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 - Run the following from the root of your project
   ```
-  python3 set_env.py
+ #!/usr/bin/env  python3 set_env.py
   ```
 
 ### Deploy App
@@ -218,7 +218,7 @@ We shouldn't store secrets in source code, so utilizing environmental variables 
 In this step the app is going to be launched to fly.io.
 - Create and configure the app  
   ```
-  python fly_manager.py launch <app-name>
+  #!/usr/bin/env python3 fly_manager.py launch <app-name>
   
   ```
     
@@ -248,5 +248,5 @@ and Update DATABASE_URL in .env file.
 - Open the app in browser
 
   ```  
-  python fly_manager.py open <app-name>
+  #!/usr/bin/env python3 fly_manager.py open <app-name>
   ```
