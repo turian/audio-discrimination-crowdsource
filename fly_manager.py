@@ -3,6 +3,16 @@ import subprocess
 import os
 from set_env import EnvironmentVarSetting
 import sys
+from dotenv import dotenv_values
+
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+
+BASE_DIR = Path(__file__).resolve()
+
+load_dotenv(".env")
 
 
 class FlyHelper:
@@ -10,30 +20,25 @@ class FlyHelper:
         pass
 
     def create_app(self, app_name):
-        print(app_name)
         # Define your app parameters
 
         region = "iad"  # default to Virginia
-        database_url = "postgres://user:password@host:port/database"
+        # Database detail
+        user = app_name
+        password = get_random_secret_key()[0:10]
+        host = "audio-discrimination-croudsource-dev-db.internal"
+        port = 5432
+        db = 5433
+        database_url = "postgres://{0}:{1}@{2}:{3}/{4}".format(
+            user, password, host, port, db
+        )
 
-        # Launch the Fly app and set the DATABASE_URL environment variable
-        # command = f'flyctl launch --name {app_name} --region {region} "'
         command = f'flyctl launch --name {app_name} --region {region} --env "DATABASE_URL={database_url}"'
-        print(command)
         process = subprocess.run(command, shell=True, capture_output=True, text=True)
 
-        print("__________________FI____________________")
-        print("here")
-        print(process.stdout)
-        print("________________fo______________________")
-
-        # Check the return code of the Fly CLI command
         if process.returncode != 0:
-            print("Error launching Fly app")
+            raise "Error launching Fly app"
         else:
-            print("Fly app launched successfully")
-
-            # Get the output of the "info" command as a JSON object
             process = subprocess.run(
                 ["flyctl", "status", "--app", app_name, "--json"],
                 stdout=subprocess.PIPE,
@@ -43,78 +48,68 @@ class FlyHelper:
             # Parse the output as a JSON object
             try:
                 info = json.loads(process.stdout)
-
-                print("===")
-                print(info)
-
-                print("===++")
                 hostName = info["Hostname"]
-
-                print(info["Hostname"])
                 domain = "https://" + hostName
 
                 EnvironmentVarSetting().update_env_variable(
-                    "DATABASE_URL", database_url
-                )
-                EnvironmentVarSetting().update_env_variable("ALLOWED_HOSTS", hostName)
-                EnvironmentVarSetting().update_env_variable(
-                    "CSRF_TRUSTED_ORIGINS", domain
+                    database_url, hostName, domain
                 )
 
             except json.decoder.JSONDecodeError:
-                print(f"Error parsing JSON output: {process.stdout}")
-                exit(1)
+                raise f"Error parsing JSON output: {process.stdout}"
 
     # deploy the app to fly.io
-    def deploy(self, app_name):
-        # import secret values
-        FlyHelper().import_secrets()
+    def deploy(self, app_name=None, mode="staging"):
+        # import secret values before deployment
+        FlyHelper().import_secrets(mode=mode)
 
-        command = f'fly deploy --app {app_name}"'
-        print(command)
+        if app_name is None:
+            command = f"fly deploy"
+        else:
+            command = f"fly deploy --app {app_name}"
         process = subprocess.run(command, shell=True)
         if process.returncode != 0:
-            print("Error Deploying Fly app")
-        else:
-            print("Fly app Deployed successfully")
-            print(process.stderr)
+            raise "Error Deploying Fly app"
+
+        print("Fly app Deployed successfully")
 
     # Import secrets to fly.io
-    def import_secrets(self, app_name):
-        command = "flyctl secrets import -a {app_name} < .env"
-        process = subprocess.run(command, shell=True)
-        return process.returncode != 0
+    def import_secrets(self, mode="staging"):
+        # import secrets to fly.io
+        template = dotenv_values(".env.tmpl")
+
+        for key, value in template.items():
+            if key == "DEVELOPMENT_MODE":
+                command = "flyctl secrets set " + key + "=" + mode
+            else:
+                command = "flyctl secrets set " + key + "=" + os.getenv(key)
+                process = subprocess.run(command, shell=True)
 
     def open(self, app_name):
+        # open app on browser with app_name
         command = "fly open -app {app_name}"
         process = subprocess.run(command, shell=True)
-        if process.returncode != 0:
-            print("Error Opening your Fly app")
-        else:
-            print("Your fly app is running")
 
 
+# conditionals to run specific method on bash command run
 if sys.argv[1] == "launch":
+
     FlyHelper().create_app(sys.argv[2])
+
 elif sys.argv[1] == "deploy":
-    FlyHelper().deploy(sys.argv[2])
+
+    if len(sys.argv) > 2:
+        FlyHelper().deploy(sys.argv[2])
+    else:
+        FlyHelper().deploy()
+
 elif sys.argv[1] == "open":
-    FlyHelper().open(sys.argv[2])
-# command = ['ls', '-l']
 
-# import simplejson
+    if len(sys.argv) > 2:
+        FlyHelper().open(sys.argv[2])
 
-# process = subprocess.run('fly status', stdout=subprocess.PIPE, text=True )
-# print('----')
-# print(process.stdout)
-# dataform = process.stdout.decode('utf-8').replace('\0', '')
-# dataform = str(process.stdout).strip("'<>() ").replace('\'', '\"')
+    else:
+        FlyHelper().open()
 
-# print(dataform)
-# print(type(process.stdout))
-# info_json = json.loads(dataform)
-# print(info_json)
-# domains = process.stdout.read().splitlines()
-# print(domains)
-# flyctl secrets import -a <app-name> < .env
-# flyctl ssh console -a <app-name>       - connect to server
+elif sys.argv[1] == "secrets":
+    FlyHelper().import_secrets()

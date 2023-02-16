@@ -22,31 +22,27 @@ class EnvironmentVarSetting:
         # Write the actual values to a .env file
         with open(".env", "w") as f:
             for key, value in actual.items():
-
                 f.write(f"{key}={value}\n")
         return
 
-    def update_env_variable(self, key, value):
-        print(key, value)
+    def update_env_variable(self, database_url, hostName, domain):
+        print(database_url, hostName, domain)
         # Load the template and get the placeholders
-        template = dotenv_values(".env.tmpl")
-        # Replace the placeholders with actual values
-        actual = {}
-        actual["DEBUG"] = True
-        actual["DEVELOPMENT_MODE"] = "local"
 
-        for key1, value in template.items():
-            if key1 == key:
-                # if the key is allowed hosts or trusted origins append to string
-                if key == "ALLOWED_HOSTS":
-                    actual[key] = "localhost 127.0.0.1 " + value
-                else:
-                    actual[key1] = value
-
+        ll = {
+            "DEBUG": True,
+            "DEVELOPMENT_MODE": "local",
+            "ALLOWED_HOSTS": "localhost 127.0.0.1  [::1] " + hostName,
+            "DATABASE_URL": database_url,
+            "SECRET_KEY": get_random_secret_key(),
+            "CSRF_TRUSTED_ORIGINS": domain,
+        }
         # Write the actual values to a .env file
         with open(".env", "w") as f:
-            for key, value in actual.items():
+            print("writting")
+            for key, value in ll.items():
+                print(key, value)
                 f.write(f"{key}={value}\n")
 
 
-EnvironmentVarSetting().execute()
+# EnvironmentVarSetting().execute()

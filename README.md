@@ -213,9 +213,10 @@ We shouldn't store secrets in source code, so utilizing environmental variables 
  #!/usr/bin/env  python3 set_env.py
   ```
 
-### Deploy App
+### Launch the App
 
 In this step the app is going to be launched to fly.io.
+
 - Create and configure the app  
   ```
   #!/usr/bin/env python3 fly_manager.py launch <app-name>
@@ -235,14 +236,14 @@ and Update DATABASE_URL in .env file.
   1. your app
   2. database instance and 
   3. Fly builders: to build docker images
-   
+  
+  
+#### Deploy the APP
+- To deploy the app to the FLY platform. 
+Both app-name and mode are optional fields. Specify app-name when you have more than apps launched, and mode values are stating or production. by default it will deploy with staging.
 
-
-#### Deploy
-
-- To deploy the app to the FLY platform.
   ```
-  #!/usr/bin/env python3 fly_manager.py deploy <app-name>
+  #!/usr/bin/env python3 fly_manager.py deploy <app-name> <mode>
   ```
 
 - Open the app in browser
