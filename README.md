@@ -220,6 +220,7 @@ We shouldn't store secrets in source code, so utilizing environmental variables 
 In this step the app is going to be launched to fly.io.
 
 - Create and configure the app  
+
   ```
   #!/usr/bin/env python3 fly_manager.py launch <app-name>
   
@@ -231,9 +232,11 @@ Copy the DATABASE_URL from the termial output of the above process(fly launch)
 and Update DATABASE_URL in .env file.
 
 - To make sure the app is created successfully:
+
   ```
   fly apps list
   ```
+
   This command prints 3 apps: 
   1. your app
   2. database instance and 

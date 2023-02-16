@@ -43,4 +43,4 @@ class EnvironmentVarSetting:
                 f.write(f"{key}={value}\n")
 
 
-EnvironmentVarSetting().execute()
+# EnvironmentVarSetting().execute()

@@ -4,7 +4,8 @@ import os
 from set_env import EnvironmentVarSetting
 import sys
 from dotenv import dotenv_values
-
+from secrets import choice
+import string
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -24,18 +25,15 @@ class FlyHelper:
 
         region = "iad"  # default to Virginia
         # Database detail
-        user = app_name
-        password = get_random_secret_key()[0:10]
+        user = "postgres"
+        password = "".join([choice(string.ascii_uppercase) for _ in range(10)])
         host = "audio-discrimination-croudsource-dev-db.internal"
         port = 5432
-        db = 5433
-        database_url = "postgres://{0}:{1}@{2}:{3}/{4}".format(
-            user, password, host, port, db
-        )
 
+        database_url = "postgres://{0}:{1}@{2}:{3}".format(user, password, host, port)
         command = f'flyctl launch --name {app_name} --region {region} --env "DATABASE_URL={database_url}"'
-        process = subprocess.run(command, shell=True, capture_output=True, text=True)
 
+        process = subprocess.run(command, shell=True, capture_output=True, text=True)
         if process.returncode != 0:
             raise "Error launching Fly app"
         else:
