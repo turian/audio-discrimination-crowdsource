@@ -8,7 +8,7 @@ urlpatterns = [
     path("task-flow/", views.TaskFlowView.as_view(), name="task-flow"),
     path("auth-token/", views.TokenView.as_view(), name="auth-token"),
     # APIs
-    path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api"),
+    path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api_url"),
     path(
         "api/v1/annotation-list/",
         views.AnnotationListAPI.as_view(),
