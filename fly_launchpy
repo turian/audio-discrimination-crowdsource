@@ -1,0 +1,54 @@
+
+import json
+import subprocess
+from dotenv import dotenv_values
+
+from set_env import EnvironmentVarSetting
+
+class FlyHelper: 
+    
+    def __init__(self) -> None:
+        pass
+    
+    def create_app(self, app_name='audio-discrimination-croudsource-dev'):
+        # Define your app parameters
+        
+        region = 'iad'
+        database_url = 'postgres://user:password@host:port/database'
+
+        # Launch the Fly app and set the DATABASE_URL environment variable
+        # command = f'flyctl launch --name {app_name} --region {region} "'
+        command = f'flyctl launch --name {app_name} --region {region} --env "DATABASE_URL={database_url}"'
+        print(command)
+        process = subprocess.run(command, shell=True)
+        print('______________________________________')
+        print(process.stdout)
+        print('______________________________________')
+
+        # config_json = json.loads(process.stdout)
+        # print(config_json)
+        
+        # # Load the template and get the placeholders
+        # template = dotenv_values('.env.tmpl')
+        
+        # env_set = EnvironmentVarSetting()
+        # env_set.update_env_variable("DATABASE_URL",config_json['DATABASE_URL'])
+        # # env_set.update_env_variable("ALLOWED_HOSTS",config_json['DATABASE_URL'])
+        # # env_set.update_env_variable("CSRF_TRUSTED_ORIGINS",'https://'+ config_json['DATABASE_URL'])
+        
+     
+        # Check the return code of the Fly CLI command
+        if process.returncode != 0:
+            print('Error launching Fly app')
+        else:
+            print('Fly app launched successfully')
+    
+    def deploy(self):
+        command = f'fly deploy"'
+        print(command)
+        process = subprocess.run(command, shell=True)
+
+FlyHelper().create_app('audio-discrimination-croudsource-robel-staging')
+
+#flyctl secrets import -a <app-name> < .env 
+#flyctl ssh console -a <app-name>       - connect to server

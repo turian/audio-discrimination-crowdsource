@@ -13,7 +13,6 @@ class EnvironmentVarSetting:
         actual['DEBUG'] = True
         actual['DEVELOPMENT_MODE'] = 'local'
         actual['ALLOWED_HOSTS'] = 'localhost 127.0.0.1'
-        actual['CSRF_TRUSTED_ORIGINS'] = ''
 
         for key, value in template.items():
             if key == 'SECRET_KEY':
@@ -44,3 +43,4 @@ class EnvironmentVarSetting:
                 
                 f.write(f'{key}={value}\n')
 
+EnvironmentVarSetting().execute()

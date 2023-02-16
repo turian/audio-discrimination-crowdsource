@@ -131,7 +131,7 @@ Now, for any new html page, we need to do the following:
 
 ## Install FlyCtl
 
-To work with the Fly platform, you first need to install Flyctl, a command line interface that allows tou to do everything from creating an account to deploy to Fly.
+To work with the Fly platform, you first need to install Flyctl, a command line interface that allows you to do everything from creating an account to deploy to Fly.
   - Linux:
     ```  
     curl  -L https://fly.io/install.sh | sh
@@ -164,19 +164,17 @@ The output of the above command will be empty table since you have no apps launc
 ### Environment Variables
 
 We shouldn't store secrets in source code, so utilizing environmental variables is needed.
-Generate SECRET_KEY (if change needed)
 - Run the following from the root of your project
   ```
-  python3 generate_key.py
+  python3 set_env.py
   ```
-  Get your key and update in .env file SECRET_KEY='<your-key>'
 
 ### Deploy App
 
 In this step the app is going to be launched to fly.io.
 - Create and configure the app  
   ```
-  fly launch
+  python3 launch
   ```
     
 This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
