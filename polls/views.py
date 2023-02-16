@@ -5,8 +5,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
-from rest_framework import generics, mixins, permissions, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework import generics, mixins, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
