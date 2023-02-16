@@ -67,7 +67,6 @@ class FlyHelper:
 
     # deploy the app to fly.io
     def deploy(self, app_name):
-
         # import secret values
         FlyHelper().import_secrets()
 
@@ -82,13 +81,11 @@ class FlyHelper:
 
     # Import secrets to fly.io
     def import_secrets(self, app_name):
-
         command = "flyctl secrets import -a {app_name} < .env"
         process = subprocess.run(command, shell=True)
         return process.returncode != 0
 
     def open(self, app_name):
-
         command = "fly open -app {app_name}"
         process = subprocess.run(command, shell=True)
         if process.returncode != 0:

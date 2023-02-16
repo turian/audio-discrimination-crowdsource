@@ -43,8 +43,6 @@ class EnvironmentVarSetting:
                 else:
                     actual[key1] = value
 
-        print(actual)
-
         # Write the actual values to a .env file
         with open(".env", "w") as f:
             for key, value in actual.items():
