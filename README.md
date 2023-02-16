@@ -174,7 +174,8 @@ We shouldn't store secrets in source code, so utilizing environmental variables 
 In this step the app is going to be launched to fly.io.
 - Create and configure the app  
   ```
-  python3 launch
+  python fly_manager.py launch <app-name>
+  
   ```
     
 This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
@@ -191,27 +192,16 @@ and Update DATABASE_URL in .env file.
   2. database instance and 
   3. Fly builders: to build docker images
 
-#### Import Secrets
- - This is neccassary step
-    ```
-    flyctl secrets import -a <app-name> .env
-    ```
-    Or you can add one at a time
-    ```
-    fly secrets set DEBUG="1"
-    fly secrets set SECRET_KEY="<your-key>"
-    fly secrets set ALLOWED_HOSTS="localhost 127.0.0.1 [::1 <your_app_hostname>" 
-    fly secrets set CSRF_TRUSTED_ORIGINS="https://<your_app_hostname>"    
-    ```
 
 #### Deploy
 
 - To deploy the app to the FLY platform.
   ```
-  fly deploy
+  python fly_manager.py deploy <app-name>
   ```
 
 - Open the app in browser
+
   ```  
-  fly open
+  python fly_manager.py open <app-name>
   ```
