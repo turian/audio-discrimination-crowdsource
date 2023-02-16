@@ -30,9 +30,9 @@
         <code>
 import requests
 headers = {
-    "Authorization": "Token {{ token.key }}"
+    "Authorization":admin_api_url "Token {{ token.key }}"
     }
-url = "{{ admin_api }}"
+url = "{{ admin_api_url }}"
 response = requests.get(url, headers=headers)
 print(response.json())
 print(response.status_code)
@@ -51,8 +51,8 @@ headers = {
     }
 annotation_api = "{{ annotation_api }}"
 response = requests.get(annotation_api, headers=headers)
-print(response.json())
-print(response.status_code)
+# print(response.json())
+# print(response.status_code)
           </code>
         </pre>
       </div>
