@@ -144,7 +144,7 @@ To work with the Fly platform, you first need to install Flyctl, a command line 
     ```
     iwr https://fly.io/install.ps1 -useb
     ```  
-    Visit [Installation Guilde](https://fly.io/docs/hands-on/install-flyctl/) if you need installation guide
+    Here is the [Installation Guilde](https://fly.io/docs/hands-on/install-flyctl/)
 
 
 Next authenticate with your fly.io account:
