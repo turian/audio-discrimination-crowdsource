@@ -20,21 +20,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 from django.core.management.utils import get_random_secret_key
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
 
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(" ")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS",'').split(" ")
 
-DEBUG = os.getenv("DEBUG")
+DEBUG = os.getenv("DEBUG", "False") == True
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS",'127.0.0.1 localhost').split(" ")
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE")
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE",'local')
 
 
 # Application definition

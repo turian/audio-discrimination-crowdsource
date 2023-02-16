@@ -135,6 +135,6 @@ batch/data/
 .DS_Store
 
 .venv/
+.env
 
-fly.toml
 
