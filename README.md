@@ -209,8 +209,10 @@ The output of the above command will be empty table since you have no apps launc
 
 We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 - Run the following from the root of your project
+  
   ```
- #!/usr/bin/env  python3 set_env.py
+  #!/usr/bin/env  python3 set_env.py
+  
   ```
 
 ### Launch the App
