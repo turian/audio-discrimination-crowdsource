@@ -1,10 +1,12 @@
-from django.views import View
-from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from django.utils import timezone
 from django.urls import reverse
+from django.shortcuts import redirect, render
+from django.views import View
+
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,10 +15,15 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
+from rest_framework import permissions, status
+from rest_framework.authentication import TokenAuthentication
+
 
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation, Batch
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
+
+
 
 
 class IndexView(TemplateView):
