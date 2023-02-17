@@ -72,6 +72,121 @@ DEBUG=True python manage.py runserver
 ```
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
+### Deployment to fly.io
+
+#### Install flyctl
+
+To work with the fly platform, you first need to install flyctl, a command line interface that allows you to do everything from creating an account to deploy to fly.
+- Linux:
+```  
+curl  -L https://fly.io/install.sh | sh
+```
+- OSX:
+```
+brew install flyctl
+```
+- Windows:
+```
+iwr https://fly.io/install.ps1 -useb
+``` 
+
+(If interested, here is the [Installation Guide](https://fly.io/docs/hands-on/install-flyctl/))
+
+
+Next authenticate with your fly.io account:
+```
+fly auth login
+```
+
+- To make sure everything is working well:    
+```
+fly apps list
+```
+The output of the above command will be empty table since you have no apps launched yet
+
+
+#### Configure the Project
+
+##### Environment Variables
+
+We shouldn't store secrets in source code, so utilizing environmental variables is needed.
+- Run the following from the root of your project
+```
+./set_env.py HANDLE
+```
+where `HANDLE` is your github username or similar. It is used to
+create the name of the application and make sure that different
+devs don't claim the same app name.
+
+Add these to your environment:
+```
+source .env
+```
+
+#### Launch the App
+
+In this step the app is going to be launched to fly.io.
+
+- Launch and configure the app  
+
+```
+flyctl launch --name $APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
+```
+and answer the questions as follows:
+```
+Would you like to set up a Postgresql database now? Yes
+Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
+Would you like to set up an Upstash Redis database now? No
+Would you like to deploy now? No
+```
+
+Towards the end it will tell you your postgres credentials. *IMPORTANT*:
+Copy-and-paste this information into `db.txt`, which is `.gitignore`'d.
+
+This command will create you an app on fly.io, spin up a postgres
+instance, and create an app configuration named `fly.toml` in your
+project root. `fly.toml` file contains all app details.
+
+- To make sure the app is created successfully:
+
+```
+fly apps list
+```
+
+This command prints 3 apps: 
+1. your app
+2. database instance and 
+3. fly builders: to build docker images
+
+- Import secrets
+
+```
+./fly_manager.py import_secrets
+```
+
+This adds a few more secrets to `.env` and sets them for your app.
+Perhaps not all of these should be secrets, some should be visible
+environment variables, but I haven't been able to figure that out
+yet. Not important for now.
+
+- Deploy the app
+```
+flyctl deploy --app $APP_NAME
+``` 
+
+- Open the app in browser
+
+```  
+flyctl open --app $APP_NAME
+```
+
+- Try again?
+
+If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
+```
+./fly_manager.py delete_all
+```
+
 ### Digital Ocean apps
 
 DEPRECATED. We are going to use fly.io
@@ -171,119 +286,4 @@ Now, for any new html page, we need to do the following:
 // any extra js here
 {% endblock %}
 
-```
-
-# Deployment to fly.io
-
-## Install flyCtl
-
-To work with the fly platform, you first need to install flyctl, a command line interface that allows you to do everything from creating an account to deploy to fly.
-- Linux:
-```  
-curl  -L https://fly.io/install.sh | sh
-```
-- OSX:
-```
-brew install flyctl
-```
-- Windows:
-```
-iwr https://fly.io/install.ps1 -useb
-``` 
-
-(If interested, here is the [Installation Guide](https://fly.io/docs/hands-on/install-flyctl/))
-
-
-Next authenticate with your fly.io account:
-```
-fly auth login
-```
-
-- To make sure everything is working well:    
-```
-fly apps list
-```
-The output of the above command will be empty table since you have no apps launched yet
-
-
-## Configure the Project
-
-### Environment Variables
-
-We shouldn't store secrets in source code, so utilizing environmental variables is needed.
-- Run the following from the root of your project
-```
-./set_env.py HANDLE
-```
-where `HANDLE` is your github username or similar. It is used to
-create the name of the application and make sure that different
-devs don't claim the same app name.
-
-Add these to your environment:
-```
-source .env
-```
-
-### Launch the App
-
-In this step the app is going to be launched to fly.io.
-
-- Launch and configure the app  
-
-```
-flyctl launch --name $APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
-```
-and answer the questions as follows:
-```
-Would you like to set up a Postgresql database now? Yes
-Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
-Would you like to set up an Upstash Redis database now? No
-Would you like to deploy now? No
-```
-
-Towards the end it will tell you your postgres credentials. *IMPORTANT*:
-Copy-and-paste this information into `db.txt`, which is `.gitignore`'d.
-
-This command will create you an app on fly.io, spin up a postgres
-instance, and create an app configuration named `fly.toml` in your
-project root. `fly.toml` file contains all app details.
-
-- To make sure the app is created successfully:
-
-```
-fly apps list
-```
-
-This command prints 3 apps: 
-1. your app
-2. database instance and 
-3. fly builders: to build docker images
-
-- Import secrets
-
-```
-./fly_manager.py import_secrets
-```
-
-This adds a few more secrets to `.env` and sets them for your app.
-Perhaps not all of these should be secrets, some should be visible
-environment variables, but I haven't been able to figure that out
-yet. Not important for now.
-
-- Deploy the app
-```
-flyctl deploy --app $APP_NAME
-``` 
-
-- Open the app in browser
-
-```  
-flyctl open --app $APP_NAME
-```
-
-- Try again?
-
-If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
-```
-./fly_manager.py delete_all
 ```
