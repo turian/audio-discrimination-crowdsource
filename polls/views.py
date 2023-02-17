@@ -14,12 +14,10 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
-from rest_framework import permissions, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework import  status
 
 
-from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation, Batch
+from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
 
