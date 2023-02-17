@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from tkinter import W
 from django.core.management.utils import get_random_secret_key
 from dotenv import dotenv_values, set_key
 
@@ -13,13 +14,15 @@ class EnvironmentVarSetting:
         pass
 
     def create(self, handle: str):
-        assert not os.path.exists(".env"), "File .env already exists, aborting. Please delete it if you're sure you want to do this."
+        assert not os.path.exists(
+            ".env"
+        ), "File .env already exists, aborting. Please delete it if you're sure you want to do this."
         values = {
             "DEBUG": True,
             "DEVELOPMENT_MODE": "local",
-            "ALLOWED_HOSTS": "localhost 127.0.0.1 [::1]"
-            "HANDLE": handle
+            "ALLOWED_HOSTS": "localhost 127.0.0.1 [::1]",
             "SECRET_KEY": get_random_secret_key(),
+            "HANDLE": handle,
         }
 
         for key, value in values.items():
@@ -37,12 +40,13 @@ class EnvironmentVarSetting:
 
 
 def is_valid_flyio_handle(name):
-    #pattern = r'^[a-z0-9]([a-z0-9\-]{1,61}[a-z0-9])?$'
-    pattern = r'^[a-z0-9]([a-z0-9\-]{1,24}[a-z0-9])?$'
+    # pattern = r'^[a-z0-9]([a-z0-9\-]{1,61}[a-z0-9])?$'
+    pattern = r"^[a-z0-9]([a-z0-9\-]{1,24}[a-z0-9])?$"
     return bool(re.match(pattern, name))
 
+
 @click.command()
-@click.argument('handle')
+@click.argument("handle")
 def execute(handle):
     assert is_valid_flyio_handle(handle), "Invalid handle"
     EnvironmentVarSetting().execute(handle)
