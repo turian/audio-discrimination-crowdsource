@@ -29,7 +29,7 @@ def postgres_password() -> str:
 
 
 def run_to_popen(cmd):
-    print(repr(cmd))
+    # print(repr(cmd))
     # Split the command string into a list of its components
     cmd_list = shlex.split(cmd)
     # Create a list that can be used as the argument to Popen
@@ -43,7 +43,7 @@ def run_to_popen(cmd):
 def run_command(cmd, stdin=None):
     print(cmd)
     cmd = run_to_popen(cmd)
-    print(cmd)
+    # print(cmd)
     if not stdin:
         proc = subprocess.Popen(
             cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
@@ -83,59 +83,55 @@ class FlyHelper:
         self.app_name = dotenv_values(".env")["APP_NAME"]
         pass
 
-    def launch_app(self):
-        # Define your app parameters
+    # I wasn't able to get any of this to work because it doesn't allow me to pass
+    # the interactive information about the postgres database, and we need that.
+    #    def launch_app(self):
+    #        # Define your app parameters
+    #
+    #        region = "iad"  # default to Virginia
+    #
+    #        """
+    #        # Database detail
+    #        user = "postgres"
+    #        password = postgres_password()
+    #        host = f"{self.app_name}-db.internal"
+    #        port = 5432
+    #
+    #        database_url = "postgres://{0}:{1}@{2}:{3}".format(user, password, host, port)
+    #        """
+    #        # command = f'flyctl launch --auto-confirm --name {self.app_name} --region {region} --env "DATABASE_URL={database_url}" --dockerfile Dockerfile --dockerignore-from-gitignore'
+    #        # command = f'flyctl launch --name {self.app_name} --region {region} --env "DATABASE_URL={database_url}" --dockerfile Dockerfile --dockerignore-from-gitignore'
+    #        command = f"flyctl launch --name {self.app_name} --region {region} --dockerfile Dockerfile --dockerignore-from-gitignore"
+    #        command = f"flyctl launch --name $APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore"
+    #        print("Please run this command:\n\n")
+    #        print(command)
+    #        print("\n\n")
+    #        print("And answer the questions as follows:")
+    #        print("# Would you like to set up a Postgresql database now? Yes")
+    #        print(
+    #            "# Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk"
+    #        )
+    #        print("# Would you like to set up an Upstash Redis database now? No")
+    #        print("# Would you like to deploy now? No")
+    #        print("\n\n")
+    #        print("\n\n")
+    #        input = """
+    # Y
+    #
+    # N
+    # N
+    #        """
+    #
+    #        # process = subprocess.run(command, shell=True, capture_output=True, text=True, stdin=io.StringIO(input))
+    #        returncode = run_command(command, stdin=input)
+    #        if returncode != 0:
+    #            raise "Error launching Fly app"
 
-        region = "iad"  # default to Virginia
-        # Database detail
-        user = "postgres"
-        password = postgres_password()
-        host = f"{self.app_name}-db.internal"
-        port = 5432
-
-        database_url = "postgres://{0}:{1}@{2}:{3}".format(user, password, host, port)
-        command = f'flyctl launch --auto-confirm --name {self.app_name} --region {region} --env "DATABASE_URL={database_url}" --dockerfile Dockerfile --dockerignore-from-gitignore'
-
-        # Would you like to set up a Postgresql database now? Yes
-        # Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
-        # Would you like to set up an Upstash Redis database now? No
-        # Would you like to deploy now? No
-        input = """
-Y
-
-N
-N
-        """
-
-        # process = subprocess.run(command, shell=True, capture_output=True, text=True, stdin=io.StringIO(input))
-        returncode = run_command(command, stdin=input)
-        if returncode != 0:
-            raise "Error launching Fly app"
-        else:
-            process = subprocess.run(
-                ["flyctl", "status", "--app", self.app_name, "--json"],
-                stdout=subprocess.PIPE,
-                text=True,
-            )
-
-            # Parse the output as a JSON object
-            try:
-                info = json.loads(process.stdout)
-                print(info)
-                host_name = info["Hostname"]
-                domain = "https://" + host_name
-
-                EnvironmentVarSetting().update_env_variable(
-                    database_url, host_name, domain
-                )
-
-            except json.decoder.JSONDecodeError:
-                raise Exception(f"Error parsing JSON output: {process.stdout}")
-
+    # Better to run this manually to see any errors
+    # which otherwise might not get logged
+    """
     # deploy the app to fly.io
     def deploy(self):
-        # import secret values before deployment
-        FlyHelper().import_secrets()
 
         command = f"fly deploy --app {self.app_name}"
         returncode = run_command(command)
@@ -143,9 +139,11 @@ N
             raise Exception("Error Deploying Fly app")
 
         print("Fly app Deployed successfully")
+    """
 
     # Import secrets to fly.io
     def import_secrets(self):
+        self.save_app_hostname_to_env()
         # import secrets to fly.io
         values = dotenv_values(".env")
         for key, value in values.items():
@@ -154,10 +152,32 @@ N
             if returncode != 0:
                 raise Exception("Error importing secrets to Fly")
 
+    def save_app_hostname_to_env(self):
+        process = subprocess.run(
+            ["flyctl", "status", "--app", self.app_name, "--json"],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+
+        # Parse the output as a JSON object
+        try:
+            info = json.loads(process.stdout)
+            print(info)
+            host_name = info["Hostname"]
+            domain = "https://" + host_name
+
+            EnvironmentVarSetting().update_env_variable(host_name, domain)
+
+        except json.decoder.JSONDecodeError:
+            raise Exception(f"Error parsing JSON output: {process.stdout}")
+
+    # Also pointless now that app_name is env variable.
+    """
     def open(self):
         # open app on browser with app_name
         command = "fly open -app {self.app_name}"
         process = subprocess.run(command, shell=True)
+    """
 
     def delete_all(self):
         if os.path.exists("fly.toml"):
@@ -186,10 +206,10 @@ N
 @click.argument("command")
 def run(command):
     {
-        "launch": FlyHelper().launch_app,
-        "deploy": FlyHelper().deploy,
+        # "launch": FlyHelper().launch_app,
+        # "deploy": FlyHelper().deploy,
         "open": FlyHelper().open,
-        "secrets": FlyHelper().import_secrets,
+        "import_secrets": FlyHelper().import_secrets,
         # Remove this after dev is done and this PR is ready to merge
         "delete_all": FlyHelper().delete_all,
     }[command]()

@@ -32,12 +32,12 @@ class EnvironmentVarSetting:
             set_key(".env", key, value)
         return
 
-    def update_env_variable(self, database_url, host_name, domain):
+    def update_env_variable(self, host_name, domain):
         # Load the template and get the placeholders
 
         values = dotenv_values(".env")
 
-        set_key(".env", "DATABASE_URL", database_url)
+        # set_key(".env", "DATABASE_URL", database_url)
         set_key(".env", "CSRF_TRUSTED_ORIGINS", domain)
         set_key(".env", "ALLOWED_HOSTS", values["ALLOWED_HOSTS"] + " " + host_name)
 

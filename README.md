@@ -173,11 +173,11 @@ Now, for any new html page, we need to do the following:
 
 ```
 
-# Deployment to Fly.io
+# Deployment to fly.io
 
-## Install FlyCtl
+## Install flyCtl
 
-To work with the Fly platform, you first need to install Flyctl, a command line interface that allows you to do everything from creating an account to deploy to Fly.
+To work with the fly platform, you first need to install flyctl, a command line interface that allows you to do everything from creating an account to deploy to fly.
 - Linux:
 ```  
 curl  -L https://fly.io/install.sh | sh
@@ -219,6 +219,11 @@ where `HANDLE` is your github username or similar. It is used to
 create the name of the application and make sure that different
 devs don't claim the same app name.
 
+Add these to your environment:
+```
+source .env
+```
+
 ### Launch the App
 
 In this step the app is going to be launched to fly.io.
@@ -226,13 +231,22 @@ In this step the app is going to be launched to fly.io.
 - Launch and configure the app  
 
 ```
-./fly_manager.py launch
+flyctl launch --name $APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
 ```
-    
-This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
-  
-Copy the DATABASE_URL from the termial output of the above process(fly launch)
-and Update DATABASE_URL in .env file.
+and answer the questions as follows:
+```
+Would you like to set up a Postgresql database now? Yes
+Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
+Would you like to set up an Upstash Redis database now? No
+Would you like to deploy now? No
+```
+
+Towards the end it will tell you your postgres credentials. *IMPORTANT*:
+Copy-and-paste this information into `db.txt`, which is `.gitignore`'d.
+
+This command will create you an app on fly.io, spin up a postgres
+instance, and create an app configuration named `fly.toml` in your
+project root. `fly.toml` file contains all app details.
 
 - To make sure the app is created successfully:
 
@@ -243,15 +257,33 @@ fly apps list
 This command prints 3 apps: 
 1. your app
 2. database instance and 
-3. Fly builders: to build docker images
+3. fly builders: to build docker images
+
+- Import secrets
+
+```
+./fly_manager.py import_secrets
+```
+
+This adds a few more secrets to `.env` and sets them for your app.
+Perhaps not all of these should be secrets, some should be visible
+environment variables, but I haven't been able to figure that out
+yet. Not important for now.
 
 - Deploy the app
 ```
-./fly_manager.py deploy
+flyctl deploy --app $APP_NAME
 ``` 
 
 - Open the app in browser
 
 ```  
-./fly_manager.py open
+flyctl open --app $APP_NAME
+```
+
+- Try again?
+
+If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
+```
+./fly_manager.py delete_all
 ```

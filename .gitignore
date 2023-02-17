@@ -145,3 +145,4 @@ fly.toml
 .git/
 *.sqlite3
 .dockerignore
+db.txt
