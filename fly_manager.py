@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+
 import json
-import subprocess
 import os
-from set_env import EnvironmentVarSetting
+import subprocess
 import sys
+
+from set_env import EnvironmentVarSetting
 
 
 class FlyHelper:
