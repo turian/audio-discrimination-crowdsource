@@ -1,5 +1,49 @@
 # audio-discrimination-crowdsource
 
+Web service to crowd-source audio discrimination data.
+
+Users are given instructions about the kind of audio they will be
+listening to, and what kind of annotation they should make.
+
+When they begin work, they are presented with a listening task.
+They are presented with an MP3 to listen to (from an S3 endpoint
+probably) in a JS audio player. Later we might switch to FLAC or
+OGG (quality 10). They listen to the audio and must select a radio
+box choosing their annotation.
+
+For v1, they hear audio that is under 20 seconds long and is three
+sounds. "AAB", "ABA", "BBA", or "BAB". They are asked to choose
+whether the first and second sound are the same ("XXY"), or the
+first and third sound are the same ("XYX").
+
+10% of the time, they are given "gold" tasks so we know the right
+answer. This allows us to discard the work of annotators that are
+just clicking randomly.
+
+After 15 minutes of work, the annotators are told to take a break
+for an hour. This is so they don't get fatigued and start making
+mistakes.
+
+We want an admin interface to see the quality of the work each
+annotator is doing. It should also track time worked, so annotators
+can be paid properly. Lastly, it would be interesting to see how
+long it takes before the quality of their work goes down, so we can
+adjust the 15 minute time limit per session.
+
+V2: We will want several different kinds of audio experiments, each
+of which has a different name in the database. Each different audio
+experiment will have:
+* A different set of initial instructions.
+* A different list of audio file S3 paths.
+* (Possibly) more than one audio file to listen to, but we can also
+do one audio file and add silence in between.
+* A different set of radio options to choose between.
+For example, in a second kind of audio experiment, they might listen
+to two audio compression algorithms and pick the one with fewer
+artifacts.
+
+## Usage
+
 Web service to crowd-source audio discrimination data
 
 ## Getting Started
@@ -165,16 +209,20 @@ The output of the above command will be empty table since you have no apps launc
 
 We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 - Run the following from the root of your project
+  
   ```
-  python3 set_env.py
+  #!/usr/bin/env  python3 set_env.py
+  
   ```
 
-### Deploy App
+### Launch the App
 
 In this step the app is going to be launched to fly.io.
+
 - Create and configure the app  
+
   ```
-  python fly_manager.py launch <app-name>
+  #!/usr/bin/env python3 fly_manager.py launch <app-name>
   
   ```
     
@@ -184,24 +232,27 @@ Copy the DATABASE_URL from the termial output of the above process(fly launch)
 and Update DATABASE_URL in .env file.
 
 - To make sure the app is created successfully:
+
   ```
   fly apps list
   ```
+
   This command prints 3 apps: 
   1. your app
   2. database instance and 
   3. Fly builders: to build docker images
+  
+  
+#### Deploy the APP
+- To deploy the app to the FLY platform. 
+Both app-name and mode are optional fields. Specify app-name when you have more than apps launched, and mode values are stating or production. by default it will deploy with staging.
 
-
-#### Deploy
-
-- To deploy the app to the FLY platform.
   ```
-  python fly_manager.py deploy <app-name>
+  #!/usr/bin/env python3 fly_manager.py deploy <app-name> <mode>
   ```
 
 - Open the app in browser
 
   ```  
-  python fly_manager.py open <app-name>
+  #!/usr/bin/env python3 fly_manager.py open <app-name>
   ```

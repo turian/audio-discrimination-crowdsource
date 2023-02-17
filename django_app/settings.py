@@ -191,7 +191,7 @@ AUTH_USER_MODEL = "polls.User"
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
