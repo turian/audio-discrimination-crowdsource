@@ -116,6 +116,14 @@ for each experiment. I'll spec this when I spec the second experiment.
 
 (Later: We might want to have functionality that does not give a user a task if K=3 people have already annotated it. K should be adjustable per experiment.)
 
+### Admin Batch Submit View
+
+To be spec'ed. A way for the admin to add new batches by uploading a CSV.
+
+### Admin TODO
+
+One thing that is missing and maybe I'll spec later is the ability to measure annotator fatigue. i.e. if 15 minutes is too long or too short. How long does the typical person take to get ear fatigue? Alternately I might just do annotation myself and see.
+
 ## Models
 
 User:
