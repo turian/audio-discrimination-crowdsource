@@ -3,6 +3,16 @@
 Note that we expect no more than 10 simultaneous users. This app
 will never require scalability, so don't optimize for scale.
 
+## Experiment Types
+
+There are currently two types of experiments. The first (2AFC) was
+the one originally spec'ed. Here are their names:
+
+* 2AFC
+* A/B
+
+Each experiment has a separate landing page.
+
 ## Workflows
 
 ### User Auth Workflow
@@ -141,10 +151,33 @@ Task:
     * reference_url: URL string.
     * transform_url: URL string.
     * transform_metadata: JSON.
+    * experiment_type: FK to ExperimentType.
 
 Annotation:
     * user: foreign key to User row.
     * task: foreign key to Task row.
     * annotated_at: timestamp.
-    * task_presentation: "AAB", "ABA", "BBA", or "BAB".
-    * annotation: "XXY" or "XYX".
+    * task_presentation: string.
+        Database must verify constraint that task_presentation is in task.experiment_type.task_presentation
+    * annotation: string.
+        Database must verify constraint that task_presentation is in task.experiment_type.annotations
+
+This table is a fixture.
+ExperimentType:
+    * name: string
+        2AFC or A/B
+
+This table is a fixture.
+ExperimentTypeTaskPresentation:
+    * FK to ExperimentType
+    * task_presentation: string
+For 2AFC: "AAB", "ABA", "BBA", "BAB".
+For A/B: "AB", "BA".
+
+ExperimentTypeAnnotation:
+    * FK to ExperimentType
+    * annotation: string
+For 2AFC: "XXY", "XYX".
+For 2AFC: "X", "Y".
+
+(Alternately, annotation and task_presentation could be Lists in ExperimentType if it makes it easier to code the constraints in Annotation. Thoughts? Speed is not important, code simplicity and lack of bugs is.)
