@@ -27,6 +27,7 @@ repos:
       rev: v1.29.0  # or higher tag
       hooks:
           - id: yamllint
+            exclude: ^\.github/
             args: [--format, parsable, --strict]
 
     - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
