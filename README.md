@@ -74,6 +74,8 @@ DEBUG=True python manage.py runserver
 
 ### Digital Ocean apps
 
+DEPRECATED. We are going to use fly.io
+
 There is a production app and a staging app, set up separately.
 The staging app builds and deploys when there are pushed to `main` branch.
 The production app builds and deploys when there are pushed to
@@ -176,30 +178,31 @@ Now, for any new html page, we need to do the following:
 ## Install FlyCtl
 
 To work with the Fly platform, you first need to install Flyctl, a command line interface that allows you to do everything from creating an account to deploy to Fly.
-  - Linux:
-    ```  
-    curl  -L https://fly.io/install.sh | sh
-    ```
-  - OSX:
-    ```
-    brew install flyctl
-    ```
-  - Windows:
-    ```
-    iwr https://fly.io/install.ps1 -useb
-    ```  
-    Here is the [Installation Guilde](https://fly.io/docs/hands-on/install-flyctl/)
+- Linux:
+```  
+curl  -L https://fly.io/install.sh | sh
+```
+- OSX:
+```
+brew install flyctl
+```
+- Windows:
+```
+iwr https://fly.io/install.ps1 -useb
+``` 
+
+(If interested, here is the [Installation Guide](https://fly.io/docs/hands-on/install-flyctl/))
 
 
 Next authenticate with your fly.io account:
-  ```
-  fly auth login
-  ```
+```
+fly auth login
+```
 
 - To make sure everything is working well:    
-  ```
-  fly apps list
-  ```
+```
+fly apps list
+```
 The output of the above command will be empty table since you have no apps launched yet
 
 
@@ -209,11 +212,12 @@ The output of the above command will be empty table since you have no apps launc
 
 We shouldn't store secrets in source code, so utilizing environmental variables is needed.
 - Run the following from the root of your project
-  
-  ```
-  #!/usr/bin/env  python3 set_env.py
-  
-  ```
+```
+./set_env.py HANDLE
+```
+where `HANDLE` is your github username or similar. It is used to
+create the name of the application and make sure that different
+devs don't claim the same app name.
 
 ### Launch the App
 

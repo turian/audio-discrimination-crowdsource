@@ -112,7 +112,7 @@ env.bak/
 venv.bak/
 
 logs
-Dockerfile
+#Dockerfile
 
 
 # Spyder project settings

@@ -25,3 +25,5 @@ setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerabil
 
 python-dotenv>=0.21.0
 whitenoise==6.3.0 # to serve static files in production
+
+click
