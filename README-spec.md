@@ -79,7 +79,42 @@ with this Batch are written to the database.
 
 ## Admin Dashboard
 
-This will be spec'ed later. For now, all tables should be visible.
+There are a list of different experiments. (In the first version, we will only have one experiment.) If you click on one, you go to the Admin Experiment View.
+There is a link to the Admin User View.
+
+There should be a simple link or something that allows me to view all raw tables.
+
+### Admin User View
+
+There is a table of annotators.
+
+There is a field to add their hourly rate as a float. (This should be added to the User model.)
+
+The columns are: email, experiment name, number of tasks completed, percent of gold correct, interannotator agreement, ROI, lock?, delete?
+
+* Number of tasks completed is the number of tasks in that experiment they did, including gold.
+* Percent of gold correct: What percent of gold tasks did they get correct
+* Interannotator agreement: Leave this blank for now, I'll spec it later.
+* ROI: Compute the number of hours they worked on this experiment. (We might need to consider adding a Sessions table to track this.) ROI = # tasks completed / (# hours * hourly rate)
+* lock?: A boolean checkbox allowing me to lock the user, because they were slow.
+* delete?: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality.
+
+Locked annotators are grayed out.
+A button should allow me lock all selected users.
+
+### Admin Experiment View
+
+Show experiment name.
+
+Organized in batches. Show latest first. Show gold first.
+
+Each batch table:
+* task ID, # annotations, annotations %, reference_url, transform_url, transform_JSON
+
+Annotations % should be blank now. It's a formula computed differently
+for each experiment. I'll spec this when I spec the second experiment.
+
+(Later: We might want to have functionality that does not give a user a task if K=3 people have already annotated it. K should be adjustable per experiment.)
 
 ## Models
 
@@ -88,6 +123,7 @@ User:
     * first_task_of_this_session_performed_at: timestamp.
     (default: start of time)
     * is_locked: (default: False)
+    * hourly_rate: float (default: None)
 
 Batch:
     * created_at: timestamp.
