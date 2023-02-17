@@ -3,6 +3,8 @@
 Note that we expect no more than 10 simultaneous users. This app
 will never require scalability, so don't optimize for scale.
 
+We should use HTMX not JS.
+
 ## Experiment Types
 
 There are currently two types of experiments. The first (2AFC) was
@@ -93,6 +95,7 @@ There are a list of different experiments. (In the first version, we will only h
 There is a link to the Admin User View.
 
 There should be a simple link or something that allows me to view all raw tables.
+Just the typical default Django admin functionality.
 
 ### Admin User View
 
@@ -107,7 +110,7 @@ The columns are: email, experiment name, number of tasks completed, percent of g
 * Interannotator agreement: Leave this blank for now, I'll spec it later.
 * ROI: Compute the number of hours they worked on this experiment. (We might need to consider adding a Sessions table to track this.) ROI = # tasks completed / (# hours * hourly rate)
 * lock?: A boolean checkbox allowing me to lock the user, because they were slow.
-* delete?: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality.
+* delete?: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality. (Delete is permanent. I will typically use lock. But if someone just comes and clicks buttons randomly, it affects the interannotator agreement and makes all the statistics weird, and I just want to remove them entirely and all their work.)
 
 Locked annotators are grayed out.
 A button should allow me lock all selected users.
