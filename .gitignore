@@ -141,3 +141,7 @@ batch/data/
 .venv/
 
 
+fly.toml
+.git/
+*.sqlite3
+.dockerignore

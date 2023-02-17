@@ -1,28 +1,31 @@
 #!/usr/bin/env python3
 
 import os
+import re
 from tkinter import W
-from django.core.management.utils import get_random_secret_key
-from dotenv import dotenv_values, set_key
 
 import click
-import re
+from django.core.management.utils import get_random_secret_key
+from dotenv import dotenv_values, set_key
 
 
 class EnvironmentVarSetting:
     def __init__(self) -> None:
         pass
 
-    def create(self, handle: str):
+    def create(self, handle: str, mode: str = "staging"):
+        assert mode in ["staging", "prod"], "Invalid mode"
         assert not os.path.exists(
             ".env"
         ), "File .env already exists, aborting. Please delete it if you're sure you want to do this."
         values = {
-            "DEBUG": True,
+            "DEBUG": "True",
             "DEVELOPMENT_MODE": "local",
             "ALLOWED_HOSTS": "localhost 127.0.0.1 [::1]",
             "SECRET_KEY": get_random_secret_key(),
             "HANDLE": handle,
+            "MODE": mode,
+            "APP_NAME": f"audio-discrimination-crowdsource-{handle}-{mode}",
         }
 
         for key, value in values.items():
@@ -47,10 +50,10 @@ def is_valid_flyio_handle(name):
 
 @click.command()
 @click.argument("handle")
-def execute(handle):
+def create(handle):
     assert is_valid_flyio_handle(handle), "Invalid handle"
-    EnvironmentVarSetting().execute(handle)
+    EnvironmentVarSetting().create(handle)
 
 
 if __name__ == "__main__":
-    execute()
+    create()

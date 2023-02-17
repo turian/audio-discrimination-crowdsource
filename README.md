@@ -223,12 +223,11 @@ devs don't claim the same app name.
 
 In this step the app is going to be launched to fly.io.
 
-- Create and configure the app  
+- Launch and configure the app  
 
-  ```
-  #!/usr/bin/env python3 fly_manager.py launch <app-name>
-  
-  ```
+```
+./fly_manager.py launch
+```
     
 This command will create you an app on Fly.io , spin up a postgres instance, and create an app configuration named fly.toml in your project root. fly.toml file contains all app details.
   
@@ -237,26 +236,22 @@ and Update DATABASE_URL in .env file.
 
 - To make sure the app is created successfully:
 
-  ```
-  fly apps list
-  ```
+```
+fly apps list
+```
 
-  This command prints 3 apps: 
-  1. your app
-  2. database instance and 
-  3. Fly builders: to build docker images
-  
-  
-#### Deploy the APP
-- To deploy the app to the FLY platform. 
-Both app-name and mode are optional fields. Specify app-name when you have more than apps launched, and mode values are stating or production. by default it will deploy with staging.
+This command prints 3 apps: 
+1. your app
+2. database instance and 
+3. Fly builders: to build docker images
 
-  ```
-  #!/usr/bin/env python3 fly_manager.py deploy <app-name> <mode>
-  ```
+- Deploy the app
+```
+./fly_manager.py deploy
+``` 
 
 - Open the app in browser
 
-  ```  
-  #!/usr/bin/env python3 fly_manager.py open <app-name>
-  ```
+```  
+./fly_manager.py open
+```
