@@ -2,7 +2,6 @@
 
 import os
 import re
-from tkinter import W
 
 import click
 from django.core.management.utils import get_random_secret_key
