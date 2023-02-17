@@ -8,10 +8,12 @@ We should use HTMX not JS.
 ## Experiment Types
 
 There are currently two types of experiments. The first (2AFC) was
-the one originally spec'ed. Here are their names:
+the one originally spec'ed.
 
 * 2AFC
 * A/B
+
+For a particular experiment *type*, there might be multiple experiments with different *names*.
 
 Each experiment has a separate landing page.
 
@@ -65,15 +67,16 @@ Otherwise (90% chance), randomly select a task where `task.batch
 (If there are no tasks left in this batch for the user to annotate,
 present a screen that says: "Come back later for more work.")
 
-For the chosen task, call `present_task_for_user(task)`. This method
-will be written by the lead dev, but should be mocked for now. It
-will return a URL to an mp3 and `task_presentation` ("AAB", "ABA",
-"BBA", or "BAB").
+For the chosen task, call `present_task_for_user(task, experiment_name)`
+(or `experiment_id`). This method will be written by the lead dev,
+but should be mocked for now. It will return a URL to an mp3 and
+`task_presentation`.
 
 The task has a template which has static text, a JS player for the
-mp3, and a radio form with two options: "XXY" or "XYX". The User
-chooses one of the two options and clicks submit. An Annotation row
-is written to the database and the User Task Workflow begins again.
+mp3, and a radio form with options based upon the experiment type
+annnotations. The User chooses one of the two options and clicks
+submit. An Annotation row is written to the database and the User
+Task Workflow begins again.
 
 ### Batch Admin Jobs
 
@@ -117,7 +120,7 @@ A button should allow me lock all selected users.
 
 ### Admin Experiment View
 
-Show experiment name.
+Show experiment name and experiment type.
 
 Organized in batches. Show latest first. Show gold first.
 
@@ -174,8 +177,12 @@ Annotation:
         Database must verify constraint that task_presentation is in task.experiment_type.annotations
 
 This table is a fixture.
+Experiment:
+    * name: string (unique)
+    * type: FK to ExperimentType
+
 ExperimentType:
-    * name: string
+    * type: string (unique)
         2AFC or A/B
 
 This table is a fixture.
@@ -190,5 +197,9 @@ ExperimentTypeAnnotation:
     * annotation: string
 For 2AFC: "XXY", "XYX".
 For 2AFC: "X", "Y".
+Note: Future experiment types might have more than two options.
 
-(Alternately, annotation and task_presentation could be Lists in ExperimentType if it makes it easier to code the constraints in Annotation. Thoughts? Speed is not important, code simplicity and lack of bugs is.)
+(Alternately, annotation and task_presentation could be Lists in
+ExperimentType if it makes it easier to code the constraints in
+Annotation. Thoughts? Speed is not important, code simplicity and
+lack of bugs is.)
