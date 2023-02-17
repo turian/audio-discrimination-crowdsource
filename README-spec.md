@@ -93,14 +93,14 @@ There is a table of annotators.
 
 There is a field to add their hourly rate as a float. (This should be added to the User model.)
 
-The columns are: email, experiment name, number of tasks completed, percent of gold correct, interannotator agreement, ROI, lock?, delete?
+The columns are: email, experiment name, number of tasks completed, percent of gold correct, interannotator agreement, ROI, lock, delete
 
 * Number of tasks completed is the number of tasks in that experiment they did, including gold.
 * Percent of gold correct: What percent of gold tasks did they get correct
 * Interannotator agreement: Leave this blank for now, I'll spec it later.
 * ROI: Compute the number of hours they worked on this experiment. (We might need to consider adding a Sessions table to track this.) ROI = # tasks completed / (# hours * hourly rate)
-* lock?: A boolean checkbox allowing me to lock the user, because they were slow.
-* delete?: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality. (Delete is permanent. I will typically use lock. But if someone just comes and clicks buttons randomly, it affects the interannotator agreement and makes all the statistics weird, and I just want to remove them entirely and all their work.)
+* lock: A boolean checkbox allowing me to lock the user, because they were slow.
+* delete: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality. (Delete is permanent. I will typically use lock. But if someone just comes and clicks buttons randomly, it affects the interannotator agreement and makes all the statistics weird, and I just want to remove them entirely and all their work.)
 
 Locked annotators are grayed out.
 A button should allow me lock all selected users.
