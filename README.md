@@ -42,6 +42,27 @@ For example, in a second kind of audio experiment, they might listen
 to two audio compression algorithms and pick the one with fewer
 artifacts.
 
+## Additional Audio Experiments
+
+### Audio Experiment 1
+- In this we can create two versions of the audio with different sound characteristics.
+
+- Users hear both versions of the audio and they are asked which version they prefer.
+
+### Audio Experiment 2
+- In this we can create a series of spoken phrases to test the speech recognition.
+
+- Play the spoken phrases to each user and ask them to identify the phrase that was spoken.
+
+### Audio Experiment 3
+- In this we can play a series of sounds to each listener and ask them to rate each sound on a scale of 1 to 10, based on specific criteria, such as clarity, dynamic range, and frequency response.
+
+### Audio Experiment 4
+- In this we can play a audio of series of notes on different musical instruments.
+
+- Ask users to identify the instrument that produced each sound.
+
+
 ## Usage
 
 Web service to crowd-source audio discrimination data
