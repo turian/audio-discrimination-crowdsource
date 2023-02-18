@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Annotation, Batch, Task, CurrentBatchEval, CurrentBatchGold
+
+from .models import Annotation, Batch, CurrentBatchEval, CurrentBatchGold, Task
 
 
 class AnnotationSerializer(serializers.ModelSerializer):

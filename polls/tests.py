@@ -5,7 +5,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Batch, Task, Annotation
+from .models import Annotation, Batch, Task
 
 
 class LockUserAnnotationListTest(APITestCase):
