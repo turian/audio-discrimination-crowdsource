@@ -23,4 +23,4 @@ jobs:
                   extra-flake8-options: --max-line-length=88 --extend-ignore=E203 --per-file-ignores=__init__.py:F401
                   extra-black-options: --exclude migrations|manage.py
                   extra-mypy-options: ''
-                  extra-isort-options: --profile black --exclude migrations|manage.py
+                  extra-isort-options: --profile black --skip migrations --skip manage.py
