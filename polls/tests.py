@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 class TestCheckUserLock(APITestCase):
     """This class set up a test case and test if CheckUserLockMixin
-    actually redirect to thank you page.
+    actually redirect to thank you page if user is locked.
     """
 
     def setUp(self):
@@ -18,7 +18,7 @@ class TestCheckUserLock(APITestCase):
         )
 
     def test_check_user_lock(self):
-        url = reverse("auth-flow")
+        url = reverse("task-flow")
         expected_url = reverse("thank-you")
         self.client.force_authenticate(user=self.locked_user)
         response = self.client.get(url)

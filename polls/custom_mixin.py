@@ -2,7 +2,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.shortcuts import redirect
 
 
-class CheckUserLockMixin:
+class CheckUserLock:
     """evaluates 'check_user_is_locked'
     if 'check_user_is_locked' returns True redirects to 'thank-you' page
     """
@@ -14,6 +14,7 @@ class CheckUserLockMixin:
         Override this method to override the redirect_url attribute.
         """
         redirect_url = self.redirect_url
+
         if not redirect_url:
             raise ImproperlyConfigured(
                 "{0} is missing the redirect_url attribute. "
@@ -40,3 +41,8 @@ class CheckUserLockMixin:
         if test_result:
             return redirect(self.get_redirect_url())
         return super().dispatch(request, *args, **kwargs)
+
+
+class CheckUserLockMixin(CheckUserLock):
+    def test_func(self):
+        return self.request.user.is_locked
