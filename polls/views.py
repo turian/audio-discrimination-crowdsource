@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from rest_framework import generics, mixins, status
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -98,6 +99,10 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+    authentication_classes = [
+        TokenAuthentication,
+    ]
+
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
 
@@ -122,7 +127,6 @@ class UserLockAPIView(APIView):
                 user = get_user_model().objects.get(id=id)
                 user.is_locked = True
                 user.save()
-                return Response(status.HTTP_200_OK)
             except get_user_model().DoesNotExist:
                 user_not_found.append(id)
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
