@@ -22,10 +22,6 @@ class HomeView(TemplateView):
     template_name = "polls/home.html"
 
 
-class ThanksView(TemplateView):
-    template_name = "polls/thanks.html"
-
-
 class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
     template_name = "polls/auth_flow.html"
 
@@ -37,9 +33,6 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
             "rest_time": rest_time,
         }
         return render(request, self.template_name, context)
-
-    def check_user_is_locked(self):
-        return self.request.user.is_locked
 
 
 class TaskFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
@@ -104,3 +97,7 @@ class AdminAPIView(APIView):
 
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
+
+
+class ThanksView(TemplateView):
+    template_name = "polls/thanks.html"
