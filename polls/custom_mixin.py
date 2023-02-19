@@ -15,7 +15,6 @@ class CheckUserLockMixin:
         )
 
     def dispatch(self, request, *args, **kwargs):
-        print("CheckUserLockMixin is being executed")
         if self.test_case():
             return redirect(reverse("thank-you"))
         return super().dispatch(request, *args, **kwargs)
