@@ -2,6 +2,7 @@
 # From https://www.codingforentrepreneurs.com/blog/django-github-actions/
 name: Django Test (sqlite)
 
+
 # Controls when the workflow will run
 on:
   # Allows you to call this workflow within another workflow

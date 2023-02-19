@@ -2,6 +2,7 @@
 # From https://www.codingforentrepreneurs.com/blog/django-github-actions/
 name: Django Tests with Postgres
 
+
 # Controls when the workflow will run
 on:
   # Allows you to call this workflow within another workflow
@@ -58,18 +59,20 @@ jobs:
             - name: Run Migrations
         # Step specific environment variables
               env:
-                  DEBUG: False
+                  DEBUG: false
                   DEVELOPMENT_MODE: production
                   DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_DB }}
+                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_DB
+                      }}
               run: |
                   python manage.py migrate
             - name: Run Tests
         # Step specific environment variables
               env:
-                  DEBUG: False
+                  DEBUG: false
                   DEVELOPMENT_MODE: production
                   DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_DB }}
-              run: |
+                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_DB
+                      }}
+              run: |-
                   python manage.py test
