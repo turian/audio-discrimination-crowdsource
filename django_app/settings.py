@@ -153,7 +153,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
         "default": dj_database_url.parse(
-            os.environ.get("DATABASE_URL"), conn_max_age=60
+            os.environ.get("DATABASE_URL"), conn_max_age=300
         ),
     }
 
