@@ -35,10 +35,17 @@ jobs:
             - name: Install requirements
               run: |
                   pip install -r requirements.txt
-            - name: Run Tests
+            - name: Run Migrations
         # Step specific environment variables
               env:
                   DEBUG: 'True'
                   DEVELOPMENT_MODE: local
               run: |
+                  python manage.py test
+            - name: Run Tests
+        # Step specific environment variables
+              env:
+                  DEBUG: 'True'
+                  DEVELOPMENT_MODE: local
+              run: |-
                   python manage.py test
