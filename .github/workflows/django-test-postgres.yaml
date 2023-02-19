@@ -60,8 +60,7 @@ jobs:
                   DEBUG: false
                   DEVELOPMENT_MODE: production
                   DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT
-                      }}
+                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT }}
               run: |
                   python manage.py migrate
             - name: Run Tests
@@ -70,7 +69,6 @@ jobs:
                   DEBUG: false
                   DEVELOPMENT_MODE: production
                   DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT
-                      }}
+                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT }}
               run: |-
                   python manage.py test
