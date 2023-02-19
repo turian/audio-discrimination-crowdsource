@@ -20,7 +20,7 @@ class LockUserAnnotationListTest(APITestCase):
             username="test_user", password="testpass"
         )
         self.admin_user = get_user_model().objects.create(
-            username="test_admin", password="testpass", is_superuser=True, is_staff=True
+            username="test_admin", password="testpass", is_staff=True
         )
         self.batch = Batch.objects.create(created_at=timezone.now(), notes="test note")
         self.task_1 = Task.objects.create(
