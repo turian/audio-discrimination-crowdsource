@@ -55,20 +55,19 @@ jobs:
             - name: Install requirements
               run: |
                   pip install -r requirements.txt
-            - name: Run Migrations
-              env:
-                  DEBUG: false
-                  DEVELOPMENT_MODE: production
-                  DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT }}
-              run: |
-                  python manage.py migrate
             - name: Run Tests
         # Step specific environment variables
               env:
-                  DEBUG: false
+                  DEBUG: '0'
                   DEVELOPMENT_MODE: production
                   DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT }}
-              run: |-
+                  DB_USERNAME: ${{ env.POSTGRES_USER }}
+                  DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+                  DB_HOST: ${{ env.POSTGRES_HOST }}
+                  DB_DATABASE: ${{ env.POSTGRES_DB }}
+                  DB_PORT: ${{ env.POSTGRES_PORT }}
+                  DATABASE_URL: postgres://${{ env.POSTGRES_USER }:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_DB }}/${{ env.POSTGRES_PORT
+                      }}
+              run: |
+                  python manage.py migrate
                   python manage.py test
