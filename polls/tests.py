@@ -9,6 +9,11 @@ from .models import Annotation, Batch, Task
 
 
 class TestCheckUserLock(APITestCase):
+    """This class set up a test case and test if CheckUserLockMixin
+    actually redirect user to thank you page if user is locked and
+    it also assert that unlocked users have access to their desired page.
+    """
+
     def setUp(self):
         self.client = Client()
         self.locked_user = get_user_model().objects.create(
