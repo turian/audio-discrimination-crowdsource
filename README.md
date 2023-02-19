@@ -2,6 +2,18 @@
 
 Web service to crowd-source audio discrimination data.
 
+## Motivation
+
+Audio researchers need subjective evaluation of audio models. For
+example, does this model or this model produce better sounding
+speech?
+
+This repo allows you to run listening experiments so that people
+can say "audio A" is better than "audio B" and collect those
+annotations.
+
+## Approach
+
 Users are given instructions about the kind of audio they will be
 listening to, and what kind of annotation they should make.
 
