@@ -124,6 +124,9 @@ characters:
 export HANDLE={username}
 ```
 
+For free, you can set up just a staging app with postgres. In that case, skip all commands below involving production.
+If you want a staging AND production app, you will be billed by `fly.io`.
+
 Now, use the follow commands to create a staging and production app:
 ```
 export STAGING_APP_NAME=audio-discrimination-crowdsource-$HANDLE-staging
@@ -139,7 +142,7 @@ fly apps create --name $PRODUCTION_APP_NAME --network iad
 Set-up postgres:
 ```
 flyctl postgres create -n $STAGING_APP_NAME-db -r iad
-flyctl postgres create -n $POSTGRES_APP_NAME-db -r iad
+flyctl postgres create -n $PRODUCTION_APP_NAME-db -r iad
 ```
 
 Towards the end it will tell you your postgres credentials.
@@ -148,8 +151,8 @@ is `.gitignore`'d.
 
 Attach postgres to your apps:
 ```
-flyctl postgres attach --app $STAGING_APP_NAME $STAGING_APP_NAME-db
-flyctl postgres attach --app $PRODUCTION_APP_NAME $PRODUCTION_APP_NAME-db
+flyctl postgres attach --app $STAGING_APP_NAME --config fly-staging.toml $STAGING_APP_NAME-db
+flyctl postgres attach --app $PRODUCTION_APP_NAME --config fly-production.toml $PRODUCTION_APP_NAME-db
 ```
 
 Create a random secret key for your Django apps:
@@ -172,10 +175,21 @@ Production:
 fly deploy -c fly-production.toml --app $PRODUCTION_APP_NAME
 ```
 
+If you get an error like this:
+```
+	 django.db.utils.OperationalError: could not translate host name "top2.nearest.of.audio-discrimination-crowdsource-HANDLE-staging-db.internal" to address: Name or service not known
+	 Starting clean up.
+```
+Then change your secrets, for example:
+```
+flyctl secrets set --app $STAGING_APP_NAME DATABASE_URL="what you saved in db.txt"
+```
+
 - Finally, open the app in a browser:
 
 ```  
 flyctl open --app $STAGING_APP_NAME
+flyctl open --app $PRODUCTION_APP_NAME
 ```
 
 ### Messed up, start over
