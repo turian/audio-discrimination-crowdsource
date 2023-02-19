@@ -4,7 +4,8 @@ from django.urls import reverse
 
 class CheckUserLockMixin:
     """
-    Custom mixin that checks a test case and redirects the user to a URL named "thank-you"
+    Custom mixin that checks a test case and redirects the user to a
+    URL named "thank-you"
     if the test case is true.
     """
 
