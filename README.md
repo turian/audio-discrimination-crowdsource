@@ -132,27 +132,22 @@ Now, use the follow commands to create a staging and production app:
 export STAGING_APP_NAME=audio-discrimination-crowdsource-$HANDLE-staging
 export PRODUCTION_APP_NAME=audio-discrimination-crowdsource-$HANDLE-production
 
+flyctl launch --name $STAGING_APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
+flyctl launch --name $PRODUCTION_APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
+```
+and answer the questions as follows:
+```
+Would you like to set up a Postgresql database now? Yes
+Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
+Would you like to set up an Upstash Redis database now? No
+Would you like to deploy now? No
+```
+
+Remove the created `fly.toml` and use the repo's toml configs:
+```
+rm fly.toml
 sed "s/HANDLE/$HANDLE/g" fly-staging.toml.tmpl > fly-staging.toml
 sed "s/HANDLE/$HANDLE/g" fly-production.toml.tmpl > fly-production.toml
-
-fly apps create --name $STAGING_APP_NAME --network iad
-fly apps create --name $PRODUCTION_APP_NAME --network iad
-```
-
-Set-up postgres:
-```
-flyctl postgres create -n $STAGING_APP_NAME-db -r iad
-flyctl postgres create -n $PRODUCTION_APP_NAME-db -r iad
-```
-
-Towards the end it will tell you your postgres credentials.
-*IMPORTANT*: Copy-and-paste this information into `db.txt`, which
-is `.gitignore`'d.
-
-Attach postgres to your apps:
-```
-flyctl postgres attach --app $STAGING_APP_NAME --config fly-staging.toml $STAGING_APP_NAME-db
-flyctl postgres attach --app $PRODUCTION_APP_NAME --config fly-production.toml $PRODUCTION_APP_NAME-db
 ```
 
 Create a random secret key for your Django apps:
@@ -197,6 +192,31 @@ flyctl open --app $PRODUCTION_APP_NAME
 If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
 ```
 ./delete-all-fly-apps.py
+```
+
+### Manual app creation
+
+This is a little nicer, but sometimes doesn't work. So just follow the instructions above:
+
+```
+fly apps create --name $STAGING_APP_NAME --network iad
+fly apps create --name $PRODUCTION_APP_NAME --network iad
+```
+
+Set-up postgres:
+```
+flyctl postgres create -n $STAGING_APP_NAME-db -r iad
+flyctl postgres create -n $PRODUCTION_APP_NAME-db -r iad
+```
+
+Towards the end it will tell you your postgres credentials.
+*IMPORTANT*: Copy-and-paste this information into `db.txt`, which
+is `.gitignore`'d.
+
+Attach postgres to your apps:
+```
+flyctl postgres attach --app $STAGING_APP_NAME --config fly-staging.toml $STAGING_APP_NAME-db
+flyctl postgres attach --app $PRODUCTION_APP_NAME --config fly-production.toml $PRODUCTION_APP_NAME-db
 ```
 
 ### Digital Ocean apps
