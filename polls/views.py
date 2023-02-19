@@ -1,9 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
-from rest_framework import permissions, status
+from rest_framework import generics, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
 from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
+from .serializers import AnnotationSerializer
 from .utils import batch_selector, check_user_work_permission, present_task_for_user
 
 
@@ -82,9 +85,16 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        admin_api_url = request.build_absolute_uri("/polls/api/v1/admin-api/")
+        admin_api = request.build_absolute_uri(reverse("admin-api"))
+        annotation_api = request.build_absolute_uri(reverse("annotation-api"))
+        lock_users_api = request.build_absolute_uri(reverse("lock-users-api"))
         token, _ = Token.objects.get_or_create(user=request.user)
-        context = {"token": token, "admin_api_url": admin_api_url}
+        context = {
+            "token": token,
+            "admin_api": admin_api,
+            "annotation_api": annotation_api,
+            "lock_users_api": lock_users_api,
+        }
         return render(request, "polls/auth_token.html", context)
 
     def test_func(self):
@@ -97,6 +107,31 @@ class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
+
+
+class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Annotation.objects.all()
+    serializer_class = AnnotationSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class UserLockAPIView(APIView):
+    def post(self, request):
+        user_ids = request.data.get("users", list())
+        user_not_found = list()
+        for id in user_ids:
+            try:
+                user = get_user_model().objects.get(id=id)
+                user.is_locked = True
+                user.save()
+            except get_user_model().DoesNotExist:
+                user_not_found.append(id)
+        return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)

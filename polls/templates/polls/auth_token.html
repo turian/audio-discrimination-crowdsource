@@ -21,14 +21,16 @@
         <h3>API Token</h3>
         <code>{{ token }}</code>
       </div>
-      <p class="mt-3">
+
+      <h4 class="mt-3">Admin API</h4>
+      <p>
         Use following code snippet to make request to admin api endpoint.
       </p>
       <pre>
         <code>
 import requests
 headers = {
-    "Authorization": "Token {{ token.key }}"
+    "Authorization":admin_api_url "Token {{ token.key }}"
     }
 url = "{{ admin_api_url }}"
 response = requests.get(url, headers=headers)
@@ -36,6 +38,48 @@ print(response.json())
 print(response.status_code)
         </code>
       </pre>
+
+      <div class="mt-3">
+        <h4>Annotation API</h4>
+        <p>Fetches all entries of annotation table</p>
+        <pre>
+          <code>
+import requests
+
+headers = {
+    "Authorization": "Token {{ token.key }}"
+    }
+annotation_api = "{{ annotation_api }}"
+response = requests.get(annotation_api, headers=headers)
+# print(response.json())
+# print(response.status_code)
+          </code>
+        </pre>
+      </div>
+
+      <div class="mt-3">
+        <h4>Lock Users API</h4>
+        <p>Lock users based on posted list containing user ids</p>
+        <pre>
+          <code>
+import requests
+
+headers = {
+    "Authorization": "Token {{ token.key }}"
+    }
+# list of user ids
+user_ids = [10, 5]
+json_payload = {
+    "users": user_ids
+    }
+lock_users_api = "{{ lock_users_api }}"
+response = requests.post(lock_users_api, headers=headers, json=json_payload)
+print(response.json())
+print(response.status_code)
+          </code>
+        </pre>
+      </div>
+
     </div>
     <div class="col"></div>
   </div>

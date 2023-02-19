@@ -3,6 +3,20 @@
 Note that we expect no more than 10 simultaneous users. This app
 will never require scalability, so don't optimize for scale.
 
+We should use HTMX not JS.
+
+## Experiment Types
+
+There are currently two types of experiments. The first (2AFC) was
+the one originally spec'ed.
+
+* 2AFC
+* A/B
+
+For a particular experiment *type*, there might be multiple experiments with different *names*.
+
+Each experiment has a separate landing page.
+
 ## Workflows
 
 ### User Auth Workflow
@@ -53,15 +67,16 @@ Otherwise (90% chance), randomly select a task where `task.batch
 (If there are no tasks left in this batch for the user to annotate,
 present a screen that says: "Come back later for more work.")
 
-For the chosen task, call `present_task_for_user(task)`. This method
-will be written by the lead dev, but should be mocked for now. It
-will return a URL to an mp3 and `task_presentation` ("AAB", "ABA",
-"BBA", or "BAB").
+For the chosen task, call `present_task_for_user(task, experiment_name)`
+(or `experiment_id`). This method will be written by the lead dev,
+but should be mocked for now. It will return a URL to an mp3 and
+`task_presentation`.
 
 The task has a template which has static text, a JS player for the
-mp3, and a radio form with two options: "XXY" or "XYX". The User
-chooses one of the two options and clicks submit. An Annotation row
-is written to the database and the User Task Workflow begins again.
+mp3, and a radio form with options based upon the experiment type
+annnotations. The User chooses one of the two options and clicks
+submit. An Annotation row is written to the database and the User
+Task Workflow begins again.
 
 ### Batch Admin Jobs
 
@@ -79,7 +94,51 @@ with this Batch are written to the database.
 
 ## Admin Dashboard
 
-This will be spec'ed later. For now, all tables should be visible.
+There are a list of different experiments. (In the first version, we will only have one experiment.) If you click on one, you go to the Admin Experiment View.
+There is a link to the Admin User View.
+
+There should be a simple link or something that allows me to view all raw tables.
+Just the typical default Django admin functionality.
+
+### Admin User View
+
+There is a table of annotators.
+
+There is a field to add their hourly rate as a float. (This should be added to the User model.)
+
+The columns are: email, experiment name, number of tasks completed, percent of gold correct, interannotator agreement, ROI, lock, delete
+
+* Number of tasks completed is the number of tasks in that experiment they did, including gold.
+* Percent of gold correct: What percent of gold tasks did they get correct
+* Interannotator agreement: Leave this blank for now, I'll spec it later.
+* ROI: Compute the number of hours they worked on this experiment. (We might need to consider adding a Sessions table to track this.) ROI = # tasks completed / (# hours * hourly rate)
+* lock: A boolean checkbox allowing me to lock the user, because they were slow.
+* delete: A boolean checkbox allowing me to lock the user AND delete all their annotations from the database, because they were low quality. (Delete is permanent. I will typically use lock. But if someone just comes and clicks buttons randomly, it affects the interannotator agreement and makes all the statistics weird, and I just want to remove them entirely and all their work.)
+
+Locked annotators are grayed out.
+A button should allow me lock all selected users.
+
+### Admin Experiment View
+
+Show experiment name and experiment type.
+
+Organized in batches. Show latest first. Show gold first.
+
+Each batch table:
+* task ID, # annotations, annotations %, reference_url, transform_url, transform_JSON
+
+Annotations % should be blank now. It's a formula computed differently
+for each experiment. I'll spec this when I spec the second experiment.
+
+(Later: We might want to have functionality that does not give a user a task if K=3 people have already annotated it. K should be adjustable per experiment.)
+
+### Admin Batch Submit View
+
+To be spec'ed. A way for the admin to add new batches by uploading a CSV.
+
+### Admin TODO
+
+One thing that is missing and maybe I'll spec later is the ability to measure annotator fatigue. i.e. if 15 minutes is too long or too short. How long does the typical person take to get ear fatigue? Alternately I might just do annotation myself and see.
 
 ## Models
 
@@ -88,6 +147,7 @@ User:
     * first_task_of_this_session_performed_at: timestamp.
     (default: start of time)
     * is_locked: (default: False)
+    * hourly_rate: float (default: None)
 
 Batch:
     * created_at: timestamp.
@@ -105,10 +165,41 @@ Task:
     * reference_url: URL string.
     * transform_url: URL string.
     * transform_metadata: JSON.
+    * experiment_type: FK to ExperimentType.
 
 Annotation:
     * user: foreign key to User row.
     * task: foreign key to Task row.
     * annotated_at: timestamp.
-    * task_presentation: "AAB", "ABA", "BBA", or "BAB".
-    * annotation: "XXY" or "XYX".
+    * task_presentation: string.
+        Database must verify constraint that task_presentation is in task.experiment_type.task_presentation
+    * annotation: string.
+        Database must verify constraint that task_presentation is in task.experiment_type.annotations
+
+This table is a fixture.
+Experiment:
+    * name: string (unique)
+    * type: FK to ExperimentType
+
+ExperimentType:
+    * type: string (unique)
+        2AFC or A/B
+
+This table is a fixture.
+ExperimentTypeTaskPresentation:
+    * FK to ExperimentType
+    * task_presentation: string
+For 2AFC: "AAB", "ABA", "BBA", "BAB".
+For A/B: "AB", "BA".
+
+ExperimentTypeAnnotation:
+    * FK to ExperimentType
+    * annotation: string
+For 2AFC: "XXY", "XYX".
+For 2AFC: "X", "Y".
+Note: Future experiment types might have more than two options.
+
+(Alternately, annotation and task_presentation could be Lists in
+ExperimentType if it makes it easier to code the constraints in
+Annotation. Thoughts? Speed is not important, code simplicity and
+lack of bugs is.)
