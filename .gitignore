@@ -141,8 +141,9 @@ batch/data/
 .venv/
 
 
-fly.toml
+fly*.toml
 .git/
 *.sqlite3
 .dockerignore
 db.txt
+db-*.txt

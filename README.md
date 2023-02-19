@@ -58,9 +58,7 @@ artifacts.
 
 Web service to crowd-source audio discrimination data
 
-## Getting Started
-
-### Local dev
+### Local Dev
 
 This is the one time setup:
 ```
@@ -116,87 +114,75 @@ fly apps list
 ```
 The output of the above command will be empty table since you have no apps launched yet
 
+#### fly setup
 
-#### Configure the Project
-
-##### Environment Variables
-
-We shouldn't store secrets in source code, so utilizing environmental variables is needed.
-- Run the following from the root of your project
-```
-./set_env.py HANDLE
-```
-where `HANDLE` is your github username or similar. It is used to
-create the name of the application and make sure that different
-devs don't claim the same app name.
-
-Add these to your environment:
-```
-source .env
-```
-
-#### Launch the App
-
-In this step the app is going to be launched to fly.io.
-
-- Launch and configure the app  
+So that different devs have diff app names, please set an environment
+variable with a unique handle or username in lowercase alphabetic
+characters:
 
 ```
-flyctl launch --name $APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
-```
-and answer the questions as follows:
-```
-Would you like to set up a Postgresql database now? Yes
-Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
-Would you like to set up an Upstash Redis database now? No
-Would you like to deploy now? No
+export HANDLE={username}
 ```
 
-Towards the end it will tell you your postgres credentials. *IMPORTANT*:
-Copy-and-paste this information into `db.txt`, which is `.gitignore`'d.
-
-This command will create you an app on fly.io, spin up a postgres
-instance, and create an app configuration named `fly.toml` in your
-project root. `fly.toml` file contains all app details.
-
-- To make sure the app is created successfully:
-
+Now, use the follow commands to create a staging and production app:
 ```
-fly apps list
-```
+export STAGING_APP_NAME=audio-discrimination-crowdsource-$HANDLE-staging
+export PRODUCTION_APP_NAME=audio-discrimination-crowdsource-$HANDLE-production
 
-This command prints 3 apps: 
-1. your app
-2. database instance and 
-3. fly builders: to build docker images
+sed "s/HANDLE/$HANDLE/g" fly-staging.toml.tmpl > fly-staging.toml
+sed "s/HANDLE/$HANDLE/g" fly-production.toml.tmpl > fly-production.toml
 
-- Import secrets
-
-```
-./fly_manager.py import_secrets
+fly apps create --name $STAGING_APP_NAME --network iad
+fly apps create --name $PRODUCTION_APP_NAME --network iad
 ```
 
-This adds a few more secrets to `.env` and sets them for your app.
-Perhaps not all of these should be secrets, some should be visible
-environment variables, but I haven't been able to figure that out
-yet. Not important for now.
-
-- Deploy the app
+Set-up postgres:
 ```
-flyctl deploy --app $APP_NAME
-``` 
+flyctl postgres create -n $STAGING_APP_NAME-db -r iad
+flyctl postgres create -n $POSTGRES_APP_NAME-db -r iad
+```
 
-- Open the app in browser
+Towards the end it will tell you your postgres credentials.
+*IMPORTANT*: Copy-and-paste this information into `db.txt`, which
+is `.gitignore`'d.
+
+Attach postgres to your apps:
+```
+flyctl postgres attach --app $STAGING_APP_NAME $STAGING_APP_NAME-db
+flyctl postgres attach --app $PRODUCTION_APP_NAME $PRODUCTION_APP_NAME-db
+```
+
+Create a random secret key for your Django apps:
+```
+flyctl secrets set --app $STAGING_APP_NAME SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')"
+flyctl secrets set --app $PRODUCTION_APP_NAME SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')"
+```
+
+### fly deployment
+
+This will do all migrations:
+
+Staging:
+```
+fly deploy -c fly-staging.toml --app $STAGING_APP_NAME
+```
+
+Production:
+```
+fly deploy -c fly-production.toml --app $PRODUCTION_APP_NAME
+```
+
+- Finally, open the app in a browser:
 
 ```  
-flyctl open --app $APP_NAME
+flyctl open --app $STAGING_APP_NAME
 ```
 
-- Try again?
+### Messed up, start over
 
 If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
 ```
-./fly_manager.py delete_all
+./delete-all-fly-apps.py
 ```
 
 ### Digital Ocean apps
