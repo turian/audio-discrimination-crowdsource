@@ -35,7 +35,7 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
         return render(request, self.template_name, context)
 
 
-class TaskFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
+class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
     template_name = "polls/task_flow.html"
 
     def get(self, request):
@@ -91,9 +91,8 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(APIView):
+class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
 
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
