@@ -175,6 +175,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# DRF global settings
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.IsAdminUser",
+    ],
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
