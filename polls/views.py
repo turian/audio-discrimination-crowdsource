@@ -45,25 +45,35 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
         if should_rest:
             return redirect("auth-flow")
-        elif can_continue:
+
+        if can_continue:
             # Update user's session start time
             request.user.first_task_of_this_session_performed_at = timezone.now()
             request.user.save()
 
+        current_batch = ""
         if batch_selector():
-            # when probability lesss than 90%
-            current_batch = CurrentBatchEval.objects.first().current_batch_eval
+            current_batch_eval = CurrentBatchEval.objects.first()
+            current_batch = (
+                current_batch_eval.current_batch_eval if current_batch_eval else ""
+            )
         else:
-            current_batch = CurrentBatchGold.objects.first().current_batch_gold
-        all_tasks = current_batch.tasks.all()
-        tasks_for_user = all_tasks.exclude(annotation__user=request.user)
-        task = tasks_for_user.first()
-        context = {"task": task}
-        if not task:
-            return render(request, self.template_name, context)
-        url, task_presentation = present_task_for_user(task)
-        context["url"] = url
-        context["task_presentation"] = task_presentation
+            current_batch_gold = CurrentBatchGold.objects.first()
+            current_batch = (
+                current_batch_gold.current_batch_gold if current_batch_gold else ""
+            )
+
+        context = {}
+        if current_batch:
+            tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+            task = tasks_for_user.first()
+            if task:
+                url, task_presentation = present_task_for_user(task)
+                context = {
+                    "task": task,
+                    "url": url,
+                    "task_presentation": task_presentation,
+                }
         return render(request, self.template_name, context)
 
     def post(self, request):
