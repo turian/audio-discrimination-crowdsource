@@ -17,7 +17,7 @@ pre-commit==2.20.0
 #audiomentations[extras]
 
 # Should only be for dev, not prod deploys
-black==22.12.0
+black==23.1.0
 nbstripout==0.6.1
 jupytext==v1.14.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
