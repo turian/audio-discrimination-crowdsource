@@ -102,12 +102,20 @@ iwr https://fly.io/install.ps1 -useb
 
 (If interested, here is the [Installation Guide](https://fly.io/docs/hands-on/install-flyctl/))
 
+- Once you're done with flyctl installation, add flyctl to path:
+```
+export FLYCTL_INSTALL="/home/$USER/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+```
 
-Next authenticate with your fly.io account:
+- Next authenticate with your fly.io account if you already have one:
 ```
 fly auth login
 ```
-
+- If you do not have an existing fly.io account, authenticate using:
+```
+fly auth signup
+```
 - To make sure everything is working well:    
 ```
 fly apps list
@@ -120,6 +128,7 @@ So that different devs have diff app names, please set an environment
 variable with a unique handle or username in lowercase alphabetic
 characters:
 
+NOTE: replace "{username}" with the name you like fly.io to use as your user name. e.g: export HANDLE=myname
 ```
 export HANDLE={username}
 ```
