@@ -10,17 +10,16 @@ sqlparse==0.4.3
 djangorestframework==3.14.0
 
 django-bootstrap-v5
-pre-commit==2.20.0
+pre-commit==3.0.4
 ## For audio transforms
 #sox
 #pydub
 #audiomentations[extras]
 
 ## Should only be for dev, not prod deploys
-#black==22.12.0
+#black==23.1.0
 #nbstripout==0.6.1
 #jupytext==v1.14.1
-
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 
 python-dotenv>=0.21.0
