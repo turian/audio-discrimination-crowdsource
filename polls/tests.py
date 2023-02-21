@@ -104,15 +104,18 @@ class BatchTasksAPIViewTest(APITestCase):
     """
 
     def setUp(self):
-        self.admin_user = get_user_model().create(username="admin", is_staff=True)
+        self.admin_user = get_user_model().objects.create(
+            username="admin", is_staff=True
+        )
         self.admin_user.set_password("testpassword")
         self.admin_user.save()
 
         self.client = Client()
 
     def test_task_batch_api_with_get(self):
-        """This should return 404 as get method is not allowed
+        """This should return 401 as get method is not allowed
         to asses this api
         """
         url = reverse("lock-users-api")
-        self
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 401)
