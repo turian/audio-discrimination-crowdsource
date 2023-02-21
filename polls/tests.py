@@ -95,3 +95,24 @@ class LockUserAnnotationListTest(APITestCase):
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expected_output)
+
+
+class BatchTasksAPIViewTest(APITestCase):
+    """This test case affirms that the BatchTasksAPIView
+    works as expected and that all permission classes to asses the
+    view are regarded, also that the view do send back expected response
+    """
+
+    def setUp(self):
+        self.admin_user = get_user_model().create(username="admin", is_staff=True)
+        self.admin_user.set_password("testpassword")
+        self.admin_user.save()
+
+        self.client = Client()
+
+    def test_task_batch_api_with_get(self):
+        """This should return 404 as get method is not allowed
+        to asses this api
+        """
+        url = reverse("lock-users-api")
+        self
