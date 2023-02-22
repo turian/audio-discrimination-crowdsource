@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, Batch, CurrentBatchEval, CurrentBatchGold, Task
+from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, check_user_work_permission, present_task_for_user
 
@@ -144,7 +144,7 @@ class BatchTasksAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
     def post(self, request):
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            batch = serializer.save()
+            serializer.save()
             return Response({"status": "success"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
