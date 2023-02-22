@@ -1,22 +1,22 @@
-from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
-from django.views.generic import TemplateView
-from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, render
 from django.urls import reverse
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import mixins
-from rest_framework import generics
-from rest_framework import status
+from django.utils import timezone
+from django.views import View
+from django.views.generic import TemplateView
+from rest_framework import generics, mixins, status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 
+from .custom_mixin import CheckUserLockMixin
 from .models import CurrentBatchEval, CurrentBatchGold, Task, Annotation, Batch
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, present_task_for_user, check_user_work_permission
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class IndexView(TemplateView):
@@ -27,7 +27,7 @@ class HomeView(TemplateView):
     template_name = "polls/home.html"
 
 
-class AuthFlowView(LoginRequiredMixin, View):
+class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
     template_name = "polls/auth_flow.html"
 
     def get(self, request):
@@ -40,13 +40,12 @@ class AuthFlowView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
-class TaskFlowView(LoginRequiredMixin, View):
+class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
     template_name = "polls/task_flow.html"
 
     def get(self, request):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
-        # TODO: create custom mixin or decorator to check if user.is_locked
-        if should_rest or request.user.is_locked:
+        if should_rest:
             return redirect("auth-flow")
         elif can_continue:
             # Update user's session start time
@@ -82,6 +81,9 @@ class TaskFlowView(LoginRequiredMixin, View):
         )
         return redirect("task-flow")
 
+    def check_user_is_locked(self):
+        return self.request.user.is_locked
+
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
@@ -103,9 +105,18 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(APIView):
+class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+    authentication_classes = [TokenAuthentication]
+
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class ThanksView(TemplateView):
+    template_name = "polls/thanks.html"
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
