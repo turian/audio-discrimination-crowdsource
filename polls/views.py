@@ -85,7 +85,7 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        admin_api = request.build_absolute_uri(reverse("admin-api"))
+        admin_api = request.build_absolute_uri(reverse("admin-api-url"))
         annotation_api = request.build_absolute_uri(reverse("annotation-api"))
         lock_users_api = request.build_absolute_uri(reverse("lock-users-api"))
         token, _ = Token.objects.get_or_create(user=request.user)
