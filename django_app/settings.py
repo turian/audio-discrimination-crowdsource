@@ -11,22 +11,31 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import os.path
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# assert os.path.exists(BASE_DIR / ".env")
+# load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 from django.core.management.utils import get_random_secret_key
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS", "https://127.0.0.1 https://localhost"
+).split(" ")
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+DEBUG = os.getenv("DEBUG", "False") in ("True", "true", "1")
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1 localhost").split(" ")
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "local")
 
@@ -56,6 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -142,7 +152,9 @@ elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+        "default": dj_database_url.parse(
+            os.environ.get("DATABASE_URL"), conn_max_age=300
+        ),
     }
 
 # Password validation
@@ -191,10 +203,15 @@ AUTH_USER_MODEL = "polls.User"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
 STATIC_URL = "/static/"
+
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [
     BASE_DIR / "assets",
 ]
