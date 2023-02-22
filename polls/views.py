@@ -140,7 +140,10 @@ class UserLockAPIView(APIView):
 
 
 class BatchTasksAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+    allowed_methods = ["POST"]
+
     def post(self, request):
+        print("it check in herr")
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             batch = serializer.save()
@@ -148,5 +151,5 @@ class BatchTasksAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
             return Response({"status": "success"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def test_func(self, request):
+    def test_func(self):
         return self.request.user.is_superuser

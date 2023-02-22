@@ -98,24 +98,42 @@ class LockUserAnnotationListTest(APITestCase):
 
 
 class BatchTasksAPIViewTest(APITestCase):
-    """This test case affirms that the BatchTasksAPIView
-    works as expected and that all permission classes to asses the
-    view are regarded, also that the view do send back expected response
-    """
-
     def setUp(self):
         self.admin_user = get_user_model().objects.create(
-            username="admin", is_staff=True
+            username="test_admin", password="testpass", is_staff=True, is_superuser=True
         )
-        self.admin_user.set_password("testpassword")
-        self.admin_user.save()
 
-        self.client = Client()
+        self.valid_payload = {
+            "is_gold": True,
+            "notes": "Test batch",
+            "tasks": [
+                {
+                    "reference_url": "http://example.com/reference",
+                    "transform_url": "http://example.com/transform",
+                    "transform_metadata": {"foo": "bar"},
+                },
+                {
+                    "reference_url": "http://example.com/reference2",
+                    "transform_url": "http://example.com/transform2",
+                    "transform_metadata": {"baz": "qux"},
+                },
+            ],
+            "set_to_current_batch_gold": True,
+        }
 
-    def test_task_batch_api_with_get(self):
-        """This should return 401 as get method is not allowed
-        to asses this api
+    def test_create_batch(self):
         """
-        url = reverse("lock-users-api")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 401)
+        Test batch job creation view for expected status code output.
+        """
+        url = reverse("batch-tasks-api")
+        self.client.force_authenticate(user=self.admin_user)
+        response = self.client.post(url, self.valid_payload, format="json", follow=True)
+        self.assertEqual(response.status_code, 201)
+        print(response.content.decode("utf-8"))
+        self.assertEqual(response.data, {"status": "success"})
+
+    def test_create_batch_view_on_get(self):
+        """This method is not allowed, hence 405 is expected."""
+        self.client.force_authenticate(user=self.admin_user)
+        response = self.client.get(reverse("batch-tasks-api"))
+        self.assertEqual(response.status_code, 405)
