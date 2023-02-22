@@ -58,9 +58,7 @@ artifacts.
 
 Web service to crowd-source audio discrimination data
 
-## Getting Started
-
-### Local dev
+### Local Dev
 
 This is the one time setup:
 ```
@@ -84,7 +82,155 @@ DEBUG=True python manage.py runserver
 ```
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
+### Deployment to fly.io
+
+#### Install flyctl
+
+To work with the fly platform, you first need to install flyctl, a command line interface that allows you to do everything from creating an account to deploy to fly.
+- Linux:
+```  
+curl  -L https://fly.io/install.sh | sh
+```
+- OSX:
+```
+brew install flyctl
+```
+- Windows:
+```
+iwr https://fly.io/install.ps1 -useb
+``` 
+
+(If interested, here is the [Installation Guide](https://fly.io/docs/hands-on/install-flyctl/))
+
+- Once you're done with flyctl installation, add flyctl to path:
+```
+export FLYCTL_INSTALL="/home/$USER/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+```
+
+- Next authenticate with your fly.io account if you already have one:
+```
+fly auth login
+```
+- If you do not have an existing fly.io account, authenticate using:
+```
+fly auth signup
+```
+- To make sure everything is working well:    
+```
+fly apps list
+```
+The output of the above command will be empty table since you have no apps launched yet
+
+#### fly setup
+
+So that different devs have diff app names, please set an environment
+variable with a unique handle or username in lowercase alphabetic
+characters:
+
+NOTE: replace "{username}" with the name you like fly.io to use as your user name. e.g: export HANDLE=myname
+```
+export HANDLE={username}
+```
+
+For free, you can set up just a staging app with postgres. In that case, skip all commands below involving production.
+If you want a staging AND production app, you will be billed by `fly.io`.
+
+Now, use the follow commands to create a staging and production app:
+```
+export STAGING_APP_NAME=audio-discrimination-crowdsource-$HANDLE-staging
+export PRODUCTION_APP_NAME=audio-discrimination-crowdsource-$HANDLE-production
+
+flyctl launch --name $STAGING_APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
+flyctl launch --name $PRODUCTION_APP_NAME --region iad --dockerfile Dockerfile --dockerignore-from-gitignore
+```
+and answer the questions as follows:
+```
+Would you like to set up a Postgresql database now? Yes
+Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk
+Would you like to set up an Upstash Redis database now? No
+Would you like to deploy now? No
+```
+
+Remove the created `fly.toml` and use the repo's toml configs:
+```
+rm fly.toml
+sed "s/HANDLE/$HANDLE/g" fly-staging.toml.tmpl > fly-staging.toml
+sed "s/HANDLE/$HANDLE/g" fly-production.toml.tmpl > fly-production.toml
+```
+
+Create a random secret key for your Django apps:
+```
+flyctl secrets set --app $STAGING_APP_NAME SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')"
+flyctl secrets set --app $PRODUCTION_APP_NAME SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')"
+```
+
+### fly deployment
+
+This will do all migrations:
+
+Staging:
+```
+fly deploy -c fly-staging.toml --app $STAGING_APP_NAME
+```
+
+Production:
+```
+fly deploy -c fly-production.toml --app $PRODUCTION_APP_NAME
+```
+
+If you get an error like this:
+```
+	 django.db.utils.OperationalError: could not translate host name "top2.nearest.of.audio-discrimination-crowdsource-HANDLE-staging-db.internal" to address: Name or service not known
+	 Starting clean up.
+```
+Then change your secrets, for example:
+```
+flyctl secrets set --app $STAGING_APP_NAME DATABASE_URL="what you saved in db.txt"
+```
+
+- Finally, open the app in a browser:
+
+```  
+flyctl open --app $STAGING_APP_NAME
+flyctl open --app $PRODUCTION_APP_NAME
+```
+
+### Messed up, start over
+
+If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
+```
+./delete-all-fly-apps.py
+```
+
+### Manual app creation
+
+This is a little nicer, but sometimes doesn't work. So just follow the instructions above:
+
+```
+fly apps create --name $STAGING_APP_NAME --network iad
+fly apps create --name $PRODUCTION_APP_NAME --network iad
+```
+
+Set-up postgres:
+```
+flyctl postgres create -n $STAGING_APP_NAME-db -r iad
+flyctl postgres create -n $PRODUCTION_APP_NAME-db -r iad
+```
+
+Towards the end it will tell you your postgres credentials.
+*IMPORTANT*: Copy-and-paste this information into `db.txt`, which
+is `.gitignore`'d.
+
+Attach postgres to your apps:
+```
+flyctl postgres attach --app $STAGING_APP_NAME --config fly-staging.toml $STAGING_APP_NAME-db
+flyctl postgres attach --app $PRODUCTION_APP_NAME --config fly-production.toml $PRODUCTION_APP_NAME-db
+```
+
 ### Digital Ocean apps
+
+DEPRECATED. We are going to use fly.io
 
 There is a production app and a staging app, set up separately.
 The staging app builds and deploys when there are pushed to `main` branch.
