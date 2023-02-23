@@ -103,7 +103,7 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+class AdminAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request):
@@ -139,7 +139,7 @@ class UserLockAPIView(APIView):
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
 
 
-class BatchTasksAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+class BatchTasksAPIView(APIView):
     allowed_methods = ["POST"]
 
     def post(self, request):
