@@ -26,7 +26,7 @@ class User(AbstractUser):
 
 
 class Batch(models.Model):
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     is_gold = models.BooleanField(default=False)
     notes = models.TextField()
 

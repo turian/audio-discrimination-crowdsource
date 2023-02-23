@@ -74,18 +74,18 @@ class LockUserAnnotationListTest(APITestCase):
     def test_lock_user(self):
         url = reverse("lock-users-api")
         self.client.force_authenticate(user=self.admin_user)
-        payload = {"users": [self.user.id, 5, 10]}
+        payload = {"users": [self.user.id, 15, 10]}
         response = self.client.post(url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {"users_not_found": [5, 10]})
+        self.assertEqual(response.json(), {"users_not_found": [15, 10]})
 
     def test_annotation_list(self):
         url = reverse("annotation-api")
         expected_output = [
             {
                 "id": 1,
-                "user": 1,
-                "task": 1,
+                "user": self.user.id,
+                "task": self.task_1.id,
                 "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "task_presentation": "AAB",
                 "annotations": "XXY",
@@ -95,3 +95,45 @@ class LockUserAnnotationListTest(APITestCase):
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), expected_output)
+
+
+class BatchTasksAPIViewTest(APITestCase):
+    def setUp(self):
+        self.admin_user = get_user_model().objects.create(
+            username="test_admin", password="testpass", is_staff=True, is_superuser=True
+        )
+
+        self.valid_payload = {
+            "is_gold": True,
+            "notes": "Test batch",
+            "tasks": [
+                {
+                    "reference_url": "http://example.com/reference",
+                    "transform_url": "http://example.com/transform",
+                    "transform_metadata": {"foo": "bar"},
+                },
+                {
+                    "reference_url": "http://example.com/reference2",
+                    "transform_url": "http://example.com/transform2",
+                    "transform_metadata": {"baz": "qux"},
+                },
+            ],
+            "set_to_current_batch_gold": True,
+        }
+
+    def test_create_batch(self):
+        """
+        Test batch job creation view for expected status code output.
+        """
+        url = reverse("batch-tasks-api")
+        self.client.force_authenticate(user=self.admin_user)
+        response = self.client.post(url, self.valid_payload, format="json", follow=True)
+        self.assertEqual(response.status_code, 201)
+        print(response.content.decode("utf-8"))
+        self.assertEqual(response.data, {"status": "success"})
+
+    def test_create_batch_view_on_get(self):
+        """This method is not allowed, hence 405 is expected."""
+        self.client.force_authenticate(user=self.admin_user)
+        response = self.client.get(reverse("batch-tasks-api"))
+        self.assertEqual(response.status_code, 405)

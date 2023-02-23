@@ -26,6 +26,7 @@
       <p>
         Use following code snippet to make request to admin api endpoint.
       </p>
+      <p>Method allowed <code>GET</code></p>
       <pre>
         <code>
 import requests
@@ -42,6 +43,7 @@ print(response.status_code)
       <div class="mt-3">
         <h4>Annotation API</h4>
         <p>Fetches all entries of annotation table</p>
+        <p>Method allowed <code>GET</code></p>
         <pre>
           <code>
 import requests
@@ -60,6 +62,7 @@ response = requests.get(annotation_api, headers=headers)
       <div class="mt-3">
         <h4>Lock Users API</h4>
         <p>Lock users based on posted list containing user ids</p>
+        <p>Method allowed <code>GET</code></p>
         <pre>
           <code>
 import requests
@@ -74,6 +77,59 @@ json_payload = {
     }
 lock_users_api = "{{ lock_users_api }}"
 response = requests.post(lock_users_api, headers=headers, json=json_payload)
+print(response.json())
+print(response.status_code)
+          </code>
+        </pre>
+      </div>
+
+      <div class="mt-3">
+        <h4>Batch Tasks API</h4>
+        <p>
+          Creates batch and related tasks, posted batch can also be set to 
+          current batch gold and current batch eval.<br>
+        </p>
+        <p>Method allowed <code>POST</code></p>
+        <p>
+          For setting the batch as current batch eval set
+          <code>"set_to_current_batch_eval": True</code> in payload.<br>
+          Note that only simple batch can be set to current_batch_eval.
+        </p>
+        <p>
+          For setting the batch as current batch gold set
+          <code>"set_to_current_batch_gold": True</code> in payload.<br>
+          Note that only gold batch can be set to current_batch_gold.
+        </p>
+        <pre>
+          <code>
+import requests
+
+headers = {
+    "Authorization": "Token {{ token.key }}"
+    }
+batch_task_api = "{{ batch_tasks_api }}"
+
+payload = {
+    "set_to_current_batch_eval": True,
+    "set_to_current_batch_gold": False,
+    "is_gold": False,
+    "notes": "Test simple batch tasks creation with api",
+    "tasks":[
+        # list containing tasks
+        {
+            "reference_url": "https://www.test-api.com",
+            "transform_url": "https://www.test-api.com",
+            "transform_metadata": {}
+        },
+        {
+            "reference_url": "https://www.test-api1.com",
+            "transform_url": "https://www.test-api1.com",
+            "transform_metadata": {}
+        }
+    ]
+}
+
+response = requests.post(batch_task_api, headers=headers, json=payload)
 print(response.json())
 print(response.status_code)
           </code>

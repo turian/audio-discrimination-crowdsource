@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
 from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
-from .serializers import AnnotationSerializer
+from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, check_user_work_permission, present_task_for_user
 
 
@@ -98,12 +98,14 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         admin_api = request.build_absolute_uri(reverse("admin-api-url"))
         annotation_api = request.build_absolute_uri(reverse("annotation-api"))
         lock_users_api = request.build_absolute_uri(reverse("lock-users-api"))
+        batch_tasks_api = request.build_absolute_uri(reverse("batch-tasks-api"))
         token, _ = Token.objects.get_or_create(user=request.user)
         context = {
             "token": token,
             "admin_api": admin_api,
             "annotation_api": annotation_api,
             "lock_users_api": lock_users_api,
+            "batch_tasks_api": batch_tasks_api,
         }
         return render(request, "polls/auth_token.html", context)
 
@@ -111,7 +113,7 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+class AdminAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request):
@@ -145,3 +147,19 @@ class UserLockAPIView(APIView):
             except get_user_model().DoesNotExist:
                 user_not_found.append(id)
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
+
+
+class BatchTasksAPIView(APIView):
+    allowed_methods = ["POST"]
+
+    def post(self, request):
+        print("it check in herr")
+        serializer = BatchTaskSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            batch = serializer.save()
+            print(batch)  # print is a placeholder to fulfil flake8 needs.
+            return Response({"status": "success"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def test_func(self):
+        return self.request.user.is_superuser
