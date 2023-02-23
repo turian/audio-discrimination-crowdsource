@@ -7,6 +7,7 @@ extend-ignore =
     E203,
 exclude =
     migrations
+    Dockerfile
     __pycache__
     manage.py
     settings.py
