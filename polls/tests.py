@@ -74,18 +74,18 @@ class LockUserAnnotationListTest(APITestCase):
     def test_lock_user(self):
         url = reverse("lock-users-api")
         self.client.force_authenticate(user=self.admin_user)
-        payload = {"users": [self.user.id, 5, 10]}
+        payload = {"users": [self.user.id, 15, 10]}
         response = self.client.post(url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {"users_not_found": [5, 10]})
+        self.assertEqual(response.json(), {"users_not_found": [15, 10]})
 
     def test_annotation_list(self):
         url = reverse("annotation-api")
         expected_output = [
             {
                 "id": 1,
-                "user": 1,
-                "task": 1,
+                "user": self.user.id,
+                "task": self.task_1.id,
                 "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "task_presentation": "AAB",
                 "annotations": "XXY",
