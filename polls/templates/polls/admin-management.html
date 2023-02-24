@@ -3,5 +3,23 @@
 
 {% block body-block %}
     {% trans "Admin management view" %}
-    {% trans "insert table here" %}
+    <table>
+        <thead>
+          <tr>
+            <th>Annotator</th>
+            <th>Email</th>
+            <th>Experiment Name</th>
+            <th>Number of Tasks Completed</th>
+            <th>Percent of Gold Correct</th>
+            <th>Interannotator Agreement</th>
+            <th>ROI</th>
+            <th>Lock</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows of data will go here -->
+        </tbody>
+      </table>
+      
 {% endblock body-block %}

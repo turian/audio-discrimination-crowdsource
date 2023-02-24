@@ -168,6 +168,7 @@ class BatchTasksAPIView(APIView):
 class AdminManamentView(LoginRequiredMixin, UserPassesTestMixin):
     def get(self, request):
         annotators = get_user_model().objects.exclude(is_superuser=True)
+
         context = {"annotators": annotators}
         return render(request, "admin-management.html", context)
 
