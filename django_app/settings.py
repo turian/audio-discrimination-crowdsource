@@ -153,7 +153,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
         "default": dj_database_url.parse(
-            os.environ.get("DATABASE_URL"), conn_max_age=300
+            os.environ.get("DATABASE_URL"), conn_max_age=0
         ),
     }
 
@@ -209,17 +209,17 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 # The static files folder is staticfiles
 # But the URL used to load these files are /static
 STATIC_URL = "/static/"
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_DIRS = [
-    BASE_DIR / "assets",
-]
+STATIC_ROOT = Path(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [Path(BASE_DIR, "assets")]
 
 # If you plan on storing static files in other locations outside
 # of your individual Django-app static files, you will need to add
 # an additional directive to your settings file.
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+# Media setup for media files e.g images.
+MEDIA_URL = "/media/"
+MEDIA_ROOT = Path(BASE_DIR, "assets/images")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

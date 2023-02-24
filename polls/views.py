@@ -45,25 +45,35 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
         can_continue, should_rest, _ = check_user_work_permission(request.user)
         if should_rest:
             return redirect("auth-flow")
-        elif can_continue:
+
+        if can_continue:
             # Update user's session start time
             request.user.first_task_of_this_session_performed_at = timezone.now()
             request.user.save()
 
+        current_batch = ""
         if batch_selector():
-            # when probability lesss than 90%
-            current_batch = CurrentBatchEval.objects.first().current_batch_eval
+            current_batch_eval = CurrentBatchEval.objects.first()
+            current_batch = (
+                current_batch_eval.current_batch_eval if current_batch_eval else ""
+            )
         else:
-            current_batch = CurrentBatchGold.objects.first().current_batch_gold
-        all_tasks = current_batch.tasks.all()
-        tasks_for_user = all_tasks.exclude(annotation__user=request.user)
-        task = tasks_for_user.first()
-        context = {"task": task}
-        if not task:
-            return render(request, self.template_name, context)
-        url, task_presentation = present_task_for_user(task)
-        context["url"] = url
-        context["task_presentation"] = task_presentation
+            current_batch_gold = CurrentBatchGold.objects.first()
+            current_batch = (
+                current_batch_gold.current_batch_gold if current_batch_gold else ""
+            )
+
+        context = {}
+        if current_batch:
+            tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+            task = tasks_for_user.first()
+            if task:
+                url, task_presentation = present_task_for_user(task)
+                context = {
+                    "task": task,
+                    "url": url,
+                    "task_presentation": task_presentation,
+                }
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -103,7 +113,7 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+class AdminAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request):
@@ -139,13 +149,18 @@ class UserLockAPIView(APIView):
         return Response({"users_not_found": user_not_found}, status.HTTP_200_OK)
 
 
-class BatchTasksAPIView(LoginRequiredMixin, UserPassesTestMixin, APIView):
+class BatchTasksAPIView(APIView):
+    allowed_methods = ["POST"]
+
     def post(self, request):
+        print("it check in herr")
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            batch = serializer.save()
+            print(batch)  # print is a placeholder to fulfil flake8 needs.
             return Response({"status": "success"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def test_func(self, request):
+    def test_func(self):
         return self.request.user.is_superuser
