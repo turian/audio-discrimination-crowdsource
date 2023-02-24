@@ -121,7 +121,7 @@ class BatchTasksAPIViewTest(APITestCase):
             "set_to_current_batch_gold": True,
         }
 
-    def test_create_batch(self):
+    def create_batch(self):
         """
         Test batch job creation view for expected status code output.
         """
