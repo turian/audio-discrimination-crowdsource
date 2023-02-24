@@ -153,7 +153,6 @@ class BatchTasksAPIView(APIView):
     allowed_methods = ["POST"]
 
     def post(self, request):
-        print("it check in herr")
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
