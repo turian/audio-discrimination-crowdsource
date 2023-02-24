@@ -5,12 +5,12 @@ from .models import (
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
-    Task,
-    User,
     Experiment,
     ExperimentType,
     ExperimentTypeAnnotation,
     ExperimentTypeTaskPresentation,
+    Task,
+    User,
 )
 
 admin.site.register(Batch)
