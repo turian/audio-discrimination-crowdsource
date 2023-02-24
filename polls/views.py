@@ -165,12 +165,16 @@ class BatchTasksAPIView(APIView):
         return self.request.user.is_superuser
 
 
-class AdminManamentView(LoginRequiredMixin, UserPassesTestMixin):
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         annotators = get_user_model().objects.exclude(is_superuser=True)
 
-        context = {"annotators": annotators}
+        context = {"annotators": annotators, "get_email": self.get_email}
         return render(request, "admin-management.html", context)
 
     def test_func(self):
         return self.request.user.is_superuser
+
+    # def get_email(self, user_id):
+    #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
+    #     return profile.email
