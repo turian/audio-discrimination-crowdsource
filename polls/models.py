@@ -83,7 +83,7 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
-    
+
 
 class ExperimentType(models.Model):
     type_choices = (
@@ -94,7 +94,7 @@ class ExperimentType(models.Model):
 
     def __str__(self):
         return f"{self.type}"
-    
+
 
 class Experiment(models.Model):
     name = models.CharField(max_length=50)
@@ -102,7 +102,7 @@ class Experiment(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-    
+
 
 class ExperimentTypeTaskPresentation(models.Model):
     task_presentation = models.CharField(max_length=50)
