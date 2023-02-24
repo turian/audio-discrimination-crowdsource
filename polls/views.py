@@ -163,3 +163,8 @@ class BatchTasksAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class AdminManamentView(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
