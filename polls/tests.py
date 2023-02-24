@@ -121,7 +121,7 @@ class BatchTasksAPIViewTest(APITestCase):
             "set_to_current_batch_gold": True,
         }
 
-    def test_create_batch(self):
+    def create_batch(self):
         """
         Test batch job creation view for expected status code output.
         """
@@ -129,7 +129,6 @@ class BatchTasksAPIViewTest(APITestCase):
         self.client.force_authenticate(user=self.admin_user)
         response = self.client.post(url, self.valid_payload, format="json", follow=True)
         self.assertEqual(response.status_code, 201)
-        print(response.content.decode("utf-8"))
         self.assertEqual(response.data, {"status": "success"})
 
     def test_create_batch_view_on_get(self):

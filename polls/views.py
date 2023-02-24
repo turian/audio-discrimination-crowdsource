@@ -153,9 +153,9 @@ class BatchTasksAPIView(APIView):
     allowed_methods = ["POST"]
 
     def post(self, request):
-        print("it check in herr")
         serializer = BatchTaskSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            serializer.save()
             batch = serializer.save()
             print(batch)  # print is a placeholder to fulfil flake8 needs.
             return Response({"status": "success"}, status=status.HTTP_201_CREATED)
