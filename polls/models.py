@@ -83,3 +83,38 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
+    
+
+class ExperimentType(models.Model):
+    type_choices = (
+        ("2AFC", "2AFC"),
+        ("A/B", "A/B"),
+    )
+    type = models.CharField(max_length=10, choices=type_choices)
+
+    def __str__(self):
+        return f"{self.type}"
+    
+
+class Experiment(models.Model):
+    name = models.CharField(max_length=50)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}"
+    
+
+class ExperimentTypeTaskPresentation(models.Model):
+    task_presentation = models.CharField(max_length=50)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.task_presentation}"
+
+
+class ExperimentTypeAnnotation(models.Model):
+    annotation = models.CharField(max_length=50)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.annotation}"

@@ -12,7 +12,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
+from .models import (
+    Annotation,
+    Batch,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Task,
+    User,
+    Experiment,
+    ExperimentType,
+    ExperimentTypeAnnotation,
+    ExperimentTypeTaskPresentation,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, check_user_work_permission, present_task_for_user
 
@@ -34,6 +45,17 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
             "can_continue": can_continue,
             "should_rest": should_rest,
             "rest_time": rest_time,
+        }
+        return render(request, self.template_name, context)
+
+
+class AdminDashboardView(LoginRequiredMixin, CheckUserLockMixin, View):
+    template_name = "polls/admin_dashboard.html"
+
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {
+            "experiments": experiments,
         }
         return render(request, self.template_name, context)
 
