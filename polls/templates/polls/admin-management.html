@@ -18,7 +18,70 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Rows of data will go here -->
+            <!-- Annotator column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{annotator.name}}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Email column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{ annotator.annotator_profile.email }}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Experiment name column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{% trans "holder" %}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Number of tasks completed column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{% trans "holder" %}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Percent of Gold correct column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{% trans "holder" %}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Interannotator agreement -->
+            {% for annotator in annotators %}
+                <td>
+                    <p></p>
+                </td>
+            {% endfor %}
+
+            <!-- ROI column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{% trans "holder" %}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Lock column -->
+            {% for annotator in annotators %}
+                {% if annotator.is_locked %}
+                    <p class="bg-gray">True</p>
+                {% else %}
+                    <p>False</p>
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Delete column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{% trans "holder" %}</p>
+                </td>
+            {% endfor %}
         </tbody>
       </table>
       
