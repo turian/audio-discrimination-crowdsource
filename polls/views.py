@@ -38,8 +38,11 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
         return render(request, self.template_name, context)
 
 
-class AdminDashboardView(LoginRequiredMixin, CheckUserLockMixin, View):
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = "polls/admin_dashboard.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get(self, request):
         experiments = Experiment.objects.all()
