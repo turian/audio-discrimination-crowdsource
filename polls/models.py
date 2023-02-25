@@ -91,3 +91,6 @@ class AnnotatorProfile(models.Model):
     )
     email = models.EmailField(blank=True)
     hourly_rate = models.FloatField(default=None, editable=True, blank=True)
+
+    def __str__(self):
+        return self.email
