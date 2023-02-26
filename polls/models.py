@@ -87,7 +87,7 @@ class Annotation(models.Model):
 
 class AnnotatorProfile(models.Model):
     annotator = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="annotator"
+        get_user_model(), on_delete=models.CASCADE, related_name="user"
     )
     email = models.EmailField(blank=True)
     hourly_rate = models.FloatField(default=None, editable=True, blank=True)
