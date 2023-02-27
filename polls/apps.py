@@ -7,3 +7,5 @@ class PollsConfig(AppConfig):
 
     def ready(self):
         import polls.signals
+
+        x = polls.signals  # this is to satisfy flake8's no unused import
