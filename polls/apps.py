@@ -9,3 +9,4 @@ class PollsConfig(AppConfig):
         import polls.signals
 
         x = polls.signals  # this is to satisfy flake8's no unused import
+        x = None  # this is to satisfy flake8's no unused variable
