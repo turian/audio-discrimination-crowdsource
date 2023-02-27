@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -96,8 +95,22 @@ class ExperimentType(models.Model):
 class Experiment(models.Model):
     name = models.CharField(max_length=100)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
-    task_presentation = ArrayField(models.CharField(max_length=100), default=list)
-    annotation = ArrayField(models.CharField(max_length=100), default=list)
 
     def __str__(self):
         return f"{self.name}"
+
+
+class ExperimentTypeTaskPresentation(models.Model):
+    task_presentation = models.CharField(max_length=50)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.task_presentation}"
+
+
+class ExperimentTypeAnnotation(models.Model):
+    annotation = models.CharField(max_length=50)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.annotation}"
