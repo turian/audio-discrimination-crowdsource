@@ -12,7 +12,9 @@ urlpatterns = [
         "admin-dashboard/", views.AdminDashboardView.as_view(), name="admin_dashboard"
     ),
     path(
-        "admin-experiment/<int:experiment_id>/", views.AdminExperimentView.as_view(), name="admin_experiment"
+        "admin-experiment/<int:experiment_id>/",
+        views.AdminExperimentView.as_view(),
+        name="admin_experiment",
     ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),

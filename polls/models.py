@@ -25,7 +25,6 @@ class User(AbstractUser):
     is_locked = models.BooleanField(default=False)
 
 
-
 class ExperimentType(models.Model):
     type = models.CharField(max_length=100)
 
@@ -37,7 +36,13 @@ class Batch(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_gold = models.BooleanField(default=False)
     notes = models.TextField()
-    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE, related_name="batches", null=True, blank=True)
+    experiment_type = models.ForeignKey(
+        ExperimentType,
+        on_delete=models.CASCADE,
+        related_name="batches",
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name_plural = "batches"
@@ -92,9 +97,6 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
-
-
-
 
 
 class Experiment(models.Model):
