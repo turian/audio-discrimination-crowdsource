@@ -15,6 +15,7 @@ from .custom_mixin import CheckUserLockMixin
 from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import batch_selector, check_user_work_permission, present_task_for_user
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class IndexView(TemplateView):
@@ -49,6 +50,23 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
         context = {
             "experiments": experiments,
         }
+        return render(request, self.template_name, context)
+    
+
+class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_experiment.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, experiment_id):
+        try:
+            experiment = Experiment.objects.get(id=experiment_id)
+            batches = experiment.experiment_type.batches.all()
+            tasks = Task.objects.filter(batch__in=batches).order_by("-batch__is_gold")
+            context = {"experiment": experiment, "tasks": tasks}
+        except ObjectDoesNotExist:
+            context = {"error_message": "The Experiment with provided ID does not exist"}
         return render(request, self.template_name, context)
 
 

@@ -4,15 +4,10 @@
 
 <div class="mt-5 text-center">
     <h1>Admin View Dasaboard</h1>
-    {% if request.user.is_staff and request.user.is_superuser %}
 
     {% for experiment in experiments %}
-    <p>{{experiment.name}}</p>
+    <p> <a href="{% url 'admin_experiment' experiment_id=experiment.id%}"> {{experiment.name}} </a></p>
     {% endfor %}
-
-    {% else %}
-    <p>Only admin users can view the content</p>
-    {% endif %}
 
     <h5>Go to admin panel: <a href="/admin">admin</a></h5>
 </div>
