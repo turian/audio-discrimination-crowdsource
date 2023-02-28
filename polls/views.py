@@ -148,8 +148,12 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         annotation = Annotation.objects.filter(user=user)
         all_batch = annotation.annotation_task.batch
         gold = [batch for batch in all_batch if batch.is_gold]
-        per = all_batch / gold
+        per = gold / all_batch
         return per
+
+    def get_roi(self, user_id):
+        # no time tracking process now
+        pass
 
     # def get_email(self, user_id):
     #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
