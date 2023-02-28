@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -158,6 +159,16 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
     # def get_email(self, user_id):
     #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
     #     return profile.email
+
+
+def perform_delete(request, user_id):
+    user = get_user_model().objects.get(id=user_id)
+    annotations = Annotation.objects.filter(user=user)
+    for annotation in annotations:
+        annotation.delete()
+    user.is_locked = True
+    user.save()
+    return HttpResponse("success")
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):

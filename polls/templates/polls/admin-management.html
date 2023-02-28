@@ -56,7 +56,7 @@
             <!-- Interannotator agreement -->
             {% for annotator in annotators %}
                 <td>
-                    <p></p>
+                    <p>x</p>
                 </td>
             {% endfor %}
 
@@ -79,7 +79,11 @@
             <!-- Delete column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{% trans "holder" %}</p>
+                    <p>
+                        <a href="{% url 'perform-delete' request.user.id %}">
+                            {% trans "delete user" %}
+                        </a>
+                    </p>
                 </td>
             {% endfor %}
         </tbody>
