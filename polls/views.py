@@ -127,6 +127,35 @@ class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
 
 
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        annotators = get_user_model().objects.exclude(is_superuser=True)
+
+        context = {"annotators": annotators, "get_email": self.get_email}
+        return render(request, "admin-management.html", context)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_no_task(self, user_id):
+        user = get_user_model.objects.get(id=user_id)
+        annotation = Annotation.objects.filter(user=user)
+        task = annotation.annotation_task
+        return task.count()
+
+    def get_per_gold(self, user_id):
+        user = get_user_model().objects.get(id=user_id)
+        annotation = Annotation.objects.filter(user=user)
+        all_batch = annotation.annotation_task.batch
+        gold = [batch for batch in all_batch if batch.is_gold]
+        per = all_batch / gold
+        return per
+
+    # def get_email(self, user_id):
+    #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
+    #     return profile.email
+
+
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
@@ -163,18 +192,3 @@ class BatchTasksAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
-
-
-class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
-    def get(self, request):
-        annotators = get_user_model().objects.exclude(is_superuser=True)
-
-        context = {"annotators": annotators, "get_email": self.get_email}
-        return render(request, "admin-management.html", context)
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-    # def get_email(self, user_id):
-    #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
-    #     return profile.email
