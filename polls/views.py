@@ -163,7 +163,7 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
-    def post(request, user_id):
+    def post(request, user_id, *args, **kwargs):
         user = get_user_model().objects.get(id=user_id)
         annotations = Annotation.objects.filter(user=user)
         for annotation in annotations:
