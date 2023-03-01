@@ -8,12 +8,6 @@ urlpatterns = [
     path("task-flow/", views.TaskFlowView.as_view(), name="task-flow"),
     path("auth-token/", views.TokenView.as_view(), name="auth-token"),
     path("thank-you/", views.ThanksView.as_view(), name="thank-you"),
-    path(
-        "admin/management/",
-        views.AdminManagementView.as_view(),
-        name="admin-management",
-    ),
-    path("admin/delete/", views.perform_delete, name="perform-delete"),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
