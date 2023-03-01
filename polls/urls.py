@@ -13,7 +13,7 @@ urlpatterns = [
         views.AdminManagementView.as_view(),
         name="admin-management",
     ),
-    path("admin/delete/", views.perform_delete, name="perform-delete"),
+    path("admin/delete/", views.PerformDelete.as_view(), name="perform-delete"),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(

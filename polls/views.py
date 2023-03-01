@@ -133,10 +133,10 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         annotators = get_user_model().objects.exclude(is_superuser=True)
 
         context = {"annotators": annotators, "get_email": self.get_email}
-        return render(request, "admin-management.html", context)
+        return render(request, "polls/admin-management.html", context)
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
     def get_no_task(self, user_id):
         user = get_user_model.objects.get(id=user_id)
@@ -156,19 +156,21 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         # no time tracking process now
         pass
 
-    # def get_email(self, user_id):
-    #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
-    #     return profile.email
+    def get_email(self, user_id):
+        pass
+        # profile = AnnotatorProfile.objects.get(annotator__id=user_id)
+        # return profile.email
 
 
-def perform_delete(request, user_id):
-    user = get_user_model().objects.get(id=user_id)
-    annotations = Annotation.objects.filter(user=user)
-    for annotation in annotations:
-        annotation.delete()
-    user.is_locked = True
-    user.save()
-    return HttpResponse("success")
+class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(request, user_id):
+        user = get_user_model().objects.get(id=user_id)
+        annotations = Annotation.objects.filter(user=user)
+        for annotation in annotations:
+            annotation.delete()
+        user.is_locked = True
+        user.save()
+        return HttpResponse("success")
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):

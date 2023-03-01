@@ -2,7 +2,7 @@
 
 
 {% block body-block %}
-    {% trans "Admin management view" %}
+    Admin management view"
     <table>
         <thead>
           <tr>
@@ -35,21 +35,21 @@
             <!-- Experiment name column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{% trans "holder" %}</p>
+                    <p>holder"</p>
                 </td>
             {% endfor %}
 
             <!-- Number of tasks completed column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{% trans "holder" %}</p>
+                    <p>holder</p>
                 </td>
             {% endfor %}
 
             <!-- Percent of Gold correct column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{% trans "holder" %}</p>
+                    <p>holder"</p>
                 </td>
             {% endfor %}
 
@@ -63,7 +63,7 @@
             <!-- ROI column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{% trans "holder" %}</p>
+                    <p>holder</p>
                 </td>
             {% endfor %}
 
@@ -81,7 +81,7 @@
                 <td>
                     <p>
                         <a href="{% url 'perform-delete' request.user.id %}">
-                            {% trans "delete user" %}
+                            delete user
                         </a>
                     </p>
                 </td>
