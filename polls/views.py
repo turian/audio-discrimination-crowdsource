@@ -132,7 +132,13 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         annotators = get_user_model().objects.exclude(is_superuser=True)
 
-        context = {"annotators": annotators, "get_email": self.get_email}
+        context = {
+            "annotators": annotators,
+            "get_email": self.get_email,
+            "get_no_task": self.get_no_task,
+            "get_per_gold": self.get_per_gold,
+            "get_roi": self.get_roi,
+        }
         return render(request, "polls/admin-management.html", context)
 
     def test_func(self):
@@ -174,6 +180,7 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def test_func(self):
         return not self.request.user.is_superuser
+
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
