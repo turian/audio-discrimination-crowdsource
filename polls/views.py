@@ -14,7 +14,12 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
-from .utils import batch_selector, check_user_work_permission, present_task_for_user, parse_data_for_admin_experiment
+from .utils import (
+    batch_selector,
+    check_user_work_permission,
+    parse_data_for_admin_experiment,
+    present_task_for_user,
+)
 
 
 class IndexView(TemplateView):
