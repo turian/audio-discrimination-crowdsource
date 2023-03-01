@@ -172,6 +172,8 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         user.save()
         return HttpResponse("success")
 
+    def test_func(self):
+        return not self.request.user.is_superuser
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
