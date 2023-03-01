@@ -1,6 +1,7 @@
 import random
 
 from django.utils import timezone
+
 from .models import Task
 
 random.seed()
