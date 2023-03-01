@@ -15,6 +15,9 @@
     <p><strong>Type: </strong> {{experiment.experiment_type}}</p>
 
 
+    {% for item in data_list %}
+
+    <h5 class="mt-5">Batch: {{item.batch}}</h5>
 
     <table class="table table-striped">
         <thead>
@@ -29,7 +32,7 @@
         </thead>
         <tbody>
 
-            {% for task in tasks %}
+            {% for task in item.tasks %}
             <tr>
                 <th scope="row">{{task.id}}</th>
                 <td>{{task.annotations.count}}</td>
@@ -41,6 +44,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+    {% endfor %}
 
     {% endif %}
 

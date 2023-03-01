@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -15,7 +14,7 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
-from .utils import batch_selector, check_user_work_permission, present_task_for_user
+from .utils import batch_selector, check_user_work_permission, present_task_for_user, parse_data_for_admin_experiment
 
 
 class IndexView(TemplateView):
@@ -62,10 +61,10 @@ class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, experiment_id):
         try:
             experiment = Experiment.objects.get(id=experiment_id)
-            batches = experiment.experiment_type.batches.all()
-            tasks = Task.objects.filter(batch__in=batches).order_by("-batch__is_gold")
-            context = {"experiment": experiment, "tasks": tasks}
-        except ObjectDoesNotExist:
+            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            data_list = parse_data_for_admin_experiment(batches)
+            context = {"experiment": experiment, "data_list": data_list}
+        except Experiment.DoesNotExist:
             context = {
                 "error_message": "The Experiment with provided ID does not exist"
             }
