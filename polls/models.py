@@ -74,9 +74,7 @@ class Annotation(models.Model):
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name="annotations"
     )
-    task = models.ForeignKey(
-        Task, on_delete=models.CASCADE, related_name="annotation_task"
-    )
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     annotated_at = models.DateTimeField()
     task_presentation = models.CharField(
         max_length=3, choices=TASK_PRESENTATION_OPTIONS

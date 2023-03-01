@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -126,49 +125,6 @@ class AdminAPIView(APIView):
 
 class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
-
-
-class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
-    def get(self, request):
-        annotators = get_user_model().objects.exclude(is_superuser=True)
-
-        context = {"annotators": annotators, "get_email": self.get_email}
-        return render(request, "admin-management.html", context)
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-    def get_no_task(self, user_id):
-        user = get_user_model.objects.get(id=user_id)
-        annotation = Annotation.objects.filter(user=user)
-        task = annotation.annotation_task
-        return task.count()
-
-    def get_per_gold(self, user_id):
-        user = get_user_model().objects.get(id=user_id)
-        annotation = Annotation.objects.filter(user=user)
-        all_batch = annotation.annotation_task.batch
-        gold = [batch for batch in all_batch if batch.is_gold]
-        per = gold / all_batch
-        return per
-
-    def get_roi(self, user_id):
-        # no time tracking process now
-        pass
-
-    # def get_email(self, user_id):
-    #     profile = AnnotatorProfile.objects.get(annotator__id=user_id)
-    #     return profile.email
-
-
-def perform_delete(request, user_id):
-    user = get_user_model().objects.get(id=user_id)
-    annotations = Annotation.objects.filter(user=user)
-    for annotation in annotations:
-        annotation.delete()
-    user.is_locked = True
-    user.save()
-    return HttpResponse("success")
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
