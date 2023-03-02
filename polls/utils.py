@@ -1,9 +1,6 @@
 import random
 
-from django.db.models import Count, Q
 from django.utils import timezone
-
-from .models import Annotation
 
 random.seed()
 
@@ -33,5 +30,5 @@ def check_user_work_permission(user):
         and time_diff_minutes < minutes_after_can_continue
     )
     can_continue = time_diff_minutes > minutes_after_can_continue
-    rest_time = round(minutes_after_can_continue - time_diff_minutes)
+    rest_time = round(minutes_after_can_continue - time_diff_minutes) + 1
     return can_continue, should_rest, rest_time
