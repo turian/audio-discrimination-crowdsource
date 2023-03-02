@@ -53,7 +53,11 @@
             <!-- Percent of Gold correct column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>holder"</p>
+                    {% with user_id = annotator.pk  %}
+                        {% with per_gold = get_per_gold(user_id) %}
+                            <p>{{per_gold}}</p>
+                        {% endwith %}
+                    {% endwith %}
                 </td>
             {% endfor %}
 
@@ -67,7 +71,16 @@
             <!-- ROI column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>holder</p>
+                    {% with user_id = annotator.pk  %}
+                        {% with roi = get_roi(user_id)  %}
+                            {% if roi %}
+                                <p>{{roi}}</p>
+                            {% else %}
+                                <p>No data</p>
+                            {% endif %}
+                                
+                            {% endwith %}
+                    {% endwith %}
                 </td>
             {% endfor %}
 
