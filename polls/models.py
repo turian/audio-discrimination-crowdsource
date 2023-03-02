@@ -108,7 +108,7 @@ class Experiment(models.Model):
 
 
 class ExperimentTypeTaskPresentation(models.Model):
-    task_presentation = models.CharField(max_length=50)
+    task_presentation = models.CharField(max_length=100)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -116,7 +116,7 @@ class ExperimentTypeTaskPresentation(models.Model):
 
 
 class ExperimentTypeAnnotation(models.Model):
-    annotation = models.CharField(max_length=50)
+    annotation = models.CharField(max_length=100)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
 
     def __str__(self):
