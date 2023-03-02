@@ -2,6 +2,8 @@ import random
 
 from django.utils import timezone
 
+from .models import Task
+
 random.seed()
 
 
@@ -32,3 +34,12 @@ def check_user_work_permission(user):
     can_continue = time_diff_minutes > minutes_after_can_continue
     rest_time = round(minutes_after_can_continue - time_diff_minutes) + 1
     return can_continue, should_rest, rest_time
+
+
+def parse_data_for_admin_experiment(batches):
+    data_list = []
+    for batch in batches:
+        tasks = Task.objects.filter(batch=batch)
+        data_dict = {"batch": batch.id, "tasks": tasks, "is_gold": batch.is_gold}
+        data_list.append(data_dict)
+    return data_list
