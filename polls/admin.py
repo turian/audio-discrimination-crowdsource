@@ -7,7 +7,6 @@ from .models import (
     CurrentBatchGold,
     Experiment,
     ExperimentType,
-    AnnotatorProfile,
     Task,
     User,
 )
@@ -20,5 +19,3 @@ admin.site.register(CurrentBatchGold)
 admin.site.register(CurrentBatchEval)
 admin.site.register(Experiment)
 admin.site.register(ExperimentType)
-admin.site.register(AnnotatorProfile)
-
