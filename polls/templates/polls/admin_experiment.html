@@ -17,7 +17,15 @@
 
     {% for item in data_list %}
 
+    {% if item.is_gold == True %}
+
+    <h5 class="mt-5">Batch(Gold): {{item.batch}}</h5>
+
+    {% else %}
+
     <h5 class="mt-5">Batch: {{item.batch}}</h5>
+
+    {% endif %}
 
     <table class="table table-striped">
         <thead>

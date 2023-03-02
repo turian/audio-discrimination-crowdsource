@@ -40,6 +40,6 @@ def parse_data_for_admin_experiment(batches):
     data_list = []
     for batch in batches:
         tasks = Task.objects.filter(batch=batch)
-        data_dict = {"batch": batch.id, "tasks": tasks}
+        data_dict = {"batch": batch.id, "tasks": tasks, "is_gold": batch.is_gold}
         data_list.append(data_dict)
     return data_list
