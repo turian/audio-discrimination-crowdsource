@@ -9,6 +9,14 @@ urlpatterns = [
     path("auth-token/", views.TokenView.as_view(), name="auth-token"),
     path("thank-you/", views.ThanksView.as_view(), name="thank-you"),
     path("lock/<int:user_id>/", views.LockUserView.as_view(), name="lock-user"),
+    path(
+        "admin-dashboard/", views.AdminDashboardView.as_view(), name="admin_dashboard"
+    ),
+    path(
+        "admin-experiment/<int:experiment_id>/",
+        views.AdminExperimentView.as_view(),
+        name="admin_experiment",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(

@@ -2,10 +2,11 @@ from django.contrib import admin
 
 from .models import (
     Annotation,
-    AnnotatorProfile,
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
+    Experiment,
+    ExperimentType,
     Task,
     User,
 )
@@ -16,4 +17,5 @@ admin.site.register(Annotation)
 admin.site.register(User)
 admin.site.register(CurrentBatchGold)
 admin.site.register(CurrentBatchEval)
-admin.site.register(AnnotatorProfile)
+admin.site.register(Experiment)
+admin.site.register(ExperimentType)

@@ -41,7 +41,8 @@ jobs:
                   DEBUG: 'True'
                   DEVELOPMENT_MODE: local
               run: |
-                  python manage.py test
+                  python manage.py makemigrations --merge
+                  python manage.py migrate
             - name: Run Tests
               env:
                   DEBUG: 'True'
