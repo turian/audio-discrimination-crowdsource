@@ -3,8 +3,7 @@ import random
 from django.db.models import Count, Q
 from django.utils import timezone
 
-from .models import Annotation
-from .models import Task
+from .models import Annotation, Task
 
 random.seed()
 
