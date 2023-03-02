@@ -2,12 +2,12 @@ from django.contrib import admin
 
 from .models import (
     Annotation,
+    AnnotatorProfile,
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
     ExperimentType,
-    AnnotatorProfile,
     Task,
     User,
 )
