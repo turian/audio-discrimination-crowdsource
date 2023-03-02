@@ -42,8 +42,8 @@
 
             <!-- Number of tasks completed column -->
             {% for annotator in annotators %}
-                {% with user_id=annotator.pk %}
-                    {% with no_task=get_no_task user_id  %}
+                {% with user_id=annotator.pk no_task=get_no_task(user_id) %}
+                    {% comment %} {% with no_task=get_no_task(user_id)  %} {% endcomment %}
                         <td>
                             <p>{{no_task}}</p>
                         </td>
@@ -54,7 +54,7 @@
             <!-- Percent of Gold correct column -->
             {% for annotator in annotators %}
                 <td>
-                    {% with user_id = annotator.pk  %}
+                    {% with user_id=annotator.pk  %}
                         {% with per_gold=get_per_gold(user_id) %}
                             <p>{{per_gold}}</p>
                         {% endwith %}
