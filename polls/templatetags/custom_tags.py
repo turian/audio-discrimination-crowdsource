@@ -2,7 +2,7 @@ from django import template
 
 from ..utils import (
     get_num_user_gold_task,
-    get_user_num_task,
+    get_user_num_tasks,
     get_user_per_gold_task,
     get_user_roi,
 )
@@ -12,7 +12,7 @@ register = template.Library()
 
 @register.filter(name="get_user_num_task")
 def get_user_num_tasks(user):
-    return get_user_num_task(user)
+    return get_user_num_tasks(user)
 
 
 @register.filter(name="get_total_gold_tasks")
