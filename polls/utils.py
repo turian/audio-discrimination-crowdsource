@@ -1,6 +1,6 @@
 import random
 
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils import timezone
 
 from .models import Annotation
@@ -44,3 +44,16 @@ def get_user_num_tasks(user):
     task_count = Annotation.objects.get(user=user).annotate(total_task=Count("task"))
 
     return task_count
+
+
+def get_num_user_gold_task(user):
+    """Generate the number of gold tasks a user completed then return
+    it's value for use in template tags
+    """
+    gold_count = (
+        Annotation.objects.get(user=user)
+        .filter(task__batch__is_gold=True)
+        .annotate(total_gold_tasks=Count("task", filter=Q(task__batch__is_gold=True)))
+    )
+
+    return gold_count["total_gold_tasks"]
