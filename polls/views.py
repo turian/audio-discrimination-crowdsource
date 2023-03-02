@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -125,6 +126,22 @@ class AdminAPIView(APIView):
 
 class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
+
+
+class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        user = get_user_model().objects.get(pk=user_id)
+        if user.is_locked:
+            user.is_locked = False
+            user.save()
+            return HttpResponse("Lock")
+        else:
+            user.is_locked = True
+            user.save()
+            return HttpResponse("Unlock")
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):

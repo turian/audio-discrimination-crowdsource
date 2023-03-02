@@ -77,9 +77,13 @@
             <!-- Lock column -->
             {% for annotator in annotators %}
                 {% if annotator.is_locked %}
-                    <p class="bg-gray">Unlock</p>
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                        hx-trigger="click" hx-swap="innerHTML"
+                     class="bg-gray">Unlock</p>
                 {% else %}
-                    <p>Lock</p>
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                    hx-trigger="click" hx-swap="innerHTML"
+                class="bg-gray">Lock</p>
                 {% endif %}
             {% endfor %}
             
