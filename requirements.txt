@@ -10,7 +10,7 @@ sqlparse==0.4.3
 djangorestframework==3.14.0
 
 django-bootstrap-v5
-pre-commit==3.1.0
+pre-commit==3.0.4
 ## For audio transforms
 #sox
 #pydub
@@ -23,4 +23,4 @@ pre-commit==3.1.0
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 
 python-dotenv>=0.21.0
-whitenoise==6.4.0 # to serve static files in production
+whitenoise==6.3.0 # to serve static files in production
