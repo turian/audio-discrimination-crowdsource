@@ -1,6 +1,11 @@
 from django import template
 
-from ..utils import get_num_user_gold_task, get_user_num_task, get_user_per_gold_task
+from ..utils import (
+    get_num_user_gold_task,
+    get_user_num_task,
+    get_user_per_gold_task,
+    get_user_roi,
+)
 
 register = template.Library()
 
@@ -18,3 +23,8 @@ def get_num_gold_tasks(user):
 @register.filter(name="percentage_gold_task")
 def percentage_gold_task(user):
     return get_user_per_gold_task(user)
+
+
+@register.filter(name="calculate_roi")
+def claculate_roi(user):
+    return get_user_roi(user)

@@ -69,3 +69,8 @@ def get_user_per_gold_task(user):
     percentage_gold = float(gold_task / total_task) * 100
 
     return percentage_gold
+
+
+def get_user_roi(user):
+    """ """
+    pass
