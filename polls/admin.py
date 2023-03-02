@@ -21,4 +21,3 @@ admin.site.register(CurrentBatchEval)
 admin.site.register(Experiment)
 admin.site.register(ExperimentType)
 admin.site.register(AnnotatorProfile)
-
