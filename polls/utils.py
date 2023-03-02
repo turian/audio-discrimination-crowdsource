@@ -4,6 +4,7 @@ from django.db.models import Count, Q
 from django.utils import timezone
 
 from .models import Annotation
+from .models import Task
 
 random.seed()
 
@@ -74,3 +75,11 @@ def get_user_per_gold_task(user):
 def get_user_roi(user):
     """ """
     pass
+
+def parse_data_for_admin_experiment(batches):
+    data_list = []
+    for batch in batches:
+        tasks = Task.objects.filter(batch=batch)
+        data_dict = {"batch": batch.id, "tasks": tasks, "is_gold": batch.is_gold}
+        data_list.append(data_dict)
+    return data_list

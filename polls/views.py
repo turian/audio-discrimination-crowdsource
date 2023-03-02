@@ -12,9 +12,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
+from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
-from .utils import batch_selector, check_user_work_permission, present_task_for_user
+from .utils import (
+    batch_selector,
+    check_user_work_permission,
+    parse_data_for_admin_experiment,
+    present_task_for_user,
+)
 
 
 class IndexView(TemplateView):
@@ -35,6 +40,39 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
             "should_rest": should_rest,
             "rest_time": rest_time,
         }
+        return render(request, self.template_name, context)
+
+
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_dashboard.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {
+            "experiments": experiments,
+        }
+        return render(request, self.template_name, context)
+
+
+class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_experiment.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, experiment_id):
+        try:
+            experiment = Experiment.objects.get(id=experiment_id)
+            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            data_list = parse_data_for_admin_experiment(batches)
+            context = {"experiment": experiment, "data_list": data_list}
+        except Experiment.DoesNotExist:
+            context = {
+                "error_message": "The Experiment with provided ID does not exist"
+            }
         return render(request, self.template_name, context)
 
 
