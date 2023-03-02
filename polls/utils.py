@@ -33,7 +33,7 @@ def check_user_work_permission(user):
         and time_diff_minutes < minutes_after_can_continue
     )
     can_continue = time_diff_minutes > minutes_after_can_continue
-    rest_time = round(minutes_after_can_continue - time_diff_minutes) + 1
+    rest_time = round(minutes_after_can_continue - time_diff_minutes)
     return can_continue, should_rest, rest_time
 
 
@@ -43,7 +43,7 @@ def get_user_num_tasks(user):
     """
     task_count = Annotation.objects.get(user=user).annotate(total_task=Count("task"))
 
-    return task_count
+    return task_count["total_task"]
 
 
 def get_num_user_gold_task(user):
@@ -57,3 +57,15 @@ def get_num_user_gold_task(user):
     )
 
     return gold_count["total_gold_tasks"]
+
+
+def get_user_per_gold_task(user):
+    """Generate the percentage of Gold task a user completed
+    by annotating throuh total task
+    """
+    total_task = get_user_num_tasks(user)
+    gold_task = get_num_user_gold_task(user)
+
+    percentage_gold = float(gold_task / total_task) * 100
+
+    return percentage_gold
