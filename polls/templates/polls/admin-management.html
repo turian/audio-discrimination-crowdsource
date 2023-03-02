@@ -3,21 +3,22 @@
 
 {% block body-block %}
     Admin management view"
-    <table>
+    <table class="table table-striped">
         <thead>
           <tr>
-            <th>Annotator</th>
-            <th>Email</th>
-            <th>Experiment Name</th>
-            <th>Number of Tasks Completed</th>
-            <th>Percent of Gold Correct</th>
-            <th>Interannotator Agreement</th>
-            <th>ROI</th>
-            <th>Lock</th>
-            <th>Delete</th>
+            <th scope="col">Annotator</th>
+            <th scope="col">Email</th>
+            <th scope="col">Experiment Name</th>
+            <th scope="col">Number of Tasks Completed</th>
+            <th scope="col">Percent of Gold Correct</th>
+            <th scope="col">Interannotator Agreement</th>
+            <th scope="col">ROI</th>
+            <th scope="col">Lock</th>
+            <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
+            <tr>
             <!-- Annotator column -->
             {% for annotator in annotators %}
                 <td>
@@ -35,14 +36,14 @@
             <!-- Experiment name column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>holder"</p>
+                    <p>no experiment</p>
                 </td>
             {% endfor %}
 
             <!-- Number of tasks completed column -->
             {% for annotator in annotators %}
-                {% with user_id = annotator.pk %}
-                    {% with no_task = get_no_task(user_id)  %}
+                {% with user_id=annotator.pk %}
+                    {% with no_task=get_no_task user_id  %}
                         <td>
                             <p>{{no_task}}</p>
                         </td>
@@ -54,7 +55,7 @@
             {% for annotator in annotators %}
                 <td>
                     {% with user_id = annotator.pk  %}
-                        {% with per_gold = get_per_gold(user_id) %}
+                        {% with per_gold=get_per_gold(user_id) %}
                             <p>{{per_gold}}</p>
                         {% endwith %}
                     {% endwith %}
@@ -64,22 +65,21 @@
             <!-- Interannotator agreement -->
             {% for annotator in annotators %}
                 <td>
-                    <p>x</p>
+                    <p>no data</p>
                 </td>
             {% endfor %}
 
             <!-- ROI column -->
             {% for annotator in annotators %}
                 <td>
-                    {% with user_id = annotator.pk  %}
-                        {% with roi = get_roi(user_id)  %}
+                    {% with user_id=annotator.pk  %}
+                        {% with roi=get_roi(user_id)  %}
                             {% if roi %}
                                 <p>{{roi}}</p>
                             {% else %}
                                 <p>No data</p>
                             {% endif %}
-                                
-                            {% endwith %}
+                        {% endwith %}
                     {% endwith %}
                 </td>
             {% endfor %}
@@ -87,22 +87,21 @@
             <!-- Lock column -->
             {% for annotator in annotators %}
                 {% if annotator.is_locked %}
-                    <p class="bg-gray">True</p>
+                    <p class="bg-gray">Unlock</p>
                 {% else %}
-                    <p>False</p>
+                    <p>Lock</p>
                 {% endif %}
             {% endfor %}
             
             <!-- Delete column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>
-                        <a href="{% url 'perform-delete' request.user.id %}">
-                            delete user
-                        </a>
+                    <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}" hx-swap="innerHTML">
+                        Delete User
                     </p>
                 </td>
             {% endfor %}
+            </tr>
         </tbody>
       </table>
       
