@@ -1,6 +1,9 @@
 import random
 
+from django.db.models import Count
 from django.utils import timezone
+
+from .models import Annotation
 
 random.seed()
 
@@ -32,3 +35,12 @@ def check_user_work_permission(user):
     can_continue = time_diff_minutes > minutes_after_can_continue
     rest_time = round(minutes_after_can_continue - time_diff_minutes) + 1
     return can_continue, should_rest, rest_time
+
+
+def get_user_num_tasks(user):
+    """Generate number of task a user completed then return
+    the value to be used in template tags
+    """
+    task_count = Annotation.objects.get(user=user).annotate(total_task=Count("task"))
+
+    return task_count
