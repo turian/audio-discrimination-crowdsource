@@ -83,3 +83,14 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
+
+
+class AnnotatorProfile(models.Model):
+    annotator = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="user"
+    )
+    email = models.EmailField(blank=True)
+    hourly_rate = models.FloatField(default=None, editable=True, blank=True)
+
+    def __str__(self):
+        return self.email
