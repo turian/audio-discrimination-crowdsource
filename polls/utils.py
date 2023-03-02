@@ -76,6 +76,7 @@ def get_user_roi(user):
     """ """
     pass
 
+
 def parse_data_for_admin_experiment(batches):
     data_list = []
     for batch in batches:
