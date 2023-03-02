@@ -10,8 +10,8 @@ from ..utils import (
 register = template.Library()
 
 
-@register.filter(name="get_user_num_task")
-def get_user_num_tasks(user):
+@register.filter(name="get_num_tasks")
+def get_num_tasks(user):
     return get_user_num_tasks(user)
 
 

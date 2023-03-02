@@ -44,7 +44,7 @@
             {% for annotator in annotators %}
                 {% with user_id=annotator.pk %}
                     <td>
-                        <p>{{user_id|get_user_num_task}}</p>
+                        <p>{{user_id|get_num_tasks}}</p>
                     </td>
                 {% endwith %}
             {% endfor %}
