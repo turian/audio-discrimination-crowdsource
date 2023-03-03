@@ -8,7 +8,10 @@ random.seed()
 
 
 def batch_selector():
-    return random.random() < 0.9
+    return random.ran
+
+
+dom() < 0.9
 
 
 def present_task_for_user(task):
@@ -58,6 +61,7 @@ def get_user_per_gold_task(user):
     """Generate the percentage of Gold task a user completed
     by annotating throuh total task
     """
+
     total_task = get_user_num_tasks(user)
     gold_task = get_num_user_gold_task(user)
     if total_task == 0:
