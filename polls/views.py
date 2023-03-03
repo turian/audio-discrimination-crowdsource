@@ -13,14 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import (
-    Annotation,
-    AnnotatorProfile,
-    CurrentBatchEval,
-    CurrentBatchGold,
-    Experiment,
-    Task,
-)
+from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,

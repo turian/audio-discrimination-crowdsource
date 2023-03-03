@@ -8,10 +8,7 @@ random.seed()
 
 
 def batch_selector():
-    return random.ran
-
-
-dom() < 0.9
+    return random.random() < 0.9
 
 
 def present_task_for_user(task):
