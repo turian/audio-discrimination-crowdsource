@@ -8,6 +8,7 @@ urlpatterns = [
     path("task-flow/", views.TaskFlowView.as_view(), name="task-flow"),
     path("auth-token/", views.TokenView.as_view(), name="auth-token"),
     path("thank-you/", views.ThanksView.as_view(), name="thank-you"),
+    path("lock/<int:user_id>/", views.LockUserView.as_view(), name="lock-user"),
     path(
         "admin-dashboard/", views.AdminDashboardView.as_view(), name="admin_dashboard"
     ),

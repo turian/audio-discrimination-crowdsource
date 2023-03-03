@@ -2,7 +2,8 @@
 {% load custom_tags %}
 
 {% block body-block %}
-Admin management view"
+
+    Admin management view"
 <table class="table table-striped">
     <thead>
         <tr>
@@ -15,71 +16,88 @@ Admin management view"
             <th scope="col">ROI</th>
             <th scope="col">Lock</th>
             <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <!-- Annotator column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{annotator.name}}</p>
+                </td>
+            {% endfor %}
 
-        {% for annotator in annotators %}
-        <tr>
+            <!-- Email column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{ annotator.annotator_profile.email }}</p>
+                </td>
+            {% endfor %}
 
-            <td>
-                <p>{{annotator.annotator.username}}</p>
-            </td>
+            <!-- Experiment name column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>no experiment</p>
+                </td>
+            {% endfor %}
 
-            <td>
-                <p>{{ annotator.email }}</p>
-            </td>
-
-            <td>
-                <p>no experiment</p>
-            </td>
-
-            {% with user_id=annotator.pk %}
-            <td>
-                <p>{{user_id|get_num_tasks}}</p>
-            </td>
-            {% endwith %}
-
-            <td>
+            <!-- Number of tasks completed column -->
+            {% for annotator in annotators %}
                 {% with user_id=annotator.pk %}
-                <p>{{user_id|percentage_gold_task}}</p>
+                    <td>
+                        <p>{{user_id|get_user_num_task}}</p>
+                    </td>
                 {% endwith %}
-            </td>
+            {% endfor %}
+            
+            <!-- Percent of Gold correct column -->
+            {% for annotator in annotators %}
+                <td>
+                    {% with user_id = annotator.pk  %}
+                        <p>{{user_id|percentage_gold_task}}</p>
+                    {% endwith %}
+                </td>
+            {% endfor %}
 
-            <td>
-                <p>no data</p>
-            </td>
+            <!-- Interannotator agreement -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>no data</p>
+                </td>
+            {% endfor %}
 
-            <td>
-                {% with user_id=annotator.pk %}
-                <p>{{ user_id|calculate_roi }} no data</p>
-                {% endwith %}
-            </td>
+            <!-- ROI column -->
+            {% for annotator in annotators %}
+                <td>
+                    {% with user_id=annotator.pk  %}
+                        <p>{{ user_id|calculate_roi }} no data</p>
+                    {% endwith %}
+                </td>
+            {% endfor %}
 
-            <td>
-                {% if annotator.annotator.is_locked %}
-                <p class="bg-gray">Unlock</p>
+            <!-- Lock column -->
+            {% for annotator in annotators %}
+                {% if annotator.is_locked %}
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                        hx-trigger="click" hx-swap="innerHTML"
+                     class="bg-gray">Unlock</p>
                 {% else %}
-                <p>Lock</p>
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                    hx-trigger="click" hx-swap="innerHTML"
+                class="bg-gray">Lock</p>
                 {% endif %}
-            </td>
-
-            <td>
-                <form method="post">
-                    {% csrf_token %}
-                    <p hx-trigger="click" hx-post="{% url 'perform-delete' annotator_id=annotator.id %}"
-                        hx-swap="innerHTML">
-                        Delete Annotator
+            {% endfor %}
+            
+            <!-- Delete column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}" hx-swap="innerHTML">
+                        Delete User
                     </p>
-                </form>
-            </td>
-
-
-        </tr>
-
-        {% endfor %}
-
-    </tbody>
-</table>
-
+                </td>
+            {% endfor %}
+            </tr>
+        </tbody>
+      </table>
 {% endblock body-block %}
+
