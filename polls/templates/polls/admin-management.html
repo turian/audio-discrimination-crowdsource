@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block body-block %}
+Admin management view"
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Annotator</th>
+            <th scope="col">Email</th>
+            <th scope="col">Experiment Name</th>
+            <th scope="col">Number of Tasks Completed</th>
+            <th scope="col">Percent of Gold Correct</th>
+            <th scope="col">Interannotator Agreement</th>
+            <th scope="col">ROI</th>
+            <th scope="col">Lock</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for annotator in annotators %}
+        <tr>
+
+            <td>
+                <p>{{annotator.annotator.username}}</p>
+            </td>
+
+            <td>
+                <p>{{ annotator.email }}</p>
+            </td>
+
+            <td>
+                <p>no experiment</p>
+            </td>
+
+            {% with user_id=annotator.pk %}
+            <td>
+                <p>{{user_id|get_num_tasks}}</p>
+            </td>
+            {% endwith %}
+
+            <td>
+                {% with user_id=annotator.pk %}
+                <p>{{user_id|percentage_gold_task}}</p>
+                {% endwith %}
+            </td>
+
+            <td>
+                <p>no data</p>
+            </td>
+
+            <td>
+                {% with user_id=annotator.pk %}
+                <p>{{ user_id|calculate_roi }} no data</p>
+                {% endwith %}
+            </td>
+
+            <td>
+                {% if annotator.annotator.is_locked %}
+                <p class="bg-gray">Unlock</p>
+                {% else %}
+                <p>Lock</p>
+                {% endif %}
+            </td>
+
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <p hx-trigger="click" hx-post="{% url 'perform-delete' annotator_id=annotator.id %}"
+                        hx-swap="innerHTML">
+                        Delete Annotator
+                    </p>
+                </form>
+            </td>
+
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock body-block %}

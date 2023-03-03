@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -12,7 +13,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
+from .models import (
+    Annotation,
+    AnnotatorProfile,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Experiment,
+    Task,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
@@ -201,3 +209,28 @@ class BatchTasksAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin-management.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        context = {
+            "annotators": AnnotatorProfile.objects.all(),
+            "user_id": request.user.id,
+        }
+        return render(request, self.template_name, context)
+
+
+class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/delete-annotator.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def post(self, request, annotator_id):
+        AnnotatorProfile.objects.filter(id=annotator_id).delete()
+        return HttpResponse("deleted")
