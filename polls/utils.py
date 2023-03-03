@@ -41,22 +41,18 @@ def get_user_num_tasks(user):
     """Generate number of task a user completed then return
     the value to be used in template tags
     """
-    task_count = Annotation.objects.get(user=user).annotate(total_task=Count("task"))
+    task_count = Annotation.objects.filter(user=user).count()
 
-    return task_count["total_task"]
+    return task_count
 
 
 def get_num_user_gold_task(user):
     """Generate the number of gold tasks a user completed then return
     it's value for use in template tags
     """
-    gold_count = (
-        Annotation.objects.get(user=user)
-        .filter(task__batch__is_gold=True)
-        .annotate(total_gold_tasks=Count("task", filter=Q(task__batch__is_gold=True)))
-    )
+    gold_count = Annotation.objects.filter(user=user, task__batch__is_gold=True).count()
 
-    return gold_count["total_gold_tasks"]
+    return gold_count
 
 
 def get_user_per_gold_task(user):
@@ -65,7 +61,8 @@ def get_user_per_gold_task(user):
     """
     total_task = get_user_num_tasks(user)
     gold_task = get_num_user_gold_task(user)
-
+    if total_task == 0:
+        return 0
     percentage_gold = float(gold_task / total_task) * 100
 
     return percentage_gold

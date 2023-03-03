@@ -16,6 +16,16 @@ urlpatterns = [
         views.AdminExperimentView.as_view(),
         name="admin_experiment",
     ),
+    path(
+        "admin-management/",
+        views.AdminManagementView.as_view(),
+        name="admin_management",
+    ),
+    path(
+        "delete-annotator/<int:annotator_id>/",
+        views.DeleteAnnotator.as_view(),
+        name="perform-delete",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
