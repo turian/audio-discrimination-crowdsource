@@ -227,7 +227,7 @@ MEDIA_ROOT = Path(BASE_DIR, "assets/images")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-GRAPH_MODELS ={
-    'all_applications': True,
-    'graph_models': True,
-     }
+GRAPH_MODELS = {
+    "all_applications": True,
+    "graph_models": True,
+}
