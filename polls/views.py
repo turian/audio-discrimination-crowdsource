@@ -138,7 +138,7 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, "polls/admin-management.html", context)
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
 
 class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
