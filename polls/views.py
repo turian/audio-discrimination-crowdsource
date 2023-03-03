@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -16,8 +15,8 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
-    Batch,
     AnnotatorProfile,
+    Batch,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
