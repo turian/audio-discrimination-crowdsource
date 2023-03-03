@@ -16,7 +16,11 @@ urlpatterns = [
         views.AdminExperimentView.as_view(),
         name="admin_experiment",
     ),
-    path("create-annotation/", views.create_annotation_ajax, name="create_annotation_ajax"),
+    path(
+        "create-annotation/",
+        views.create_annotation_ajax,
+        name="create_annotation_ajax",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(

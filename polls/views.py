@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -149,7 +149,7 @@ def create_annotation_ajax(request):
     task = get_object_or_404(Task, pk=task_pk)
     batch_id = request.POST.get("batch_id")
     task_presentation = request.POST.get("taskPresentation")
-    
+
     Annotation.objects.create(
         user=request.user,
         task=task,
