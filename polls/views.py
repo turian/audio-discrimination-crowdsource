@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -15,6 +17,7 @@ from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
     Batch,
+    AnnotatorProfile,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
@@ -213,6 +216,22 @@ class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
 
 
+class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        user = get_user_model().objects.get(pk=user_id)
+        if user.is_locked:
+            user.is_locked = False
+            user.save()
+            return HttpResponse("Lock")
+        else:
+            user.is_locked = True
+            user.save()
+            return HttpResponse("Unlock")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
@@ -249,3 +268,28 @@ class BatchTasksAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin-management.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        context = {
+            "annotators": AnnotatorProfile.objects.all(),
+            "user_id": request.user.id,
+        }
+        return render(request, self.template_name, context)
+
+
+class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/delete-annotator.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def post(self, request, annotator_id):
+        AnnotatorProfile.objects.filter(id=annotator_id).delete()
+        return HttpResponse("deleted")

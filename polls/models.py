@@ -128,7 +128,7 @@ class AnnotatorProfile(models.Model):
         get_user_model(), on_delete=models.CASCADE, related_name="user"
     )
     email = models.EmailField(blank=True)
-    hourly_rate = models.FloatField(default=None, editable=True, blank=True)
+    hourly_rate = models.FloatField(default=None, editable=True, blank=True, null=True)
 
     def __str__(self):
         return self.email
