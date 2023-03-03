@@ -13,9 +13,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
+from .models import (
+    Annotation,
+    AnnotatorProfile,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Experiment,
+    Task,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
-from .utils import batch_selector, check_user_work_permission, present_task_for_user
+from .utils import (
+    batch_selector,
+    check_user_work_permission,
+    parse_data_for_admin_experiment,
+    present_task_for_user,
+)
 
 
 class IndexView(TemplateView):
@@ -36,6 +48,39 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
             "should_rest": should_rest,
             "rest_time": rest_time,
         }
+        return render(request, self.template_name, context)
+
+
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_dashboard.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {
+            "experiments": experiments,
+        }
+        return render(request, self.template_name, context)
+
+
+class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_experiment.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, experiment_id):
+        try:
+            experiment = Experiment.objects.get(id=experiment_id)
+            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            data_list = parse_data_for_admin_experiment(batches)
+            context = {"experiment": experiment, "data_list": data_list}
+        except Experiment.DoesNotExist:
+            context = {
+                "error_message": "The Experiment with provided ID does not exist"
+            }
         return render(request, self.template_name, context)
 
 
@@ -114,16 +159,6 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-
-    def get(self, request):
-        return Response({"data": "hello"}, status.HTTP_200_OK)
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-
 class ThanksView(TemplateView):
     template_name = "polls/thanks.html"
 
@@ -136,6 +171,19 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
             "annotators": annotators,
         }
         return render(request, "polls/admin-management.html", context)
+
+
+class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        user = get_user_model().objects.get(pk=user_id)
+        if user.is_locked:
+            user.is_locked = False
+            user.save()
+            return HttpResponse("Lock")
+        else:
+            user.is_locked = True
+            user.save()
+            return HttpResponse("Unlock")
 
     def test_func(self):
         return not self.request.user.is_superuser
@@ -188,6 +236,41 @@ class BatchTasksAPIView(APIView):
             print(batch)  # print is a placeholder to fulfil flake8 needs.
             return Response({"status": "success"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin-management.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        context = {
+            "annotators": AnnotatorProfile.objects.all(),
+            "user_id": request.user.id,
+        }
+        return render(request, self.template_name, context)
+
+
+class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/delete-annotator.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def post(self, request, annotator_id):
+        AnnotatorProfile.objects.filter(id=annotator_id).delete()
+        return HttpResponse("deleted")
+
+
+class AdminAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request):
+        return Response({"data": "hello"}, status.HTTP_200_OK)
 
     def test_func(self):
         return self.request.user.is_superuser

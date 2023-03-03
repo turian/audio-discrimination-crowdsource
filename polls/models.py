@@ -25,10 +25,24 @@ class User(AbstractUser):
     is_locked = models.BooleanField(default=False)
 
 
+class ExperimentType(models.Model):
+    type = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.type}"
+
+
 class Batch(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_gold = models.BooleanField(default=False)
     notes = models.TextField()
+    experiment_type = models.ForeignKey(
+        ExperimentType,
+        on_delete=models.CASCADE,
+        related_name="batches",
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name_plural = "batches"
@@ -74,9 +88,7 @@ class Annotation(models.Model):
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name="annotations"
     )
-    task = models.ForeignKey(
-        Task, on_delete=models.CASCADE, related_name="annotation_task"
-    )
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
     annotated_at = models.DateTimeField()
     task_presentation = models.CharField(
         max_length=3, choices=TASK_PRESENTATION_OPTIONS
@@ -85,3 +97,38 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
+
+
+class Experiment(models.Model):
+    name = models.CharField(max_length=100)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ExperimentTypeTaskPresentation(models.Model):
+    task_presentation = models.CharField(max_length=100)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.task_presentation}"
+
+
+class ExperimentTypeAnnotation(models.Model):
+    annotation = models.CharField(max_length=100)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.annotation}"
+
+
+class AnnotatorProfile(models.Model):
+    annotator = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="user"
+    )
+    email = models.EmailField(blank=True)
+    hourly_rate = models.FloatField(default=None, editable=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.email

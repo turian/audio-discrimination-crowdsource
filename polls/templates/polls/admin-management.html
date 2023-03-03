@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block body-block %}
+
+    Admin management view"
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Annotator</th>
+            <th scope="col">Email</th>
+            <th scope="col">Experiment Name</th>
+            <th scope="col">Number of Tasks Completed</th>
+            <th scope="col">Percent of Gold Correct</th>
+            <th scope="col">Interannotator Agreement</th>
+            <th scope="col">ROI</th>
+            <th scope="col">Lock</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <!-- Annotator column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{annotator.name}}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Email column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>{{ annotator.annotator_profile.email }}</p>
+                </td>
+            {% endfor %}
+
+            <!-- Experiment name column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>no experiment</p>
+                </td>
+            {% endfor %}
+
+            <!-- Number of tasks completed column -->
+            {% for annotator in annotators %}
+                {% with user_id=annotator.pk %}
+                    <td>
+                        <p>{{user_id|get_user_num_task}}</p>
+                    </td>
+                {% endwith %}
+            {% endfor %}
+            
+            <!-- Percent of Gold correct column -->
+            {% for annotator in annotators %}
+                <td>
+                    {% with user_id = annotator.pk  %}
+                        <p>{{user_id|percentage_gold_task}}</p>
+                    {% endwith %}
+                </td>
+            {% endfor %}
+
+            <!-- Interannotator agreement -->
+            {% for annotator in annotators %}
+                <td>
+                    <p>no data</p>
+                </td>
+            {% endfor %}
+
+            <!-- ROI column -->
+            {% for annotator in annotators %}
+                <td>
+                    {% with user_id=annotator.pk  %}
+                        <p>{{ user_id|calculate_roi }} no data</p>
+                    {% endwith %}
+                </td>
+            {% endfor %}
+
+            <!-- Lock column -->
+            {% for annotator in annotators %}
+                {% if annotator.is_locked %}
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                        hx-trigger="click" hx-swap="innerHTML"
+                     class="bg-gray">Unlock</p>
+                {% else %}
+                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                    hx-trigger="click" hx-swap="innerHTML"
+                class="bg-gray">Lock</p>
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Delete column -->
+            {% for annotator in annotators %}
+                <td>
+                    <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}" hx-swap="innerHTML">
+                        Delete User
+                    </p>
+                </td>
+            {% endfor %}
+            </tr>
+        </tbody>
+      </table>
+{% endblock body-block %}
+
