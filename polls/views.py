@@ -15,7 +15,6 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
-    AnnotatorProfile,
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
