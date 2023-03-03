@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -142,6 +141,7 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
 def create_annotation_ajax(request):
     task_pk = request.POST.get("taskPk")
+    context = {}
     if not task_pk:
         return render(request, "polls/htmlform.html", context)
 
