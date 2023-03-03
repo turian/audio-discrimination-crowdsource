@@ -3,7 +3,7 @@
 
 {% block body-block %}
 
-    Admin management view"
+    <h1 class="mt-5 text-center mb-5">Admin management view</h1>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -23,14 +23,14 @@
             <!-- Annotator column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{{annotator.name}}</p>
+                    <p>{{annotator.username}}</p>
                 </td>
             {% endfor %}
 
             <!-- Email column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{{ annotator.annotator_profile.email }}</p>
+                    <p>{{ annotator.email }}</p>
                 </td>
             {% endfor %}
 
@@ -45,7 +45,7 @@
             {% for annotator in annotators %}
                 {% with user_id=annotator.pk %}
                     <td>
-                        <p>{{user_id|get_user_num_task}}</p>
+                        <p>{{user_id|get_num_tasks}}</p>
                     </td>
                 {% endwith %}
             {% endfor %}
@@ -53,8 +53,8 @@
             <!-- Percent of Gold correct column -->
             {% for annotator in annotators %}
                 <td>
-                    {% with user_id = annotator.pk  %}
-                        <p>{{user_id|percentage_gold_task}}</p>
+                    {% with user_id=annotator.pk  %}
+                        <p>{{user_id|percentage_gold_task}}%</p>
                     {% endwith %}
                 </td>
             {% endfor %}
@@ -77,21 +77,30 @@
 
             <!-- Lock column -->
             {% for annotator in annotators %}
-                {% if annotator.is_locked %}
-                    <p hx-post="{% url 'lock-user' request.user.pk %}"
+                <td>
+                    {% if annotator.is_locked %}
+                        <p hx-post="{% url 'lock-user' request.user.pk %}"
+                            hx-trigger="click" hx-swap="innerHTML"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-confirm="Are you sure you want to unlock this user?"
+                        class="bg-danger">Unlock</p>
+                    {% else %}
+                        <p hx-post="{% url 'lock-user' request.user.pk %}"
                         hx-trigger="click" hx-swap="innerHTML"
-                     class="bg-gray">Unlock</p>
-                {% else %}
-                    <p hx-post="{% url 'lock-user' request.user.pk %}"
-                    hx-trigger="click" hx-swap="innerHTML"
-                class="bg-gray">Lock</p>
-                {% endif %}
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-confirm="Are you sure you want to lock this user?"
+                    >Lock</p>
+                    {% endif %}
+                </td>
             {% endfor %}
             
             <!-- Delete column -->
             {% for annotator in annotators %}
                 <td>
-                    <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}" hx-swap="innerHTML">
+                    <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}"
+                     hx-swap="innerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                     hx-confirm="Are you sure you want to delete this user's history?"
+                     >
                         Delete User
                     </p>
                 </td>
