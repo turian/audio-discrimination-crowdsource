@@ -2,7 +2,7 @@ import random
 
 from django.utils import timezone
 
-from .models import Task
+from .models import Annotation, Task
 
 random.seed()
 
@@ -13,7 +13,7 @@ def batch_selector():
 
 def present_task_for_user(task):
     """mock function"""
-    return "www.example.com", "AAB"
+    return task.reference_url, task.transform_url, "AAB"
 
 
 def check_user_work_permission(user):
@@ -32,8 +32,44 @@ def check_user_work_permission(user):
         and time_diff_minutes < minutes_after_can_continue
     )
     can_continue = time_diff_minutes > minutes_after_can_continue
-    rest_time = round(minutes_after_can_continue - time_diff_minutes) + 1
+    rest_time = round(minutes_after_can_continue - time_diff_minutes)
     return can_continue, should_rest, rest_time
+
+
+def get_user_num_tasks(user):
+    """Generate number of task a user completed then return
+    the value to be used in template tags
+    """
+    task_count = Annotation.objects.filter(user=user).count()
+
+    return task_count
+
+
+def get_num_user_gold_task(user):
+    """Generate the number of gold tasks a user completed then return
+    it's value for use in template tags
+    """
+    gold_count = Annotation.objects.filter(user=user, task__batch__is_gold=True).count()
+
+    return gold_count
+
+
+def get_user_per_gold_task(user):
+    """Generate the percentage of Gold task a user completed
+    by annotating throuh total task
+    """
+    total_task = get_user_num_tasks(user)
+    gold_task = get_num_user_gold_task(user)
+    if total_task == 0:
+        return 0
+    percentage_gold = float(gold_task / total_task) * 100
+
+    return percentage_gold
+
+
+def get_user_roi(user):
+    """ """
+    pass
 
 
 def parse_data_for_admin_experiment(batches):

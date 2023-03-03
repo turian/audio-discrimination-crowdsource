@@ -113,11 +113,14 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                url, task_presentation = present_task_for_user(task)
+                reference_url, transform_url, task_presentation = present_task_for_user(
+                    task
+                )
                 context = {
                     "task": task,
                     "batch_id": current_batch.id,
-                    "url": url,
+                    "reference_url": reference_url,
+                    "transform_url": transform_url,
                     "task_presentation": task_presentation,
                 }
         return render(request, self.template_name, context)
@@ -139,37 +142,41 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
         return self.request.user.is_locked
 
 
-def create_annotation_ajax(request):
-    task_pk = request.POST.get("taskPk")
-    context = {}
-    if not task_pk:
+class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
+    def post(self, request):
+        task_pk = request.POST.get("taskPk")
+        annotation_choice = request.POST.get("annotationOption")
+        batch_id = request.POST.get("batch_id")
+        task_presentation = request.POST.get("taskPresentation")
+
+        if not task_pk:
+            return render(request, "polls/htmlform.html", {})
+
+        task = get_object_or_404(Task, pk=task_pk)
+        Annotation.objects.create(
+            user=request.user,
+            task=task,
+            annotated_at=timezone.now(),
+            task_presentation=task_presentation,
+            annotations=annotation_choice,
+        )
+
+        current_batch = get_object_or_404(Batch, id=batch_id)
+        tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+        task = tasks_for_user.first()
+
+        context = {}
+        if task:
+            reference_url, transform_url, task_presentation = present_task_for_user(
+                task
+            )
+            context["reference_url"] = reference_url
+            context["transform_url"] = transform_url
+            context["task_presentation"] = task_presentation
+
+        context["task"] = task
+        context["batch_id"] = current_batch.id
         return render(request, "polls/htmlform.html", context)
-
-    annotation_choice = request.POST.get("annotationOption")
-    task = get_object_or_404(Task, pk=task_pk)
-    batch_id = request.POST.get("batch_id")
-    task_presentation = request.POST.get("taskPresentation")
-
-    Annotation.objects.create(
-        user=request.user,
-        task=task,
-        annotated_at=timezone.now(),
-        task_presentation=task_presentation,
-        annotations=annotation_choice,
-    )
-
-    current_batch = get_object_or_404(Batch, id=batch_id)
-    tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
-    task = tasks_for_user.first()
-    url, task_presentation = present_task_for_user(task)
-
-    context = {
-        "task": task,
-        "batch_id": current_batch.id,
-        "url": url,
-        "task_presentation": task_presentation,
-    }
-    return render(request, "polls/htmlform.html", context)
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):

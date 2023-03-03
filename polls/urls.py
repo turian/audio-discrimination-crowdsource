@@ -18,8 +18,8 @@ urlpatterns = [
     ),
     path(
         "create-annotation/",
-        views.create_annotation_ajax,
-        name="create_annotation_ajax",
+        views.CreateAnnotation.as_view(),
+        name="create_annotation",
     ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
