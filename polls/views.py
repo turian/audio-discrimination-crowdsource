@@ -172,6 +172,9 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         }
         return render(request, "polls/admin-management.html", context)
 
+    def test_func(self):
+        return not self.request.user.is_superuser
+
 
 class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, user_id, *args, **kwargs):

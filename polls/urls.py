@@ -20,7 +20,7 @@ urlpatterns = [
     path(
         "admin-management/",
         views.AdminManagementView.as_view(),
-        name="admin_management",
+        name="admin-management",
     ),
     path("admin/delete/<int:pk>", views.PerformDelete.as_view(), name="perform-delete"),
     # APIs
