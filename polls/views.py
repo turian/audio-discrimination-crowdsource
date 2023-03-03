@@ -241,29 +241,29 @@ class BatchTasksAPIView(APIView):
         return self.request.user.is_superuser
 
 
-class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
-    template_name = "polls/admin-management.html"
+# class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+#     template_name = "polls/admin-management.html"
 
-    def test_func(self):
-        return self.request.user.is_superuser
+#     def test_func(self):
+#         return self.request.user.is_superuser
 
-    def get(self, request):
-        context = {
-            "annotators": AnnotatorProfile.objects.all(),
-            "user_id": request.user.id,
-        }
-        return render(request, self.template_name, context)
+#     def get(self, request):
+#         context = {
+#             "annotators": AnnotatorProfile.objects.all(),
+#             "user_id": request.user.id,
+#         }
+#         return render(request, self.template_name, context)
 
 
-class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
-    template_name = "polls/delete-annotator.html"
+# class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
+#     template_name = "polls/delete-annotator.html"
 
-    def test_func(self):
-        return self.request.user.is_superuser
+#     def test_func(self):
+#         return self.request.user.is_superuser
 
-    def post(self, request, annotator_id):
-        AnnotatorProfile.objects.filter(id=annotator_id).delete()
-        return HttpResponse("deleted")
+#     def post(self, request, annotator_id):
+#         AnnotatorProfile.objects.filter(id=annotator_id).delete()
+#         return HttpResponse("deleted")
 
 
 class AdminAPIView(APIView):

@@ -22,15 +22,7 @@ urlpatterns = [
         views.AdminManagementView.as_view(),
         name="admin_management",
     ),
-    path(
-        "delete-annotator/<int:annotator_id>/",
-        views.DeleteAnnotator.as_view(),
-        name="perform-delete",
-    ),
-<<<<<<< HEAD
     path("admin/delete/<int:pk>", views.PerformDelete.as_view(), name="perform-delete"),
-=======
->>>>>>> origin/main
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
