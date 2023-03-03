@@ -13,7 +13,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
+from .models import (
+    Annotation,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Experiment,
+    ExperimentType,
+    Task,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
@@ -200,6 +207,12 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminCreateExperimentType(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, *args, **kwargs):
+        experiment_type = request.POST.get("experiment-type")
+        create_type = ExperimentType.objects.create(str(experiment_type).upper())
+        create_type.save()
+        return HttpResponse("success")
+
     def test_func(self):
         return self.request.user.is_superuser
 
