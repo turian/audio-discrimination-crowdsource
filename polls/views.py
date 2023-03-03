@@ -173,7 +173,7 @@ class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, "polls/admin-management.html", context)
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
 
 class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -189,7 +189,7 @@ class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
             return HttpResponse("Unlock")
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
 
 class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -203,7 +203,7 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return HttpResponse("success")
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
@@ -242,31 +242,6 @@ class BatchTasksAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
-
-
-# class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
-#     template_name = "polls/admin-management.html"
-
-#     def test_func(self):
-#         return self.request.user.is_superuser
-
-#     def get(self, request):
-#         context = {
-#             "annotators": AnnotatorProfile.objects.all(),
-#             "user_id": request.user.id,
-#         }
-#         return render(request, self.template_name, context)
-
-
-# class DeleteAnnotator(LoginRequiredMixin, UserPassesTestMixin, View):
-#     template_name = "polls/delete-annotator.html"
-
-#     def test_func(self):
-#         return self.request.user.is_superuser
-
-#     def post(self, request, annotator_id):
-#         AnnotatorProfile.objects.filter(id=annotator_id).delete()
-#         return HttpResponse("deleted")
 
 
 class AdminAPIView(APIView):
