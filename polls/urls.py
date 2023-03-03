@@ -13,6 +13,11 @@ urlpatterns = [
         "admin-dashboard/", views.AdminDashboardView.as_view(), name="admin_dashboard"
     ),
     path(
+        "admin/create/experiment/type",
+        views.AdminCreateExperimentTypeView.as_view(),
+        name="experiment-type",
+    ),
+    path(
         "admin-experiment/<int:experiment_id>/",
         views.AdminExperimentView.as_view(),
         name="admin_experiment",

@@ -206,7 +206,7 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminCreateExperimentType(LoginRequiredMixin, UserPassesTestMixin, View):
+class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         experiment_type = request.POST.get("experiment-type")
         create_type = ExperimentType.objects.create(str(experiment_type).upper())
