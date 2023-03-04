@@ -200,6 +200,9 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "polls/create-experiment-form.html")
+
     def test_func(self):
         return self.request.user.is_superuser
 
