@@ -207,11 +207,20 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "pools/experiment-type-form.html")
+
     def post(self, request, *args, **kwargs):
-        experiment_type = request.POST.get("experiment-type")
-        create_type = ExperimentType.objects.create(str(experiment_type).upper())
-        create_type.save()
-        return HttpResponse("success")
+        new_experiment_type = request.POST.get("experiment-type")
+        experiment_types = ExperimentType.objects.all()
+        if new_experiment_type in experiment_types:
+            return HttpResponse("Experiment Type Already Exist")
+        else:
+            create_type = ExperimentType.objects.create(
+                str(new_experiment_type).upper()
+            )
+            create_type.save()
+            return HttpResponse("successfully created")
 
     def test_func(self):
         return self.request.user.is_superuser
