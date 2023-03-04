@@ -13,7 +13,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Experiment, Task
+from .models import (
+    Annotation,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Experiment,
+    ExperimentType,
+    Task,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
@@ -201,7 +208,27 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        return render(request, "polls/create-experiment-form.html")
+        experiment_type = ExperimentType.objects.all()
+        context = {"e_types": experiment_type}
+        return render(request, "polls/create-experiment-form.html", context)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("name")
+        type_pk = request.POST.get("experiment-type")
+        experiment = Experiment.objects.get(name=name)
+        exp_type = ExperimentType.objects.get(pk=type_pk)
+        if experiment:
+            return HttpResponse("An experiment with this name already exist")
+
+        if exp_type:
+            new_experiment = Experiment.objects.create(
+                name=name, experiment_type=type_pk
+            )
+            new_experiment.save()
+            return HttpResponse("successfully created")
+
+        else:
+            return HttpResponse("Please select experiment type from dropdown")
 
     def test_func(self):
         return self.request.user.is_superuser
