@@ -18,6 +18,11 @@ urlpatterns = [
         name="admin_experiment",
     ),
     path(
+        "admin/experiment/create/",
+        views.AdminCreateExperimentView.as_view(),
+        "create-experiment",
+    ),
+    path(
         "admin-management/",
         views.AdminManagementView.as_view(),
         name="admin-management",
