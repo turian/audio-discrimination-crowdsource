@@ -208,7 +208,7 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 
 class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        return render(request, "pools/experiment-type-form.html")
+        return render(request, "polls/experiment-type-form.html")
 
     def post(self, request, *args, **kwargs):
         new_experiment_type = request.POST.get("experiment-type")
@@ -217,13 +217,13 @@ class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, Vie
             return HttpResponse("Experiment Type Already Exist")
         else:
             create_type = ExperimentType.objects.create(
-                str(new_experiment_type).upper()
+                type=str(new_experiment_type).upper()
             )
             create_type.save()
             return HttpResponse("successfully created")
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):

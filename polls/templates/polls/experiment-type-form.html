@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block body-block %}
 <h1 class="page-header">Create new experiment type below</h1>
-<form hx-post="{% url 'experiment-type' %}">
+<form hx-post="{% url 'experiment-type' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="mb-3">
       <label for="text-field" class="form-label">Experiment Type</label>
       <input type="text" class="form-control" id="text-field" name="experiment-type" placeholder="eg: AAB/ABB/BAB">
     </div>
-    <button type="submit" class="btn btn-primary" hx-target="#form-result">Submit</button>
+    <button type="submit" class="btn btn-primary" hx-target="#form-result">Create experiment type</button>
   </form>
   <div id="form-result"></div>
   
