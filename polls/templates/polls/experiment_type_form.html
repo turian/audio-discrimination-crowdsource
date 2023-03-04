@@ -3,8 +3,8 @@
 <h1 class="page-header">Create experiment type form</h1>
 <form hx-post="{% url 'experiment-type' %}">
     <div class="mb-3">
-      <label for="text-field" class="form-label">Text Field</label>
-      <input type="text" class="form-control" id="text-field" name="text-field" placeholder="eg: AAB/ABB/BAB">
+      <label for="text-field" class="form-label">Experiment Type</label>
+      <input type="text" class="form-control" id="text-field" name="experiment-type" placeholder="eg: AAB/ABB/BAB">
     </div>
     <button type="submit" class="btn btn-primary" hx-target="#form-result">Submit</button>
   </form>
