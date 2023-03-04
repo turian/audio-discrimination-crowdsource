@@ -334,20 +334,18 @@ Now, for any new html page, we need to do the following:
  pip install graphviz
  pip install django-extensions
  ```
- Go to settings.py and add 
+ Go to ```settings.py``` and add the following line to  ```INSTALLED_APPS```
  ```
  'django_extensions',
  ```
-to INSTALLED_APPS
 
-Add the following code 
+Add the following code to ```settings.py```
 ```
 GRAPH_MODELS ={
     'all_applications': True,
     'graph_models': True,
      }
 ```
- to settings.py:
 
  Now execute the folowing commands:
  ```
