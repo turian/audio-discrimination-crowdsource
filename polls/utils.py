@@ -1,6 +1,5 @@
 import random
 
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from .models import Annotation, ExperimentTypeTaskPresentation, Task
@@ -14,11 +13,17 @@ def batch_selector():
 
 def present_task_for_user(task):
     """mock function"""
+    audios = [task.reference_url, task.transform_url]
     experiment_type = task.batch.experiment_type
-    experiment_type = get_object_or_404(
-        ExperimentTypeTaskPresentation, experiment_type=task.batch.experiment_type
+    task_presentations = ExperimentTypeTaskPresentation.objects.filter(
+        experiment_type=experiment_type
     )
-    return task.reference_url, task.transform_url, experiment_type.task_presentation
+    task_presentation_chosen = random.choice(task_presentations).task_presentation
+    unique_chars = set(task_presentation_chosen)
+    audio_mapping = {}
+    for index, key in enumerate(unique_chars):
+        audio_mapping[key] = audios[index]
+    return audio_mapping, task_presentation_chosen
 
 
 def check_user_work_permission(user):
@@ -85,3 +90,11 @@ def parse_data_for_admin_experiment(batches):
         data_dict = {"batch": batch.id, "tasks": tasks, "is_gold": batch.is_gold}
         data_list.append(data_dict)
     return data_list
+
+
+def create_audio_list(audios, task_presentation):
+    audio_list = []
+    for char in task_presentation:
+        audio_list.append(audios[char])
+
+    return audio_list

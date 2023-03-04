@@ -25,6 +25,7 @@ from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
     check_user_work_permission,
+    create_audio_list,
     parse_data_for_admin_experiment,
     present_task_for_user,
 )
@@ -114,14 +115,13 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                reference_url, transform_url, task_presentation = present_task_for_user(
-                    task
-                )
+                audios, task_presentation = present_task_for_user(task)
+                audio_list = create_audio_list(audios, task_presentation)
+
                 context = {
                     "task": task,
                     "batch_id": current_batch.id,
-                    "reference_url": reference_url,
-                    "transform_url": transform_url,
+                    "audios": audio_list,
                     "task_presentation": task_presentation,
                 }
         return render(request, self.template_name, context)
@@ -168,15 +168,14 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if task:
-            reference_url, transform_url, task_presentation = present_task_for_user(
-                task
-            )
-            context["reference_url"] = reference_url
-            context["transform_url"] = transform_url
-            context["task_presentation"] = task_presentation
-
-        context["task"] = task
-        context["batch_id"] = current_batch.id
+            audios, task_presentation = present_task_for_user(task)
+            audio_list = create_audio_list(audios, task_presentation)
+            context = {
+                "task": task,
+                "batch_id": current_batch.id,
+                "audios": audio_list,
+                "task_presentation": task_presentation,
+            }
         return render(request, "polls/htmlform.html", context)
 
 
