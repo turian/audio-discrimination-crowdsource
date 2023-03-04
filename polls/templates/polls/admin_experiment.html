@@ -4,7 +4,8 @@
 
 <div class="mt-5 text-center">
     <h1>Admin View Experiment</h1>
-
+    <p class="btn btn-primary" hx-get="{% url 'experiment-type' %}" 
+        hx-trigger="click" hx-boost="true" hx-target="body">Create new Experiment type</p>
     {% if error_message %}
 
     <p>{{error_message}}</p>
