@@ -117,7 +117,7 @@ class ExperimentTypeTaskPresentation(models.Model):
 
 class ExperimentTypeAnnotation(models.Model):
     annotation = models.CharField(max_length=100)
-    experiment_type = models.OneToOneField(ExperimentType, on_delete=models.CASCADE)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.annotation}"
