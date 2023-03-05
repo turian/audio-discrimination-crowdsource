@@ -20,6 +20,7 @@ from .models import (
     CurrentBatchGold,
     Experiment,
     ExperimentType,
+    Task,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
