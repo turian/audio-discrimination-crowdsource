@@ -335,7 +335,15 @@ Now, for any new html page, we need to do the following:
  pip install django-extensions
  ```
 
-Add the following code to ```settings.py```
+On Linux use:
+
+ ```
+ sudo apt-get install graphviz
+ pip install pydotv
+ ```
+
+
+Add the following code to `settings.py`
 ```
 GRAPH_MODELS ={
     'all_applications': True,
