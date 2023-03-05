@@ -15,18 +15,11 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
-<<<<<<< HEAD
-    CurrentBatchEval,
-    CurrentBatchGold,
-    Experiment,
-    ExperimentType,
-=======
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
->>>>>>> origin/main
-    Task,
+    ExperimentType,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
