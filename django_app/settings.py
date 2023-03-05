@@ -226,7 +226,7 @@ MEDIA_ROOT = Path(BASE_DIR, "assets/images")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
+# Settings to create an ERD from models
 GRAPH_MODELS = {
     "all_applications": True,
     "graph_models": True,
