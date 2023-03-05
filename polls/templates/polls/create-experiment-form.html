@@ -2,7 +2,7 @@
 {% block body-block %}
 <h2>Create a new Experiment</h2>
 <h1 class="page-header">Create new experiment type below</h1>
-<form hx-post="{% url 'experiment-type' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<form hx-post="{% url 'create-experiment' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="true">
     <div class="mb-3">
       <label for="text-field" class="form-label">Experiment Name</label>
       <input type="text" class="form-control" id="text-field" name="experiment-name" placeholder="Input experiment name">
@@ -12,10 +12,12 @@
         <select id="select-form" class="form-select">
             {% for type in exp_types %}
                 <option value="{{type.pk}}" selected disabled>{{type.type}}</option>
+            {% empty %}
+                <option value="empty" selected disabled>No experiment type available</option>
             {% endfor %}
         </select>
       </div>
-    <button type="submit" class="btn btn-primary" hx-target="#form-result">Create experiment type</button>
+    <button type="submit" class="btn btn-primary" hx-target="#form-result">Create experiment</button>
   </form>
   <div id="form-result"></div>
 {% endblock body-block %}
