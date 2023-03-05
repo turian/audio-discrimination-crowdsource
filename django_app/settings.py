@@ -230,3 +230,9 @@ FIXTURE_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Settings to create an ERD from models
+GRAPH_MODELS = {
+    "all_applications": True,
+    "graph_models": True,
+}

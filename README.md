@@ -328,3 +328,34 @@ Now, for any new html page, we need to do the following:
 {% endblock %}
 
 ```
+
+## Generate ERD with django extensions
+```
+ pip install graphviz
+ pip install django-extensions
+ ```
+
+On Linux use:
+
+ ```
+ sudo apt-get install graphviz
+ pip install pydotv
+ ```
+
+
+Add the following code to `settings.py`
+```
+GRAPH_MODELS ={
+    'all_applications': True,
+    'graph_models': True,
+     }
+```
+
+ Now execute the following commands:
+ ```
+ pip install pyparsing pydot
+ python manage.py graph_models -a > erd.dot
+ python manage.py graph_models -a
+ python manage.py graph_models -a > erd.dot && python manage.py graph_models --pydot -a -g -o erd.png
+ ```
+ This will create a file by the name *erd.png* with all your database structure
