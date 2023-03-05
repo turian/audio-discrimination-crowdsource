@@ -20,7 +20,7 @@ urlpatterns = [
     path(
         "admin/experiment/create/",
         views.AdminCreateExperimentView.as_view(),
-        "create-experiment",
+        name="create-experiment",
     ),
     path(
         "admin-management/",
