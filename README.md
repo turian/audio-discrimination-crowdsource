@@ -94,7 +94,7 @@ To load this data execute the following command:
 python manage.py loaddata fixtures/initial_data.json
 ```
 
-This will populate you database with the data inside ```initial_data.json```
+This will populate your database with the data inside ```initial_data.json```
 
 ### Deployment to fly.io
 
