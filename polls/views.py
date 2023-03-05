@@ -266,7 +266,7 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         if exp_type:
             new_experiment = Experiment.objects.create(
-                name=str(name), experiment_type=type_pk
+                name=str(name), experiment_type=exp_type
             )
             new_experiment.save()
             return HttpResponse("successfully created")
