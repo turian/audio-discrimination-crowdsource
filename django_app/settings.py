@@ -223,7 +223,7 @@ MEDIA_ROOT = Path(BASE_DIR, "assets/images")
 
 # Fixtures setup for loading initial data to db
 FIXTURE_DIRS = [
-    os.path.join(BASE_DIR, 'fixtures'),
+    os.path.join(BASE_DIR, "fixtures"),
 ]
 
 # Default primary key field type
