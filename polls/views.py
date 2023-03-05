@@ -26,6 +26,7 @@ from .utils import (
     batch_selector,
     check_user_work_permission,
     create_audio_list,
+    get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
 )
@@ -115,6 +116,8 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
+                experiment_type = task.batch.experiment_type
+                task_annotations = get_task_annotations(experiment_type)
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)
 
@@ -123,6 +126,7 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
                     "batch_id": current_batch.id,
                     "audios": audio_list,
                     "task_presentation": task_presentation,
+                    "task_annotations": task_annotations,
                 }
         return render(request, self.template_name, context)
 
@@ -168,13 +172,17 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if task:
+            experiment_type = task.batch.experiment_type
+            task_annotations = get_task_annotations(experiment_type)
             audios, task_presentation = present_task_for_user(task)
             audio_list = create_audio_list(audios, task_presentation)
+
             context = {
                 "task": task,
                 "batch_id": current_batch.id,
                 "audios": audio_list,
                 "task_presentation": task_presentation,
+                "task_annotations": task_annotations,
             }
         return render(request, "polls/htmlform.html", context)
 

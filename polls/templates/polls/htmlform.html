@@ -9,24 +9,38 @@
   <input type="hidden" value="{{ task_list }}" name="tasklist">
   <input type="hidden" value="{{ task_presentation }}" name="taskPresentation">
   <h4>ID: {{task.pk}}</h4>
-  {% for audio in audios %}
   <div>
-  <audio controls src="{{ audio }}" class="mt-3">
-    Your browser does not support the
-    <code>audio</code> element.
-  </audio>
-</div>
-  {% endfor %}
+    {% for audio in audios %}
 
-  <div class="mt-2">
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" id="type1" name="annotationOption" value="XXY" checked>
-      <label class="form-check-label" for="type1">First and Second is same</label>
+    {% if forloop.counter == 1 %}
+    <div>
+
+      <audio controls src="{{ audio }}" class="mt-3">
+        Your browser does not support the
+        <code>audio</code> element.
+      </audio>
     </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" id="type2" name="annotationOption" value="XYX">
-      <label class="form-check-label" for="type2">First and Third is same</label>
+
+    {% else %}
+    <audio controls src="{{ audio }}" class="mt-3">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+
+    {% endif %}
+
+
+    {% endfor %}
+  </div>
+
+  <div class="mt-2 d-flex justify-content-around">
+    {% for annotation in task_annotations %}
+    <div class="form-check form-check-inline mx-10">
+      <input class="form-check-input" type="radio" id="type1" name="annotationOption"
+        value="{{ annotation.annotation }}">
     </div>
+    {% endfor %}
+
   </div>
 
   <button class="btn btn-primary mt-3" hx-post="{% url 'create_annotation' %}" hx-target="#form-div">Submit</button>

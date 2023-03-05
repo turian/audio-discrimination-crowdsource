@@ -2,7 +2,12 @@ import random
 
 from django.utils import timezone
 
-from .models import Annotation, ExperimentTypeTaskPresentation, Task
+from .models import (
+    Annotation,
+    ExperimentTypeAnnotation,
+    ExperimentTypeTaskPresentation,
+    Task,
+)
 
 random.seed()
 
@@ -98,3 +103,10 @@ def create_audio_list(audios, task_presentation):
         audio_list.append(audios[char])
 
     return audio_list
+
+
+def get_task_annotations(experiment_type):
+    task_annotations = ExperimentTypeAnnotation.objects.filter(
+        experiment_type=experiment_type
+    )
+    return task_annotations
