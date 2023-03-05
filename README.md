@@ -331,7 +331,7 @@ Now, for any new html page, we need to do the following:
 
 ## Configure fixtures
 
-There is a directory by the name ```fixtures```.
+There is a directory by the name ```fixtures``` in root project directory
 
 It contains initial data for our app in ```initial_data.json``` file.
 
