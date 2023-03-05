@@ -23,6 +23,11 @@ urlpatterns = [
         name="create-experiment",
     ),
     path(
+        "create-annotation/",
+        views.CreateAnnotation.as_view(),
+        name="create_annotation",
+    ),
+    path(
         "admin-management/",
         views.AdminManagementView.as_view(),
         name="admin-management",

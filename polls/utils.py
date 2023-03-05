@@ -1,8 +1,9 @@
 import random
 
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from .models import Annotation, Task
+from .models import Annotation, ExperimentTypeTaskPresentation, Task
 
 random.seed()
 
@@ -13,7 +14,11 @@ def batch_selector():
 
 def present_task_for_user(task):
     """mock function"""
-    return "www.example.com", "AAB"
+    experiment_type = task.batch.experiment_type
+    experiment_type = get_object_or_404(
+        ExperimentTypeTaskPresentation, experiment_type=task.batch.experiment_type
+    )
+    return task.reference_url, task.transform_url, experiment_type.task_presentation
 
 
 def check_user_work_permission(user):
