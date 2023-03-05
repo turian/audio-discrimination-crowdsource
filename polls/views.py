@@ -260,16 +260,16 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
         exp_type = ExperimentType.objects.get(pk=type_pk)
         if experiment:
             return HttpResponse("An experiment with this name already exist")
-        else:
-            if exp_type:
-                new_experiment = Experiment.objects.create(
-                    name=str(name), experiment_type=type_pk
-                )
-                new_experiment.save()
-                return HttpResponse("successfully created")
 
-            else:
-                return HttpResponse("Please select experiment type from dropdown")
+        if exp_type:
+            new_experiment = Experiment.objects.create(
+                name=str(name), experiment_type=type_pk
+            )
+            new_experiment.save()
+            return HttpResponse("successfully created")
+
+        else:
+            return HttpResponse("Please select experiment type from dropdown")
 
     def test_func(self):
         return not self.request.user.is_superuser
