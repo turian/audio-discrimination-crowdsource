@@ -11,9 +11,9 @@
         <label for="Experiment type" class="form-label">What type of experiment do you want to perform?</label>
         <select id="select-form" class="form-select">
             {% for type in exp_types %}
-                <option value="{{type.pk}}" selected disabled>{{type.type}}</option>
+                <option value="{{type.pk}}" selected>{{type.type}}</option>
             {% empty %}
-                <option value="empty" selected disabled>No experiment type available</option>
+                <option value="empty" selected>No experiment type available</option>
             {% endfor %}
         </select>
       </div>
