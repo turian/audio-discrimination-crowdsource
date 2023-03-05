@@ -209,11 +209,11 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         experiment_type = ExperimentType.objects.all()
-        context = {"e_types": experiment_type}
+        context = {"exp_types": experiment_type}
         return render(request, "polls/create-experiment-form.html", context)
 
     def post(self, request, *args, **kwargs):
-        name = request.POST.get("name")
+        name = request.POST.get("experiment-name")
         type_pk = request.POST.get("experiment-type")
         experiment = Experiment.objects.get(name=name)
         exp_type = ExperimentType.objects.get(pk=type_pk)
@@ -222,7 +222,7 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         if exp_type:
             new_experiment = Experiment.objects.create(
-                name=name, experiment_type=type_pk
+                name=str(name), experiment_type=type_pk
             )
             new_experiment.save()
             return HttpResponse("successfully created")
