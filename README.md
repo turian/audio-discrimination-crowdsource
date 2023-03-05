@@ -82,6 +82,20 @@ DEBUG=True python manage.py runserver
 ```
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
+### Database Population
+
+There is a directory by the name ```fixtures``` in root project directory
+
+It contains initial data for our app in ```initial_data.json``` file.
+
+To load this data execute the following command:
+
+```
+python manage.py loaddata fixtures/initial_data.json
+```
+
+This will populate you database with the data inside ```initial_data.json```
+
 ### Deployment to fly.io
 
 #### Install flyctl
@@ -328,17 +342,3 @@ Now, for any new html page, we need to do the following:
 {% endblock %}
 
 ```
-
-## Configure fixtures
-
-There is a directory by the name ```fixtures``` in root project directory
-
-It contains initial data for our app in ```initial_data.json``` file.
-
-To load this data execute the following command:
-
-```
-python manage.py loaddata fixtures/initial_data.json
-```
-
-This will populate you database with the data inside ```initial_data.json```
