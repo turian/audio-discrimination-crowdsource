@@ -148,6 +148,8 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
 
 class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
+    template_name = "polls/task_flow_form.html"
+
     def post(self, request):
         task_pk = request.POST.get("taskPk")
         annotation_choice = request.POST.get("annotationOption")
@@ -155,7 +157,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
         task_presentation = request.POST.get("taskPresentation")
 
         if not task_pk:
-            return render(request, "polls/htmlform.html", {})
+            return render(request, self.template_name, {})
 
         task = get_object_or_404(Task, pk=task_pk)
         Annotation.objects.create(
@@ -184,7 +186,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
                 "task_presentation": task_presentation,
                 "task_annotations": task_annotations,
             }
-        return render(request, "polls/htmlform.html", context)
+        return render(request, self.template_name, context)
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
