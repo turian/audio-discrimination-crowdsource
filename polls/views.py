@@ -274,7 +274,7 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
             return HttpResponse("Please select experiment type from dropdown")
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
 
 # API Views
