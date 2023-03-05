@@ -256,12 +256,10 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         name = request.POST.get("experiment-name")
         type_pk = request.POST.get("experiment-type")
-        print(f"name is {name}")
-        print(f"type pk is {type_pk}")
-        experiment = Experiment.objects.all()
+        experiment = Experiment.objects.filter(name=name).exists()
         exp_type = ExperimentType.objects.get(pk=type_pk)
 
-        if name in experiment:
+        if experiment:
             return HttpResponse("An experiment with this name already exist")
 
         if exp_type:
