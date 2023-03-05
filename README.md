@@ -334,10 +334,6 @@ Now, for any new html page, we need to do the following:
  pip install graphviz
  pip install django-extensions
  ```
- Go to ```settings.py``` and add the following line to  ```INSTALLED_APPS```
- ```
- 'django_extensions',
- ```
 
 Add the following code to ```settings.py```
 ```
@@ -347,7 +343,7 @@ GRAPH_MODELS ={
      }
 ```
 
- Now execute the folowing commands:
+ Now execute the following commands:
  ```
  pip install pyparsing pydot
  python manage.py graph_models -a > erd.dot
