@@ -19,6 +19,7 @@ from .models import (
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
+    ExperimentType,
     Task,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
@@ -116,7 +117,7 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                experiment_type = task.batch.experiment_type
+                experiment_type = task.batch.experiment.experiment_type
                 task_annotations = get_task_annotations(experiment_type)
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)
@@ -256,6 +257,36 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
+class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiment_type = ExperimentType.objects.all()
+        context = {"exp_types": experiment_type}
+        return render(request, "polls/create-experiment-form.html", context)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("experiment-name")
+        type_pk = request.POST.get("experiment-type")
+        experiment = Experiment.objects.filter(name=name).exists()
+        exp_type = ExperimentType.objects.get(pk=type_pk)
+
+        if experiment:
+            return HttpResponse("An experiment with this name already exist")
+
+        if exp_type:
+            new_experiment = Experiment.objects.create(
+                name=str(name), experiment_type=exp_type
+            )
+            new_experiment.save()
+            return HttpResponse("successfully created")
+
+        else:
+            return HttpResponse("Please select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+# API Views
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
