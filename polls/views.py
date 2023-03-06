@@ -302,7 +302,7 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
             new_task.save()
 
-            return HttpResponseRedirect("admin-batch-view")
+            return HttpResponseRedirect("admin_dashboard")
 
     def test_func(self):
         return self.request.user.is_superuser
