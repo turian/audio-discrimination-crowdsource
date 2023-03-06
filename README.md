@@ -82,6 +82,20 @@ DEBUG=True python manage.py runserver
 ```
 - Load `fixtures.json` according to [OAuth Setup](#OAuth-Setup).
 
+### Database Population
+
+There is a directory by the name ```fixtures``` in root project directory
+
+It contains initial data for our app in ```initial_data.json``` file.
+
+To load this data execute the following command:
+
+```
+python manage.py loaddata fixtures/initial_data.json
+```
+
+This will populate your database with the data inside ```initial_data.json```
+
 ### Deployment to fly.io
 
 #### Install flyctl
