@@ -30,7 +30,8 @@ class ExperimentType(models.Model):
 
     def __str__(self):
         return f"{self.type}"
-    
+
+
 class Experiment(models.Model):
     name = models.CharField(max_length=100)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
@@ -104,9 +105,6 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
-
-
-
 
 
 class ExperimentTypeTaskPresentation(models.Model):
