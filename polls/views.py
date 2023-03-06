@@ -287,12 +287,10 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
         json_data = request.POST.get("json-data")
         db_data = json.loads(json_data)
         for data in db_data:
-            experiment_type = ExperimentType.objects.get(
-                pk=data["batch"]["experiment-type"]
-            )
+            experiment_type = ExperimentType.objects.get(pk=data["experiment-type"])
             new_batch = Batch.objects.create(
-                is_gold=data["batch"]["is_gold"] if data["batch"]["task"] else False,
-                notes=data["batch"]["notes"] if data["batch"]["notes"] else "",
+                is_gold=data["is_gold"] if data["task"] else False,
+                notes=data["notes"] if data["notes"] else "",
                 experiment_type=experiment_type,
             )
             new_batch.save()
