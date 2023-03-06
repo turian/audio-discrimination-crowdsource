@@ -292,7 +292,7 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
             new_batch = Batch.objects.create(
                 is_gold=data["batch"]["is_gold"] if data["batch"]["task"] else False,
-                notes=data["batch"]["notes"],
+                notes=data["batch"]["notes"] if data["batch"]["notes"] else "",
                 experiment_type=experiment_type,
             )
             new_batch.save()
