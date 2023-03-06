@@ -285,24 +285,31 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def post(self, request, *args, **kwargs):
         json_data = request.POST.get("json-data")
+        exp_pk = request.POST.get("exp_pk")
+        experiment = Experiment.objects.get(pk=exp_pk).exists()
         db_data = json.loads(json_data)
-        for data in db_data:
-            experiment_type = ExperimentType.objects.get(pk=data["experiment-type"])
-            new_batch = Batch.objects.create(
-                is_gold=data["is_gold"] if data["task"] else False,
-                notes=data["notes"] if data["notes"] else "",
-                experiment_type=experiment_type,
-            )
-            new_batch.save()
-            new_task = Task.objects.create(
-                batch=new_batch,
-                reference_url=data["task"]["reference_url"],
-                transform_url=data["task"]["transform_url"],
-                transform_metadata=data["task"]["transform_metadata"],
-            )
-            new_task.save()
+        if experiment:
+            for data in db_data:
+                experiment_type = Experiment.objects.get(pk=data["experiment"])
+                new_batch = Batch.objects.create(
+                    is_gold=data["is_gold"] if data["task"] else False,
+                    notes=data["notes"] if data["notes"] else "",
+                    experiment_type=experiment_type,
+                )
+                new_batch.save()
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=data["task"]["reference_url"],
+                    transform_url=data["task"]["transform_url"],
+                    transform_metadata=data["task"]["transform_metadata"],
+                )
+                new_task.save()
 
-            return HttpResponseRedirect("admin_dashboard")
+                return HttpResponseRedirect("admin_dashboard")
+        else:
+            return HttpResponse(
+                "reference experiment does not exist, please choose from drop-down."
+            )
 
     def test_func(self):
         return self.request.user.is_superuser
