@@ -278,6 +278,9 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "admin-batch-submit.html")
+
     def test_func(self):
         return self.request.user.is_superuser
 
