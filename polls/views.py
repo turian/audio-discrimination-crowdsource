@@ -116,7 +116,7 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                experiment_type = task.batch.experiment_type
+                experiment_type = task.batch.experiment.experiment_type
                 task_annotations = get_task_annotations(experiment_type)
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)

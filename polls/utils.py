@@ -23,7 +23,7 @@ def present_task_for_user(task):
     of task presentation string
     """
     audios_list = [task.reference_url, task.transform_url]
-    experiment_type = task.batch.experiment_type
+    experiment_type = task.batch.experiment.experiment_type
     task_presentation = get_random_task_presentation(experiment_type)
 
     # to get unique characters from task_presentations for dict mapping
