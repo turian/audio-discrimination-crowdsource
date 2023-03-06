@@ -2,7 +2,8 @@
 {% block body-block %}
 <h1> Admin Batch submit Form </h1>
 
-<form>
+<form hx-post="{% url 'admin-batch-submit' %}" hx-swap="innerHTML" 
+    hx-target="#body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div>
         <label for="json-data" class="form-label">Paste JSON</label>
         <textarea name="json-data" class ="form-control" rows="10"></textarea>
