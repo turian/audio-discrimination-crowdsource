@@ -8,7 +8,15 @@
         <label for="json-data" class="form-label">Paste JSON</label>
         <textarea name="json-data" class ="form-control" rows="10"></textarea>
     </div>
-    <div></div>
+    <div>
+        <label for="Experiments" class="form-label">What type of experiment do you want to create batch tasks for?</label>
+        <select id="select-form" class="form-select" name="experiment">
+            {% for experiment in experiments %}
+                <option value="{{experiment.pk}}" >{{experiment.name}}</option>
+            {% empty %}
+                <option value="empty" selected>There is no available experiment, you need to create one first.</option>
+            {% endfor %}
+    </div>
     <submit type="submit" class="btn btn-primary">Create Batch</submit>
 </form>
 
