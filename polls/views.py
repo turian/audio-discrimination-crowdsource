@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
@@ -280,6 +282,18 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
 class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         return render(request, "admin-batch-submit.html")
+
+    def post(self, request, *args, **kwargs):
+        json_data = request.POST.get("json-data")
+        db_data = json.loads(json_data)
+        for data in db_data:
+            experiment_type = ExperimentType.objects.get(pk=data["experiment-type"])
+            new_batch = Batch.objects.create(
+                is_gold=data["is_gold"],
+                notes=data["notes"],
+                experiment_type=experiment_type,
+            )
+            new_batch.save()
 
     def test_func(self):
         return self.request.user.is_superuser
