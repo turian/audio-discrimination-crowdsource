@@ -32,6 +32,7 @@ class ExperimentType(models.Model):
         return f"{self.type}"
 
 
+
 class Experiment(models.Model):
     name = models.CharField(max_length=100)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
