@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -287,13 +287,24 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
         json_data = request.POST.get("json-data")
         db_data = json.loads(json_data)
         for data in db_data:
-            experiment_type = ExperimentType.objects.get(pk=data["experiment-type"])
+            experiment_type = ExperimentType.objects.get(
+                pk=data["batch"]["experiment-type"]
+            )
             new_batch = Batch.objects.create(
-                is_gold=data["is_gold"],
-                notes=data["notes"],
+                is_gold=data["batch"]["is_gold"],
+                notes=data["batch"]["notes"],
                 experiment_type=experiment_type,
             )
             new_batch.save()
+            new_task = Task.objects.create(
+                batch=new_batch,
+                reference_url=data["task"]["reference_url"],
+                transform_url=data["task"]["transform_url"],
+                transform_metadata=data["task"]["transform_metadata"],
+            )
+            new_task.save()
+
+            return HttpResponseRedirect("admin-batch-view")
 
     def test_func(self):
         return self.request.user.is_superuser
