@@ -26,6 +26,8 @@ from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
     check_user_work_permission,
+    create_audio_list,
+    get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
 )
@@ -115,15 +117,17 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                reference_url, transform_url, task_presentation = present_task_for_user(
-                    task
-                )
+                experiment_type = task.batch.experiment.experiment_type
+                task_annotations = get_task_annotations(experiment_type)
+                audios, task_presentation = present_task_for_user(task)
+                audio_list = create_audio_list(audios, task_presentation)
+
                 context = {
                     "task": task,
                     "batch_id": current_batch.id,
-                    "reference_url": reference_url,
-                    "transform_url": transform_url,
+                    "audios": audio_list,
                     "task_presentation": task_presentation,
+                    "task_annotations": task_annotations,
                 }
         return render(request, self.template_name, context)
 
@@ -145,6 +149,8 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
 
 class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
+    template_name = "polls/task_flow_form.html"
+
     def post(self, request):
         task_pk = request.POST.get("taskPk")
         annotation_choice = request.POST.get("annotationOption")
@@ -152,7 +158,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
         task_presentation = request.POST.get("taskPresentation")
 
         if not task_pk:
-            return render(request, "polls/htmlform.html", {})
+            return render(request, self.template_name, {})
 
         task = get_object_or_404(Task, pk=task_pk)
         Annotation.objects.create(
@@ -169,16 +175,19 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if task:
-            reference_url, transform_url, task_presentation = present_task_for_user(
-                task
-            )
-            context["reference_url"] = reference_url
-            context["transform_url"] = transform_url
-            context["task_presentation"] = task_presentation
+            experiment_type = task.batch.experiment_type
+            task_annotations = get_task_annotations(experiment_type)
+            audios, task_presentation = present_task_for_user(task)
+            audio_list = create_audio_list(audios, task_presentation)
 
-        context["task"] = task
-        context["batch_id"] = current_batch.id
-        return render(request, "polls/htmlform.html", context)
+            context = {
+                "task": task,
+                "batch_id": current_batch.id,
+                "audios": audio_list,
+                "task_presentation": task_presentation,
+                "task_annotations": task_annotations,
+            }
+        return render(request, self.template_name, context)
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
