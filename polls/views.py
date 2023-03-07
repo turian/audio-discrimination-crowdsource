@@ -283,7 +283,7 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         experiments = Experiment.objects.all()
         context = {"experiments": experiments}
-        return render(request, "admin-batch-submit.html", context)
+        return render(request, "polls/admin-batch-submit.html", context)
 
     def post(self, request, *args, **kwargs):
         json_data = request.POST.get("json-data")
