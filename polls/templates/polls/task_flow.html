@@ -1,60 +1,9 @@
-<div class="container mt-5">
-  <div class="row text-center">
-    <div class="col"></div>
-    <div class="col-6">
-      {% if not task %}
-      <h3>Come back later for more work.</h3>
-      {% else %}
+{% extends 'base.html' %}
 
-      <div id="form-div">
-        <h3>Task</h3>
-        <form hx-boost="true" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-post="{% url 'create_annotation' %}"
-          hx-target="#task-flow-container">
-          <input type="hidden" value="{{ task.pk }}" name="taskPk">
-          <input type="hidden" value="{{ batch_id }}" name="batch_id">
-          <input type="hidden" value="{{ task_list }}" name="tasklist">
-          <input type="hidden" value="{{ task_presentation }}" name="taskPresentation">
-          <p>Pick the radio button under the audio that seems most similar</p>
+{% block body-block %}
 
-          <div class="container">
-            <div class="row">
-
-              {% if reference_audio %}
-              <div class="col-12 mb-3">
-                <!-- First div -->
-                <div class="p-3">
-                  <audio controls src="{{ reference_audio }}" class="mt-3">
-                    Your browser does not support the
-                    <code>audio</code> element.
-                  </audio>
-                </div>
-              </div>
-              {% endif %}
-              {% for item in zipped_list %}
-              <div class="col-md-6">
-                <!-- Second div -->
-                <div class=" p-3">
-                  <audio controls src="{{ item.0 }}" class="mt-3">
-                    Your browser does not support the
-                    <code>audio</code> element.
-                  </audio>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                    value="{{item.1}}">
-                </div>
-              </div>
-
-              {% endfor %}
-            </div>
-          </div>
-
-          <button class="btn btn-primary mt-3">Submit</button>
-
-        </form>
-      </div>
-      {% endif %}
-    </div>
-    <div class="col"></div>
-  </div>
+<div id="task-flow-container">
+  {% include 'polls/task_flow_form.html' %}
 </div>
+
+{% endblock %}
