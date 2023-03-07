@@ -122,7 +122,8 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)
 
-                # set zipped_list(audios, annotations) and reference audio according to experiment_type
+                # set zipped_list(audios, annotations) and reference audio
+                # according to experiment_type
                 if experiment_type.type == "2AFC":
                     zipped_list = list(zip(audio_list[1:], task_annotations))
                     reference_audio = audio_list[0]
@@ -188,7 +189,8 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
             audios, task_presentation = present_task_for_user(task)
             audio_list = create_audio_list(audios, task_presentation)
 
-            # set zipped_list(audios, annotations) and reference audio according to experiment_type
+            # set zipped_list(audios, annotations) and reference audio
+            # according to experiment_type
             if experiment_type.type == "2AFC":
                 zipped_list = list(zip(audio_list[1:], task_annotations))
                 reference_audio = audio_list[0]
