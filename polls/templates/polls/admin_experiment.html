@@ -16,44 +16,40 @@
 
 
     {% for item in data_list %}
-
     {% if item.is_gold == True %}
-
-    <h5 class="mt-5">Batch(Gold): {{item.batch}}</h5>
-
+      <h5 class="mt-5">Batch(Gold): {{item.batch}}</h5>
     {% else %}
-
-    <h5 class="mt-5">Batch: {{item.batch}}</h5>
-
+      <h5 class="mt-5">Batch: {{item.batch}}</h5>
     {% endif %}
-
-    <table class="table table-striped">
+  
+    <div class="table-responsive">
+      <table class="table table-striped">
         <thead>
-            <tr>
-                <th scope="col">Task ID</th>
-                <th scope="col"># Annotations </th>
-                <th scope="col">% Annotations</th>
-                <th scope="col">Reference URL</th>
-                <th scope="col">Transform URL</th>
-                <th scope="col">Transform JSON</th>
-            </tr>
+          <tr>
+            <th scope="col">Task ID</th>
+            <th scope="col"># Annotations</th>
+            <th scope="col">% Annotations</th>
+            <th scope="col">Reference URL</th>
+            <th scope="col">Transform URL</th>
+            <th scope="col">Transform JSON</th>
+          </tr>
         </thead>
         <tbody>
-
-            {% for task in item.tasks %}
+          {% for task in item.tasks %}
             <tr>
-                <th scope="row">{{task.id}}</th>
-                <td>{{task.annotations.count}}</td>
-                <td>0</td>
-                <td>{{task.reference_url}}</td>
-                <td>{{task.transform_url}}</td>
-                <td>{{task.transform_metadata}}</td>
+              <th scope="row">{{task.id}}</th>
+              <td>{{task.annotations.count}}</td>
+              <td>0</td>
+              <td>{{task.reference_url}}</td>
+              <td>{{task.transform_url}}</td>
+              <td>{{task.transform_metadata}}</td>
             </tr>
-            {% endfor %}
+          {% endfor %}
         </tbody>
-    </table>
-
-    {% endfor %}
+      </table>
+    </div>
+  {% endfor %}
+  
 
     {% endif %}
 
