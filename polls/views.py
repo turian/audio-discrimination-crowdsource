@@ -58,7 +58,7 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = "polls/admin_dashboard.html"
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
     def get(self, request):
         experiments = Experiment.objects.all()
@@ -313,14 +313,14 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
                         transform_url=task["transform_url"],
                     )
                     new_task.save()
-            return HttpResponseRedirect("admin_dashboard")
+            return HttpResponseRedirect("admin-dashboard")
         else:
             return HttpResponse(
                 "reference experiment does not exist, please choose from drop-down."
             )
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
 
 # API Views
