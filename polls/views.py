@@ -297,14 +297,22 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
                 experiment=experiment,
             )
             new_batch.save()
-            new_task = Task.objects.create(
-                batch=new_batch,
-                reference_url=db_data["tasks"]["reference_url"],
-                transform_url=db_data["tasks"]["transform_url"],
-                transform_metadata=db_data["tasks"]["transform_metadata"],
-            )
-            new_task.save()
-
+            for task in db_data["tasks"]:
+                if "transform_metadata" in task:
+                    new_task = Task.objects.create(
+                        batch=new_batch,
+                        reference_url=task["reference_url"],
+                        transform_url=task["transform_url"],
+                        transform_metadata=task["transform_metadata"],
+                    )
+                    new_task.save()
+                else:
+                    new_task = Task.objects.create(
+                        batch=new_batch,
+                        reference_url=task["reference_url"],
+                        transform_url=task["transform_url"],
+                    )
+                    new_task.save()
             return HttpResponseRedirect("admin_dashboard")
         else:
             return HttpResponse(
