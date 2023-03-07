@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block body-block %}
 <h2>Create a new Experiment</h2>
-<form hx-post="{% url 'create-experiment' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="true">
+<form hx-post="{% url 'create-experiment' %}" hx-boost="true"
+hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="mb-3">
       <label for="text-field" class="form-label">Experiment Name</label>
       <input type="text" class="form-control" id="text-field" name="experiment-name" placeholder="Input experiment name">

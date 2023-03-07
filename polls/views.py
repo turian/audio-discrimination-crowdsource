@@ -261,7 +261,6 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
         type_pk = request.POST.get("experiment-type")
         experiment = Experiment.objects.filter(name=name).exists()
         exp_type = ExperimentType.objects.get(pk=type_pk)
-
         if experiment:
             return HttpResponse("An experiment with this name already exist")
 
@@ -288,26 +287,25 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, *args, **kwargs):
         json_data = request.POST.get("json-data")
         exp_pk = request.POST.get("exp_pk")
-        experiment = Experiment.objects.get(pk=exp_pk).exists()
+        experiment_id = Experiment.objects.filter(pk=int(exp_pk))
         db_data = json.loads(json_data)
-        if experiment:
-            for data in db_data:
-                experiment_type = Experiment.objects.get(pk=data["experiment"])
-                new_batch = Batch.objects.create(
-                    is_gold=data["is_gold"] if data["task"] else False,
-                    notes=data["notes"] if data["notes"] else "",
-                    experiment_type=experiment_type,
-                )
-                new_batch.save()
-                new_task = Task.objects.create(
-                    batch=new_batch,
-                    reference_url=data["task"]["reference_url"],
-                    transform_url=data["task"]["transform_url"],
-                    transform_metadata=data["task"]["transform_metadata"],
-                )
-                new_task.save()
+        if experiment_id.exists():
+            experiment = Experiment.objects.get(pk=exp_pk)
+            new_batch = Batch.objects.create(
+                is_gold=db_data["is_gold"] if db_data["is_gold"] else False,
+                notes=db_data["notes"] if db_data["notes"] else "",
+                experiment=experiment,
+            )
+            new_batch.save()
+            new_task = Task.objects.create(
+                batch=new_batch,
+                reference_url=db_data["tasks"]["reference_url"],
+                transform_url=db_data["tasks"]["transform_url"],
+                transform_metadata=db_data["tasks"]["transform_metadata"],
+            )
+            new_task.save()
 
-                return HttpResponseRedirect("admin_dashboard")
+            return HttpResponseRedirect("admin_dashboard")
         else:
             return HttpResponse(
                 "reference experiment does not exist, please choose from drop-down."
