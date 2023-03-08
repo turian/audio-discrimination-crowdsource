@@ -77,7 +77,7 @@ class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, experiment_id):
         try:
             experiment = Experiment.objects.get(id=experiment_id)
-            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            batches = experiment.batches.all().order_by("-is_gold")
             data_list = parse_data_for_admin_experiment(batches)
             context = {"experiment": experiment, "data_list": data_list}
         except Experiment.DoesNotExist:
