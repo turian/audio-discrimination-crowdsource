@@ -20,15 +20,11 @@
         <div class="row">
           {% if reference_audio %}
 
-          <!-- <div class="row"> -->
-          <!-- <div class="col-6 mx-auto"> -->
           <div class="col-12 mb-2 d-flex justify-content-center align-items-center">
             <audio controls src="{{ reference_audio }}" class="mt-3">
               Your browser does not support the <code>audio</code> element.
             </audio>
           </div>
-          <!-- </div> -->
-          <!-- </div> -->
           {% endif %}
 
           {% for item in zipped_list %}
