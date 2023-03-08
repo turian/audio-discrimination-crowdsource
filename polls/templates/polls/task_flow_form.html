@@ -1,56 +1,56 @@
-<div class="container mt-5">
+<div class="container">
   {% if not task %}
-  <div class="row text-center">
-    <div class="col">
+  <div>
+    <div>
       <h3>Come back later for more work.</h3>
     </div>
   </div>
   {% else %}
-  <div class="row text-center">
-    <div class="col-sm-2 col-md-3"></div>
-    <div class="col-sm-8 col-md-6">
-      <div id="form-div">
-        <h3>Task</h3>
-        <form hx-boost="true" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-post="{% url 'create_annotation' %}"
-          hx-target="#task-flow-container">
-          <input type="hidden" value="{{ task.pk }}" name="taskPk">
-          <input type="hidden" value="{{ batch_id }}" name="batch_id">
-          <input type="hidden" value="{{ task_list }}" name="tasklist">
-          <input type="hidden" value="{{ task_presentation }}" name="taskPresentation">
-          <p>Pick the radio button under the audio that seems most similar</p>
 
-          <div class="container">
-            <div class="row">
-              {% if reference_audio %}
-              <div class="col-12 mb-3">
-                <div class="p-3">
-                  <audio controls src="{{ reference_audio }}" class="mt-3">
-                    Your browser does not support the <code>audio</code> element.
-                  </audio>
-                </div>
-              </div>
-              {% endif %}
+  <div id="form-div" class="container-fluid d-flex justify-content-center align-items-center">
+    <div>
+      <h3 class="text-center">Task</h3>
+      <form hx-boost="true" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-post="{% url 'create_annotation' %}"
+        hx-target="#task-flow-container">
+        <input type="hidden" value="{{ task.pk }}" name="taskPk">
+        <input type="hidden" value="{{ batch_id }}" name="batch_id">
+        <input type="hidden" value="{{ task_list }}" name="tasklist">
+        <input type="hidden" value="{{ task_presentation }}" name="taskPresentation">
+        <p class="text-center">Pick the radio button under the audio that seems most similar</p>
+        <div class="row">
+          {% if reference_audio %}
 
-              {% for item in zipped_list %}
-              <div class="col-sm-6 mb-3">
-                <div class="p-3">
-                  <audio controls src="{{ item.0 }}" class="mt-3">
-                    Your browser does not support the <code>audio</code> element.
-                  </audio>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" required name="annotationOption" id="exampleRadios1"
-                    value="{{item.1}}">
-                </div>
-              </div>
-              {% endfor %}
+          <!-- <div class="row"> -->
+          <!-- <div class="col-6 mx-auto"> -->
+          <div class="col-12 mb-2 d-flex justify-content-center align-items-center">
+            <audio controls src="{{ reference_audio }}" class="mt-3">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+          </div>
+          <!-- </div> -->
+          <!-- </div> -->
+          {% endif %}
+
+          {% for item in zipped_list %}
+          <div class="col-sm-12 col-lg-6  d-flex align-items-center flex-column">
+
+            <audio controls src="{{ item.0 }}" class="">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+
+            <div class="">
+              <input class="" type="radio" required name="annotationOption" id="exampleRadios1" value="{{item.1}}">
             </div>
           </div>
-          <button class="btn btn-primary mt-3">Submit</button>
-        </form>
-      </div>
+          {% endfor %}
+
+        </div>
     </div>
-    <div class="col-sm-2 col-md-3"></div>
   </div>
-  {% endif %}
+  <div class="d-flex justify-content-center">
+    <button class="btn btn-primary mt-3 ">Submit</button>
+  </div>
+  </form>
+</div>
+{% endif %}
 </div>
