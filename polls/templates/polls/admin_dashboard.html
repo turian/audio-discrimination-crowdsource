@@ -4,9 +4,26 @@
 
 <div class="mt-5 text-center">
     <h1>Admin View Dasaboard</h1>
-
     {% for experiment in experiments %}
-    <p> <a href="{% url 'admin_experiment' experiment_id=experiment.id%}"> {{experiment.name}} </a></p>
+        <li hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}">
+             {{experiment.name}}
+        </li>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Batch</th>
+                    <th scope="col">Is gold</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in experiment.batches %}
+                <tr>
+                    <td>{{batch.id}}</td>
+                    <td>{{batch.is_gold}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endfor %}
 
     <h5>Go to admin panel: <a href="/admin">admin</a></h5>
