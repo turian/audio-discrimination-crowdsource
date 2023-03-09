@@ -1,4 +1,5 @@
 import random
+import re
 
 from django.utils import timezone
 
@@ -143,3 +144,14 @@ def get_task_annotations(experiment_type):
         experiment_type=experiment_type
     )
     return task_annotations
+
+
+def validate_temp_login(query_email):
+    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
+    error = ""
+    if query_email == None:
+        error = "Please send email as query param in url"
+    elif not (re.fullmatch(regex, query_email)):
+        error = "Please send a valid email as query param in url"
+
+    return error
