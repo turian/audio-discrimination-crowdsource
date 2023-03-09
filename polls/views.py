@@ -1,6 +1,8 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -268,7 +270,6 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
         type_pk = request.POST.get("experiment-type")
         experiment = Experiment.objects.filter(name=name).exists()
         exp_type = ExperimentType.objects.get(pk=type_pk)
-
         if experiment:
             return HttpResponse("An experiment with this name already exist")
 
@@ -281,6 +282,43 @@ class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         else:
             return HttpResponse("Please select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {"experiments": experiments}
+        return render(request, "polls/admin-batch-submit.html", context)
+
+    def post(self, request, *args, **kwargs):
+        json_data = request.POST.get("json-data")
+        exp_pk = request.POST.get("exp_pk")
+        experiment_id = Experiment.objects.filter(pk=int(exp_pk))
+        db_data = json.loads(json_data)
+        if experiment_id.exists():
+            experiment = Experiment.objects.get(pk=exp_pk)
+            new_batch = Batch.objects.create(
+                is_gold=db_data["is_gold"] if db_data["is_gold"] else False,
+                notes=db_data["notes"] if db_data["notes"] else "",
+                experiment=experiment,
+            )
+            new_batch.save()
+            for task in db_data["tasks"]:
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=task["reference_url"],
+                    transform_url=task["transform_url"],
+                    transform_metadata=task["transform_metadata"],
+                )
+                new_task.save()
+            return HttpResponseRedirect("admin-dashboard")
+        else:
+            return HttpResponse(
+                "reference experiment does not exist, please choose from drop-down."
+            )
 
     def test_func(self):
         return self.request.user.is_superuser

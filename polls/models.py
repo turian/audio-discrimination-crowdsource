@@ -33,7 +33,7 @@ class ExperimentType(models.Model):
 
 
 class Experiment(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=150, unique=True)
     experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -82,7 +82,7 @@ class Task(models.Model):
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name="tasks")
     reference_url = models.URLField()
     transform_url = models.URLField()
-    transform_metadata = models.JSONField()
+    transform_metadata = models.JSONField(blank=True, null=True)
 
 
 class Annotation(models.Model):

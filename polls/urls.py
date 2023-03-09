@@ -33,6 +33,11 @@ urlpatterns = [
         name="admin-management",
     ),
     path("admin/delete/<int:pk>", views.PerformDelete.as_view(), name="perform-delete"),
+    path(
+        "admin/submit-batch",
+        views.AdminBatchSubmitView.as_view(),
+        name="admin-batch-submit",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
