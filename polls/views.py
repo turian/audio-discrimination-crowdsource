@@ -1,7 +1,8 @@
 import json
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -32,6 +33,7 @@ from .utils import (
     get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
+    validate_temp_login,
 )
 
 
@@ -389,3 +391,28 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class TemporaryLogin(View):
+    template_name = "polls/temp_login.html"
+
+    def get(self, request):
+        context = {"message": "You have been logged in temporarily"}
+        query_email = request.GET.get("email", None)
+        error = validate_temp_login(query_email)
+        if error:
+            context["message"] = error
+        else:
+            username = query_email.split("@")[0]
+            temp_password = "Asdfghjkl123"
+            try:
+                temp_user = get_user_model().objects.create(
+                    username=username, email=query_email
+                )
+                temp_user.set_password(temp_password)
+                temp_user.save()
+                user = authenticate(request, username=username, password=temp_password)
+                login(request, user)
+            except IntegrityError as e:
+                context["message"] = "A user with this email already exists"
+        return render(request, self.template_name, context)

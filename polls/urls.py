@@ -38,6 +38,11 @@ urlpatterns = [
         views.AdminBatchSubmitView.as_view(),
         name="admin-batch-submit",
     ),
+    path(
+        "temporary-login",
+        views.TemporaryLogin.as_view(),
+        name="temporary_login",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
