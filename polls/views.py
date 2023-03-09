@@ -64,8 +64,10 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request):
         experiments = Experiment.objects.all()
+        batches = Batch.objects.all()
         context = {
             "experiments": experiments,
+            "batches": batches,
         }
         return render(request, self.template_name, context)
 
@@ -74,7 +76,7 @@ class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = "polls/admin_experiment.html"
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
     def get(self, request, experiment_id):
         try:
@@ -322,14 +324,14 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
                         transform_url=task["transform_url"],
                     )
                     new_task.save()
-            return HttpResponseRedirect("admin-dashboard")
+            return HttpResponseRedirect(reverse("admin_dashboard"))
         else:
             return HttpResponse(
                 "reference experiment does not exist, please choose from drop-down."
             )
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
 
 class ToggleIsGoldView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -345,7 +347,7 @@ class ToggleIsGoldView(LoginRequiredMixin, UserPassesTestMixin, View):
             return HttpResponse("True")
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return not self.request.user.is_superuser
 
 
 # API Views

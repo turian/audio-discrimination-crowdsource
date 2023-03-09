@@ -39,7 +39,7 @@ urlpatterns = [
         name="admin-batch-submit",
     ),
     path(
-        "admin/toggle-is-gold/<int:batch-pk>/",
+        "admin/toggle-is-gold/<int:batch_pk>/",
         views.ToggleIsGoldView.as_view(),
         name="toggle-is-gold",
     ),

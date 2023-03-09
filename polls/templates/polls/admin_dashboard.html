@@ -2,11 +2,11 @@
 
 {% block body-block %}
 
-<div class="mt-5 text-center">
-    <h1>Admin View Dasaboard</h1>
+<div class="mt-5">
+    <h1>Admin View Dashboard</h1>
     <ul>
         {% for experiment in experiments %}
-            <li hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" hx-target="#body">
+            <li class="text-align-left text-bold" hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" hx-target="#body">
                 {{experiment.name}}
             </li>
             <table class="table table-striped">
@@ -17,11 +17,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for batch in experiment.batches %}
-                    <tr>
-                        <td>{{batch.id}}</td>
-                        <td>{{batch.is_gold}}</td>
-                    </tr>
+                    {% for batch in batches %}
+                        {% if batch.experiment.id == experiment.id%}
+                            <tr>
+                                <td>{{batch.id}}</td>
+                                <td>{{batch.is_gold}}</td>
+                            </tr>
+                        {% endif %}
+                    
                     {% endfor %}
                 </tbody>
             </table>
@@ -30,3 +33,4 @@
     <h5>Go to admin panel: <a href="/admin">admin</a></h5>
 </div>
 {% endblock %}
+  
