@@ -60,7 +60,7 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
     template_name = "polls/admin_dashboard.html"
 
     def test_func(self):
-        return not self.request.user.is_superuser
+        return self.request.user.is_superuser
 
     def get(self, request):
         experiments = Experiment.objects.all()
@@ -307,21 +307,13 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
             new_batch.save()
             for task in db_data["tasks"]:
-                if "transform_metadata" in task:
-                    new_task = Task.objects.create(
-                        batch=new_batch,
-                        reference_url=task["reference_url"],
-                        transform_url=task["transform_url"],
-                        transform_metadata=task["transform_metadata"],
-                    )
-                    new_task.save()
-                else:
-                    new_task = Task.objects.create(
-                        batch=new_batch,
-                        reference_url=task["reference_url"],
-                        transform_url=task["transform_url"],
-                    )
-                    new_task.save()
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=task["reference_url"],
+                    transform_url=task["transform_url"],
+                    transform_metadata=task["transform_metadata"],
+                )
+                new_task.save()
             return HttpResponseRedirect("admin-dashboard")
         else:
             return HttpResponse(
