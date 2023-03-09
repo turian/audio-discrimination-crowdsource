@@ -13,6 +13,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Batch</th>
+                        <th scope="col">Created At</th>
                         <th scope="col">Is gold</th>
                     </tr>
                 </thead>
@@ -21,6 +22,7 @@
                         {% if batch.experiment.id == experiment.id%}
                             <tr>
                                 <td>{{batch.id}}</td>
+                                <td>{{batch.created_at}}</td>
                                 <td hx-post="{% url "toggle-is-gold" batch.id%}" hx-swap="innerHTML" 
                                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-confirm="Are you sure you want to toggle is_gold?">
                                 {{batch.is_gold}}
