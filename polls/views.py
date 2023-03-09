@@ -124,12 +124,21 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)
 
+                # set zipped_list(audios, annotations) and reference audio
+                # according to experiment_type
+                if experiment_type.type == "2AFC":
+                    zipped_list = list(zip(audio_list[1:], task_annotations))
+                    reference_audio = audio_list[0]
+                else:
+                    zipped_list = list(zip(audio_list, task_annotations))
+                    reference_audio = None
+
                 context = {
                     "task": task,
-                    "batch_id": current_batch.id,
-                    "audios": audio_list,
+                    "batch_id": task.batch.id,
                     "task_presentation": task_presentation,
-                    "task_annotations": task_annotations,
+                    "zipped_list": zipped_list,
+                    "reference_audio": reference_audio,
                 }
         return render(request, self.template_name, context)
 
@@ -177,17 +186,26 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if task:
-            experiment_type = task.batch.experiment_type
+            experiment_type = task.batch.experiment.experiment_type
             task_annotations = get_task_annotations(experiment_type)
             audios, task_presentation = present_task_for_user(task)
             audio_list = create_audio_list(audios, task_presentation)
 
+            # set zipped_list(audios, annotations) and reference audio
+            # according to experiment_type
+            if experiment_type.type == "2AFC":
+                zipped_list = list(zip(audio_list[1:], task_annotations))
+                reference_audio = audio_list[0]
+            else:
+                zipped_list = list(zip(audio_list, task_annotations))
+                reference_audio = None
+
             context = {
                 "task": task,
-                "batch_id": current_batch.id,
-                "audios": audio_list,
+                "batch_id": task.batch.id,
                 "task_presentation": task_presentation,
-                "task_annotations": task_annotations,
+                "zipped_list": zipped_list,
+                "reference_audio": reference_audio,
             }
         return render(request, self.template_name, context)
 
