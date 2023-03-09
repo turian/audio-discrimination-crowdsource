@@ -413,6 +413,6 @@ class TemporaryLogin(View):
                 temp_user.save()
                 user = authenticate(request, username=username, password=temp_password)
                 login(request, user)
-            except IntegrityError as e:
+            except IntegrityError:
                 context["message"] = "A user with this email already exists"
         return render(request, self.template_name, context)
