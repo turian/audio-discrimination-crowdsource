@@ -333,6 +333,17 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class ToggleIsGoldView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, batch_pk, *args, **kwargs):
+        batch = get_object_or_404(Batch, pk=batch_pk)
+        if batch.is_gold:
+            batch.is_gold = False
+            batch.save()
+            return HttpResponse("False")
+        else:
+            batch.is_gold = True
+            batch.save()
+            return HttpResponse("True")
+
     def test_func(self):
         return self.request.user.is_superuser
 
