@@ -3,12 +3,17 @@
 {% block body-block %}
 
 <div class="mt-5">
-    <h1>Admin View Dashboard</h1>
-    <ul>
+    <div class="mb-5 text-center">
+        <h1>Admin View Dashboard</h1>
+        <p>This page displays all available experiment with index and shows their
+            respective batches under each experiment in a table</p>
+    </div>
+    <ol>
         {% for experiment in experiments %}
-            <li class="text-align-left text-bold" hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" hx-target="#body">
-                {{experiment.name}}
-            </li>
+        <li class="text-align-left text-bold h4" hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" hx-target="#body">
+            {{experiment.name}}
+        </li>
+    </ol>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -36,7 +41,6 @@
                 </tbody>
             </table>
         {% endfor %}
-        <ul>
     <h5>Go to admin panel: <a href="/admin">admin</a></h5>
 </div>
 {% endblock %}
