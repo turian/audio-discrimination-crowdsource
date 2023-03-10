@@ -33,7 +33,6 @@ from .utils import (
     get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
-    validate_temp_login,
 )
 
 
