@@ -331,7 +331,9 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
                     batch=new_batch,
                     reference_url=task["reference_url"],
                     transform_url=task["transform_url"],
-                    transform_metadata=task["transform_metadata"] if task["transform_metadata"] else None,
+                    transform_metadata=task["transform_metadata"]
+                    if task["transform_metadata"]
+                    else None,
                 )
                 new_task.save()
             return HttpResponseRedirect("admin-dashboard")
