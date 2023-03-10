@@ -81,7 +81,7 @@ class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, experiment_id):
         try:
             experiment = Experiment.objects.get(id=experiment_id)
-            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            batches = experiment.batches.all().order_by("-is_gold")
             data_list = parse_data_for_admin_experiment(batches)
             context = {"experiment": experiment, "data_list": data_list}
         except Experiment.DoesNotExist:
@@ -126,12 +126,21 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
                 audios, task_presentation = present_task_for_user(task)
                 audio_list = create_audio_list(audios, task_presentation)
 
+                # set zipped_list(audios, annotations) and reference audio
+                # according to experiment_type
+                if experiment_type.type == "2AFC":
+                    zipped_list = list(zip(audio_list[1:], task_annotations))
+                    reference_audio = audio_list[0]
+                else:
+                    zipped_list = list(zip(audio_list, task_annotations))
+                    reference_audio = None
+
                 context = {
                     "task": task,
-                    "batch_id": current_batch.id,
-                    "audios": audio_list,
+                    "batch_id": task.batch.id,
                     "task_presentation": task_presentation,
-                    "task_annotations": task_annotations,
+                    "zipped_list": zipped_list,
+                    "reference_audio": reference_audio,
                 }
         return render(request, self.template_name, context)
 
@@ -179,17 +188,26 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if task:
-            experiment_type = task.batch.experiment_type
+            experiment_type = task.batch.experiment.experiment_type
             task_annotations = get_task_annotations(experiment_type)
             audios, task_presentation = present_task_for_user(task)
             audio_list = create_audio_list(audios, task_presentation)
 
+            # set zipped_list(audios, annotations) and reference audio
+            # according to experiment_type
+            if experiment_type.type == "2AFC":
+                zipped_list = list(zip(audio_list[1:], task_annotations))
+                reference_audio = audio_list[0]
+            else:
+                zipped_list = list(zip(audio_list, task_annotations))
+                reference_audio = None
+
             context = {
                 "task": task,
-                "batch_id": current_batch.id,
-                "audios": audio_list,
+                "batch_id": task.batch.id,
                 "task_presentation": task_presentation,
-                "task_annotations": task_annotations,
+                "zipped_list": zipped_list,
+                "reference_audio": reference_audio,
             }
         return render(request, self.template_name, context)
 
@@ -309,22 +327,14 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
             new_batch.save()
             for task in db_data["tasks"]:
-                if "transform_metadata" in task:
-                    new_task = Task.objects.create(
-                        batch=new_batch,
-                        reference_url=task["reference_url"],
-                        transform_url=task["transform_url"],
-                        transform_metadata=task["transform_metadata"],
-                    )
-                    new_task.save()
-                else:
-                    new_task = Task.objects.create(
-                        batch=new_batch,
-                        reference_url=task["reference_url"],
-                        transform_url=task["transform_url"],
-                    )
-                    new_task.save()
-            return HttpResponseRedirect(reverse("admin_dashboard"))
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=task["reference_url"],
+                    transform_url=task["transform_url"],
+                    transform_metadata=task["transform_metadata"] if task["transform_metadata"] else None,
+                )
+                new_task.save()
+            return HttpResponseRedirect("admin-dashboard")
         else:
             return HttpResponse(
                 "reference experiment does not exist, please choose from drop-down."
