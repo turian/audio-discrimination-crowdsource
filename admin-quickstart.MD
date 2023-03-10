@@ -32,7 +32,9 @@ Click on the link that reads, `Create Experiment`, you should get a page with tw
 After selecting an experiment type that suite your case, give your experiment a clear name (please note that experiments name must be unique, no two experiments can have the same name), click the `create experiment` button and you should get a success, indicating that experiment is successfully created.
 
 Screenshot of the `Create experiment` page:
-![Screenshot 2023-03-10 174525](https://user-images.githubusercontent.com/68183305/224373849-08a731d1-5913-435e-b736-306395a2f924.png)
+
+
+
 
 ## Understanding Batch
 This software is structured in such a way that after creating experiments, you obviously needs to create a related `Tasks`, but all tasks are tied to a `Batch`, i.e you create tasks in batches.
@@ -78,7 +80,7 @@ Having all this in mind, this is the accepted way of formating the JSON file, re
 In order to create a batch after understanding all this, click on the `create batch` in the admin side panel and let it load, there are two available inputs in the form, the first one allows you to select an experiment you're creating a batch for and the second allows you to paste your JSON data.
 A screenshot of the Create Batch Page:
 
-![Screenshot 2023-03-10 165914](https://user-images.githubusercontent.com/68183305/224380135-c835488f-2f1f-44da-83f4-f5e4f0deba78.png)
+
 
 If Batch creation is succesful, you should be redirected to `Admin Dashboard` where a table is presented under each available experiment showing the experimet's Batches, also, the you can toggle between the two batch values by clicking on the True or False value that appears at the `Is Gold` column of each experiments.
 
