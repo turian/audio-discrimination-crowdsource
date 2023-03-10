@@ -38,6 +38,11 @@ urlpatterns = [
         views.AdminBatchSubmitView.as_view(),
         name="admin-batch-submit",
     ),
+    path(
+        "admin/toggle-is-gold/<int:batch_pk>/",
+        views.ToggleIsGoldView.as_view(),
+        name="toggle-is-gold",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
