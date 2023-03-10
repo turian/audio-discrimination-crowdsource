@@ -41,6 +41,7 @@ class Experiment(models.Model):
 
 
 class Batch(models.Model):
+    name = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_gold = models.BooleanField(default=False)
     notes = models.TextField()
