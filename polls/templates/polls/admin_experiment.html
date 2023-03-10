@@ -3,7 +3,7 @@
 {% block body-block %}
 
 <div class="mt-5 text-center">
-    <h1>Admin View Experiment</h1>
+    <h1>Admin Experiment Details </h1>
 
     {% if error_message %}
 
@@ -11,8 +11,8 @@
 
     {% else %}
 
-    <p><strong>Name: </strong> {{experiment.name}}</p>
-    <p><strong>Type: </strong> {{experiment.experiment_type}}</p>
+    <p><strong>Experiment Name: </strong> {{experiment.name}}</p>
+    <p><strong>Experiment Type: </strong> {{experiment.experiment_type}}</p>
 
 
     {% for item in data_list %}

@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block body-block %}
-<h2>Create a new Experiment</h2>
+<div class="mb-5 text-center">
+  <h1 class="mt-5 text-center mb-5">Create a New Experiment</h1>
+  <p>Create a new experiment by selecting an experiment type and giving your experiment a name, 
+    you can then create some batch tasks for the experiment later.</p>
+</div>
 <form hx-post="{% url 'create-experiment' %}" hx-boost="true"
 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="mb-3">

@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block body-block %}
-<h1> Admin Batch submit Form </h1>
-
+<div class="mb-5 text-center">
+    <h1 class="mt-5 text-center mb-5">Admin Batch Submit Form </h1>
+    <p>This page allows admin users to create batch of tasks for any of their existing experiment in the database,
+        This is done by pasting a well formated JSON in the text box below.
+    </p>
+</div>
 <form hx-post="{% url 'admin-batch-submit' %}" hx-swap="innerHTML" 
     hx-target="#body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="mb-3">

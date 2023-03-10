@@ -5,14 +5,24 @@
         <p>Audio Discrimination</p>
 
     </div>
+    {% if request.user.is_superuser %}
     <div class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Dashboard</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'admin-management' %}">management</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'admin-batch-submit' %}">batch</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'temporary_login_template' %}">Temporary Login</a>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url 'admin_dashboard' %}">
+        Dashboard</a>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url 'admin-management' %}">
+        User Management</a>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url 'admin-batch-submit' %}">
+        Batch Submit</a>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url 'create-experiment' %}">
+        Create Experiment</a>
+        
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="#!">
+        Empty</a>
     </div>
 </div>
+{% endif %}
