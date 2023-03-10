@@ -14,5 +14,5 @@ def create_user_profile(request, user, *args, **kwargs):
     function to create a user profile by extracting the email address
     of user from all auth"""
     user_mail = user.email
-    profile = AnnotatorProfile.objects.create(user=user, email=user_mail)
+    profile = AnnotatorProfile.objects.create(annotator=user, email=user_mail)
     profile.save()

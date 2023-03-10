@@ -1,6 +1,9 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -12,9 +15,24 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .custom_mixin import CheckUserLockMixin
-from .models import Annotation, CurrentBatchEval, CurrentBatchGold, Task
+from .models import (
+    Annotation,
+    Batch,
+    CurrentBatchEval,
+    CurrentBatchGold,
+    Experiment,
+    ExperimentType,
+    Task,
+)
 from .serializers import AnnotationSerializer, BatchTaskSerializer
-from .utils import batch_selector, check_user_work_permission, present_task_for_user
+from .utils import (
+    batch_selector,
+    check_user_work_permission,
+    create_audio_list,
+    get_task_annotations,
+    parse_data_for_admin_experiment,
+    present_task_for_user,
+)
 
 
 class IndexView(TemplateView):
@@ -35,6 +53,39 @@ class AuthFlowView(LoginRequiredMixin, CheckUserLockMixin, View):
             "should_rest": should_rest,
             "rest_time": rest_time,
         }
+        return render(request, self.template_name, context)
+
+
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_dashboard.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {
+            "experiments": experiments,
+        }
+        return render(request, self.template_name, context)
+
+
+class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = "polls/admin_experiment.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, request, experiment_id):
+        try:
+            experiment = Experiment.objects.get(id=experiment_id)
+            batches = experiment.batches.all().order_by("-is_gold")
+            data_list = parse_data_for_admin_experiment(batches)
+            context = {"experiment": experiment, "data_list": data_list}
+        except Experiment.DoesNotExist:
+            context = {
+                "error_message": "The Experiment with provided ID does not exist"
+            }
         return render(request, self.template_name, context)
 
 
@@ -68,11 +119,26 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                url, task_presentation = present_task_for_user(task)
+                experiment_type = task.batch.experiment.experiment_type
+                task_annotations = get_task_annotations(experiment_type)
+                audios, task_presentation = present_task_for_user(task)
+                audio_list = create_audio_list(audios, task_presentation)
+
+                # set zipped_list(audios, annotations) and reference audio
+                # according to experiment_type
+                if experiment_type.type == "2AFC":
+                    zipped_list = list(zip(audio_list[1:], task_annotations))
+                    reference_audio = audio_list[0]
+                else:
+                    zipped_list = list(zip(audio_list, task_annotations))
+                    reference_audio = None
+
                 context = {
                     "task": task,
-                    "url": url,
+                    "batch_id": task.batch.id,
                     "task_presentation": task_presentation,
+                    "zipped_list": zipped_list,
+                    "reference_audio": reference_audio,
                 }
         return render(request, self.template_name, context)
 
@@ -91,6 +157,57 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
     def check_user_is_locked(self):
         return self.request.user.is_locked
+
+
+class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
+    template_name = "polls/task_flow_form.html"
+
+    def post(self, request):
+        task_pk = request.POST.get("taskPk")
+        annotation_choice = request.POST.get("annotationOption")
+        batch_id = request.POST.get("batch_id")
+        task_presentation = request.POST.get("taskPresentation")
+
+        if not task_pk:
+            return render(request, self.template_name, {})
+
+        task = get_object_or_404(Task, pk=task_pk)
+        Annotation.objects.create(
+            user=request.user,
+            task=task,
+            annotated_at=timezone.now(),
+            task_presentation=task_presentation,
+            annotations=annotation_choice,
+        )
+
+        current_batch = get_object_or_404(Batch, id=batch_id)
+        tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+        task = tasks_for_user.first()
+
+        context = {}
+        if task:
+            experiment_type = task.batch.experiment.experiment_type
+            task_annotations = get_task_annotations(experiment_type)
+            audios, task_presentation = present_task_for_user(task)
+            audio_list = create_audio_list(audios, task_presentation)
+
+            # set zipped_list(audios, annotations) and reference audio
+            # according to experiment_type
+            if experiment_type.type == "2AFC":
+                zipped_list = list(zip(audio_list[1:], task_annotations))
+                reference_audio = audio_list[0]
+            else:
+                zipped_list = list(zip(audio_list, task_annotations))
+                reference_audio = None
+
+            context = {
+                "task": task,
+                "batch_id": task.batch.id,
+                "task_presentation": task_presentation,
+                "zipped_list": zipped_list,
+                "reference_audio": reference_audio,
+            }
+        return render(request, self.template_name, context)
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -113,20 +230,119 @@ class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-class AdminAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+class ThanksView(TemplateView):
+    template_name = "polls/thanks.html"
 
+
+class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        return Response({"data": "hello"}, status.HTTP_200_OK)
+        annotators = get_user_model().objects.exclude(is_superuser=True)
+
+        context = {
+            "annotators": annotators,
+        }
+        return render(request, "polls/admin-management.html", context)
 
     def test_func(self):
         return self.request.user.is_superuser
 
 
-class ThanksView(TemplateView):
-    template_name = "polls/thanks.html"
+class LockUserView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        user = get_user_model().objects.get(pk=user_id)
+        if user.is_locked:
+            user.is_locked = False
+            user.save()
+            return HttpResponse("Lock")
+        else:
+            user.is_locked = True
+            user.save()
+            return HttpResponse("Unlock")
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
+class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(request, user_id, *args, **kwargs):
+        user = get_user_model().objects.get(id=user_id)
+        annotations = Annotation.objects.filter(user=user)
+        for annotation in annotations:
+            annotation.delete()
+        user.is_locked = True
+        user.save()
+        return HttpResponse("success")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiment_type = ExperimentType.objects.all()
+        context = {"exp_types": experiment_type}
+        return render(request, "polls/create-experiment-form.html", context)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("experiment-name")
+        type_pk = request.POST.get("experiment-type")
+        experiment = Experiment.objects.filter(name=name).exists()
+        exp_type = ExperimentType.objects.get(pk=type_pk)
+        if experiment:
+            return HttpResponse("An experiment with this name already exist")
+
+        if exp_type:
+            new_experiment = Experiment.objects.create(
+                name=str(name), experiment_type=exp_type
+            )
+            new_experiment.save()
+            return HttpResponse("successfully created")
+
+        else:
+            return HttpResponse("Please select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {"experiments": experiments}
+        return render(request, "polls/admin-batch-submit.html", context)
+
+    def post(self, request, *args, **kwargs):
+        json_data = request.POST.get("json-data")
+        exp_pk = request.POST.get("exp_pk")
+        experiment_id = Experiment.objects.filter(pk=int(exp_pk))
+        db_data = json.loads(json_data)
+        if experiment_id.exists():
+            experiment = Experiment.objects.get(pk=exp_pk)
+            new_batch = Batch.objects.create(
+                is_gold=db_data["is_gold"] if db_data["is_gold"] else False,
+                notes=db_data["notes"] if db_data["notes"] else "",
+                experiment=experiment,
+            )
+            new_batch.save()
+            for task in db_data["tasks"]:
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=task["reference_url"],
+                    transform_url=task["transform_url"],
+                    transform_metadata=task["transform_metadata"],
+                )
+                new_task.save()
+            return HttpResponseRedirect("admin-dashboard")
+        else:
+            return HttpResponse(
+                "reference experiment does not exist, please choose from drop-down."
+            )
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+# API Views
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
@@ -165,6 +381,11 @@ class BatchTasksAPIView(APIView):
         return self.request.user.is_superuser
 
 
-class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
+class AdminAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request):
+        return Response({"data": "hello"}, status.HTTP_200_OK)
+
     def test_func(self):
         return self.request.user.is_superuser

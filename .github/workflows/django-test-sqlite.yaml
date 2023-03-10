@@ -41,7 +41,11 @@ jobs:
                   DEBUG: 'True'
                   DEVELOPMENT_MODE: local
               run: |
-                  python manage.py test
+                  python manage.py makemigrations --merge
+                  python manage.py migrate
+            - name: Load Fixtures
+              run: |
+                  python manage.py loaddata fixtures/initial_data.json
             - name: Run Tests
               env:
                   DEBUG: 'True'

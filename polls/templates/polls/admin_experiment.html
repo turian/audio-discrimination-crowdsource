@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block body-block %}
+
+<div class="mt-5 text-center">
+    <h1>Admin View Experiment</h1>
+
+    {% if error_message %}
+
+    <p>{{error_message}}</p>
+
+    {% else %}
+
+    <p><strong>Name: </strong> {{experiment.name}}</p>
+    <p><strong>Type: </strong> {{experiment.experiment_type}}</p>
+
+
+    {% for item in data_list %}
+    {% if item.is_gold == True %}
+      <h5 class="mt-5">Batch(Gold): {{item.batch}}</h5>
+    {% else %}
+      <h5 class="mt-5">Batch: {{item.batch}}</h5>
+    {% endif %}
+  
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Task ID</th>
+            <th scope="col"># Annotations</th>
+            <th scope="col">% Annotations</th>
+            <th scope="col">Reference URL</th>
+            <th scope="col">Transform URL</th>
+            <th scope="col">Transform JSON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in item.tasks %}
+            <tr>
+              <th scope="row">{{task.id}}</th>
+              <td>{{task.annotations.count}}</td>
+              <td>0</td>
+              <td>{{task.reference_url}}</td>
+              <td>{{task.transform_url}}</td>
+              <td>{{task.transform_metadata}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+  
+
+    {% endif %}
+
+
+    <h5>Go to admin panel: <a href="/admin">admin</a></h5>
+</div>
+{% endblock %}
