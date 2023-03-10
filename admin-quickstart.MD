@@ -34,6 +34,7 @@ After selecting an experiment type that suite your case, give your experiment a 
 Screenshot of the `Create experiment` page:
 
 
+![Screenshot 2023-03-10 232234](https://user-images.githubusercontent.com/68183305/224440437-5101eaa3-119c-4a04-a7fe-ace8f0490866.png)
 
 
 ## Understanding Batch
@@ -77,9 +78,10 @@ Having all this in mind, this is the accepted way of formating the JSON file, re
 }
 ```
 
-In order to create a batch after understanding all this, click on the `create batch` in the admin side panel and let it load, there are two available inputs in the form, the first one allows you to select an experiment you're creating a batch for and the second allows you to paste your JSON data.
-A screenshot of the Create Batch Page:
+In order to create a batch after understanding all this, click on the `batch submit` in the admin side panel and let it load, there are two available inputs in the form, the first one allows you to select an experiment you're creating a batch for and the second allows you to paste your JSON data.
+A screenshot of the `Batch Submit` Page:
 
+![Screenshot 2023-03-10 232536](https://user-images.githubusercontent.com/68183305/224440548-dd3b57b8-07ab-432a-a1bc-fad5306c2097.png)
 
 
 If Batch creation is succesful, you should be redirected to `Admin Dashboard` where a table is presented under each available experiment showing the experimet's Batches, also, the you can toggle between the two batch values by clicking on the True or False value that appears at the `Is Gold` column of each experiments.
