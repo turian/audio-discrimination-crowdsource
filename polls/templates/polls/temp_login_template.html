@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body-block %}
+<div class="text-center" id="form-result">
+    <h2>Enter an email</h2>
+    <form action="{% url 'temporary_login' %}" method="post" class="d-flex justify-content-center align-items-center flex-column">
+        {% csrf_token %}
+        <div class="mb-3 col-md-3">
+            <input type="email" class="form-control" placeholder="Enter email" name="email" required>
+        </div>
+        <button type="submit" class="btn btn-primary" hx-target="#form-result">Login Temporarily</button>
+    </form>
+</div>
+
+{% endblock body-block %}

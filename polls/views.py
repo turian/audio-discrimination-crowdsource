@@ -415,25 +415,25 @@ class AdminAPIView(APIView):
 
 
 class TemporaryLogin(View):
-    template_name = "polls/temp_login.html"
+    template_name = "polls/temp_login_result.html"
 
-    def get(self, request):
+    def post(self, request):
         context = {"message": "You have been logged in temporarily"}
-        query_email = request.GET.get("email", None)
-        error = validate_temp_login(query_email)
-        if error:
-            context["message"] = error
-        else:
-            username = query_email.split("@")[0]
-            temp_password = "Asdfghjkl123"
-            try:
-                temp_user = get_user_model().objects.create(
-                    username=username, email=query_email
-                )
-                temp_user.set_password(temp_password)
-                temp_user.save()
-                user = authenticate(request, username=username, password=temp_password)
-                login(request, user)
-            except IntegrityError:
-                context["message"] = "A user with this email already exists"
+        query_email = request.POST.get("email", None)
+        username = query_email.split("@")[0]
+        temp_password = "Asdfghjkl123"
+        try:
+            temp_user = get_user_model().objects.create(
+                username=username, email=query_email
+            )
+            temp_user.set_password(temp_password)
+            temp_user.save()
+            user = authenticate(request, username=username, password=temp_password)
+            login(request, user)
+        except IntegrityError:
+            context["message"] = "A user with this email already exists"
         return render(request, self.template_name, context)
+
+
+class TemporaryLoginTemplate(TemplateView):
+    template_name = "polls/temp_login_template.html"
