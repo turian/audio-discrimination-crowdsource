@@ -8,9 +8,10 @@
         <p>This page displays all available experiment with index and shows their
             respective batches under each experiment in a table</p>
     </div>
-    <ol>
+    <ol class="text-primary">
         {% for experiment in experiments %}
-        <li class="text-align-left text-bold h4" hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" hx-target="#body">
+        <li class="text-align-left text-bold h4" hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" 
+        hx-target="#body" class="text-primary">
             {{experiment.name}}
         </li>
     </ol>
