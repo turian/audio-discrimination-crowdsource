@@ -406,7 +406,7 @@ class TemporaryLoginTemplate(TemplateView):
     template_name = "polls/temp_login_template.html"
 
 
-##**************** API Views *******************##
+# **************** API Views ******************* #
 
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
