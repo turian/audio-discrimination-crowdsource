@@ -17,9 +17,11 @@ Experiments are the most basic part of the application and currently, the softwa
 A/B test (experiment type) this is to check if A or B is better. I might have an experiment named "add salt" experiment and then I give annotators two dishes, A and B but I didn't tell them one has more salt and the experiment is to see which one they like better. That's an A/B test.
 
 ### 2AFC experiment type
-2AFC test (experiment type) this for example is that I give you four dishes, three don't have salt (A) [i.e saltless dishes are exoeriment type A], and the last dish has salt (B). I can give them to you in any of this order "AAB", "ABA", "BBA", "BAB". I didn't explain to you that I added salt or not and I am experimenting to see how much salt you can detect. Maybe under 1g of salt you cannot taste anymore. You answer "XXY",, which means that you think the first and second dish are the same and the third is different, or you answer "XYX" which means that you think the first and third dish are the same and the second one is different.
+2AFC test (experiment type) this for example is that I give you four dishes, three don't have salt (denoted by "A") [i.e saltless dishes are experiment type A], and the last dish has salt (denoted by "B") [i.e, salted dishes are of experiment type B]. 
+I can give the dishes to you in any of these order: "AAB", "ABA", "BBA", "BAB". I didn't explain to you that I added salt or not and the aim of my experiment is determine how much salt you can detect. Maybe under 1g of salt you cannot taste anymore. 
+If you answer "XXY", which means that you think the first and second dish are the same and the third is different, or you answer "XYX" which means that you think the first and third dish are the same and the second one is different, through this, I can determine if you really can sense salt in a dish or not.
 
-Thus an A/B test is for determining what people prefer and 2AFC test is for determining what people can sense, dectect or perceive.
+Thus an A/B test is for determining what people prefer and what would likely be welcomed by them and 2AFC test is for determining what people can sense, dectect or perceive.
 
 However, once you decide to do A/B test in order to create the tastiest dish, you might have your experiment named "salt experiment", "sugar experiment" e.t.c. The same thing applies to 2AFC when determining people's sensitivity.
 
@@ -104,7 +106,7 @@ Screenshot of `Admin Dashboard` page:
 
 Admin can reach this page only by clicking on any of the available experiments in the Admin Dashboard page, by clicking on the experiment name displayed in blue, admin would be redirected to `Experiment View` page.
 On this page, details about experiments are displayed, primarily, these details are grouped in batches, and `Batch type Gold` are prioritized in sorting the batch.
-For each batch, details about tasks created under it is deisplayed and this includes `Task id`, which is the unique identification number of that task, `# of Annotations` this shows the number of time annotation has been done on the task, `% of Annotations` which shows percentage of annotations done on the task, `reference url` which is the url of the original audio presented for annotation, `transform url` which is the url of the edited/custom audio annotators are experimenting on, `trasform json` also known as transform metadata in the batch creation JSON.
+For each batch, details about tasks created under it is displayed and this includes `Task id`, which is the unique identification number of that task, `# of Annotations` this shows the number of time annotation has been done on the task, `% of Annotations` which shows percentage of annotations done on the task, `reference url` which is the url of the original audio presented for annotation, `transform url` which is the url of the edited/custom audio annotators are experimenting on, `trasform json` also known as transform metadata in the batch creation JSON.
 Experiment name and Experiment type is displayed at the top of the page as well, and this is all about the `Admin Experiment Detail` page.
 
 Screenshot of `Admin Experiment` page:
