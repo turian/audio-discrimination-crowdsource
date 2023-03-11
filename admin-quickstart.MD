@@ -1,10 +1,11 @@
 # Admin Quick Start
 Admin users on this software have total control over everything that happens on the software, these includes:
 - Creation of experiments
+- Data management
 - User Locking
-- User data deletion
+- User data management
 - Batch creation
-To mention just few, before an account can be admin account, the account needs to have the `is_staff` permission.
+To mention just few, before an account can be an admin account, the account needs to have the `is_staff` permission from a superuser.
 
 ## Understanding Experiments
 
@@ -107,3 +108,17 @@ Experiment name and Experiment type is displayed at the top of the page as well,
 
 Screenshot:
 ![Screenshot 2023-03-10 164255](https://user-images.githubusercontent.com/68183305/224489370-8a020c9d-c4be-4043-a4ff-e5e7e0dcb6cf.png)
+
+
+## Admin User Management
+
+The most essential part of this application is the annotators and how good they're doing on the platform must be accounted for, so as to know their quality score through Gold tasks and use it to evaluate their overall quality.
+On this page, admin users have the priviledge to manage and preside over all Annotators as the page displays details of only non admin users, meaning annotators details only.
+Data displayed on this page are presented in a table with several column where each annotator on owns a row and the annotator data is presented through each column.
+Columns on the table includes, `Annotator` which is the primary name of an annotator, `Email` annotator email address, `Number of tasks completed` showing the computation of all tasks the annotator has completed on the platform, `Percentage of gold` showing the percentage of the completed task that is off Gold batch, `ROI` total worth of work an annotator has done on the platform.
+The last two column on the page are special  columns, `Lock` would lock a user outside the platform if clicked by an Admin user, the lock restriction is normally used on annotators with lower quality, and any annotator locked would not be able to perform any task on the platform again.
+Last column on the table reads `Delete` on confirmation that you really want to delete the users data after clicking delete on any user column, all tasks undergone by the user would be deleted off the database and the user would also be locked out of the platform immediately, this is a feature that can not be undone, so be careful while using it.
+
+Screenshot of `Admin User Management` page:
+
+![Screenshot 2023-03-10 152102](https://user-images.githubusercontent.com/68183305/224490459-d5e0e649-8588-48a0-ba78-acd70ed6cfea.png)
