@@ -87,3 +87,23 @@ A screenshot of the `Batch Submit` Page:
 If Batch creation is succesful, you should be redirected to `Admin Dashboard` where a table is presented under each available experiment showing the experimet's Batches, also, the you can toggle between the two batch values by clicking on the True or False value that appears at the `Is Gold` column of each experiments.
 
 
+## Admin Dashboard
+
+Admin user can reach this page through the sidebar, by clicking on Dashboard tab, or when an admin successfully submit a `Batch`, this page is used to display all experiments created in the database and for each experiment, there is a table below it that displays all batches created under the experiment.
+Items on the table includes `Batch ID` which is the identity number of each batch in the database, `Created at`, time stamp showing when each experiment was created, `Name` a unique name given to each batch and this displays None, if no name is attached to the batch, `is gold` this column displays True or False for each batch, True shows that the batch is `Batch type Gold` and False shows that the batch is `Batch type Eval`.
+You can toggle between the two values for a batch by clicking on the True or False value displayed in the batch's column, and you'll be prompt with a confirmation message to know if you really want to switch the batch type.
+
+Screenshot:
+
+![Screenshot 2023-03-10 164659](https://user-images.githubusercontent.com/68183305/224489418-ebd4b57e-f335-4949-9a97-f1ac0488878d.png)
+
+
+## Admin Experiment
+
+Admin can reach this page only by clicking on any of the available experiments in the Admin Dashboard page, by clicking on the experiment name displayed in blue, admin would be redirected to `Experiment View` page.
+On this page, details about experiments are displayed, primarily, these details are grouped in batches, and `Batch type Gold` are prioritized in sorting the batch.
+For each batch, details about tasks created under it is deisplayed and this includes `Task id`, which is the unique identification number of that task, `# of Annotations` this shows the number of time annotation has been done on the task, `% of Annotations` which shows percentage of annotations done on the task, `reference url` which is the url of the original audio presented for annotation, `transform url` which is the url of the edited/custom audio annotators are experimenting on, `trasform json` also known as transform metadata in the batch creation JSON.
+Experiment name and Experiment type is displayed at the top of the page as well, and this is all about the `Admin Experiment Detail` page.
+
+Screenshot:
+![Screenshot 2023-03-10 164255](https://user-images.githubusercontent.com/68183305/224489370-8a020c9d-c4be-4043-a4ff-e5e7e0dcb6cf.png)
