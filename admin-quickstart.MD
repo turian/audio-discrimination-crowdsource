@@ -80,6 +80,7 @@ Having all this in mind, this is the accepted way of formating the JSON file, re
 ```
 
 In order to create a batch after understanding all this, click on the `batch submit` in the admin side panel and let it load, there are two available inputs in the form, the first one allows you to select an experiment you're creating a batch for and the second allows you to paste your JSON data.
+
 A screenshot of the `Batch Submit` Page:
 
 ![Screenshot 2023-03-10 232536](https://user-images.githubusercontent.com/68183305/224440548-dd3b57b8-07ab-432a-a1bc-fad5306c2097.png)
@@ -94,7 +95,7 @@ Admin user can reach this page through the sidebar, by clicking on Dashboard tab
 Items on the table includes `Batch ID` which is the identity number of each batch in the database, `Created at`, time stamp showing when each experiment was created, `Name` a unique name given to each batch and this displays None, if no name is attached to the batch, `is gold` this column displays True or False for each batch, True shows that the batch is `Batch type Gold` and False shows that the batch is `Batch type Eval`.
 You can toggle between the two values for a batch by clicking on the True or False value displayed in the batch's column, and you'll be prompt with a confirmation message to know if you really want to switch the batch type.
 
-Screenshot:
+Screenshot of `Admin Dashboard` page:
 
 ![Screenshot 2023-03-10 164659](https://user-images.githubusercontent.com/68183305/224489418-ebd4b57e-f335-4949-9a97-f1ac0488878d.png)
 
@@ -106,7 +107,8 @@ On this page, details about experiments are displayed, primarily, these details 
 For each batch, details about tasks created under it is deisplayed and this includes `Task id`, which is the unique identification number of that task, `# of Annotations` this shows the number of time annotation has been done on the task, `% of Annotations` which shows percentage of annotations done on the task, `reference url` which is the url of the original audio presented for annotation, `transform url` which is the url of the edited/custom audio annotators are experimenting on, `trasform json` also known as transform metadata in the batch creation JSON.
 Experiment name and Experiment type is displayed at the top of the page as well, and this is all about the `Admin Experiment Detail` page.
 
-Screenshot:
+Screenshot of `Admin Experiment` page:
+
 ![Screenshot 2023-03-10 164255](https://user-images.githubusercontent.com/68183305/224489370-8a020c9d-c4be-4043-a4ff-e5e7e0dcb6cf.png)
 
 
