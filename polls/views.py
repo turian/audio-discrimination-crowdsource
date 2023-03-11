@@ -280,7 +280,6 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-
 class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         return render(request, "polls/experiment-type-form.html")
@@ -296,6 +295,7 @@ class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, Vie
             )
             create_type.save()
             return HttpResponse("successfully created")
+
 
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
@@ -381,7 +381,33 @@ class ToggleIsGoldView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
-# API Views
+class TemporaryLogin(View):
+    template_name = "polls/temp_login_result.html"
+
+    def post(self, request):
+        context = {"message": "You have been logged in temporarily"}
+        query_email = request.POST.get("email", None)
+        username = query_email.split("@")[0]
+        temp_password = "Asdfghjkl123"
+        try:
+            temp_user = get_user_model().objects.create(
+                username=username, email=query_email
+            )
+            temp_user.set_password(temp_password)
+            temp_user.save()
+            user = authenticate(request, username=username, password=temp_password)
+            login(request, user)
+        except IntegrityError:
+            context["message"] = "A user with this email already exists"
+        return render(request, self.template_name, context)
+
+
+class TemporaryLoginTemplate(TemplateView):
+    template_name = "polls/temp_login_template.html"
+
+
+##**************** API Views *******************##
+
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
@@ -429,28 +455,3 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
-
-
-class TemporaryLogin(View):
-    template_name = "polls/temp_login_result.html"
-
-    def post(self, request):
-        context = {"message": "You have been logged in temporarily"}
-        query_email = request.POST.get("email", None)
-        username = query_email.split("@")[0]
-        temp_password = "Asdfghjkl123"
-        try:
-            temp_user = get_user_model().objects.create(
-                username=username, email=query_email
-            )
-            temp_user.set_password(temp_password)
-            temp_user.save()
-            user = authenticate(request, username=username, password=temp_password)
-            login(request, user)
-        except IntegrityError:
-            context["message"] = "A user with this email already exists"
-        return render(request, self.template_name, context)
-
-
-class TemporaryLoginTemplate(TemplateView):
-    template_name = "polls/temp_login_template.html"
