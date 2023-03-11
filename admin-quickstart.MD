@@ -58,10 +58,10 @@ Having all this in mind, this is the accepted way of formating the JSON file, re
 
 ```
 {
-    "name": "salt-line batch", #signifying batch name
-    "is_gold": true,   # signifies if batch is gold or not
-    "notes": "This is a sample JSON data",  # any note at all or None would be supplied
-    "tasks": [ # List of tasks go in here
+    "name": "salt-line batch", // signifying batch name
+    "is_gold": true,   // signifies if batch is gold or not
+    "notes": "This is a sample JSON data",  // any note at all or None would be supplied
+    "tasks": [ // List of tasks go in here
         { # task 1
             "reference_url": "https://www.example.com/reference",
             "transform_url": "https://www.example.com/transform",
@@ -69,12 +69,12 @@ Having all this in mind, this is the accepted way of formating the JSON file, re
                 "key1": "value1",
                 "key2": "value2"
             }
-        }, # end of task 1
-        { # Task 2 where transform_metadata is not supplied
+        }, // end of task 1
+        { // Task 2, with example of cases where transform_metadata is not supplied
             "reference_url": "https://www.example.com/reference2",
             "transform_url": "https://www.example.com/transform2"
-        } # end of task 2
-    ] # end tasks list
+        } // end of task 2
+    ] // end tasks list
 }
 ```
 
