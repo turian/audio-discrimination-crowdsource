@@ -23,11 +23,41 @@ urlpatterns = [
         name="admin_experiment",
     ),
     path(
+        "admin/experiment/create/",
+        views.AdminCreateExperimentView.as_view(),
+        name="create-experiment",
+    ),
+    path(
+        "create-annotation/",
+        views.CreateAnnotation.as_view(),
+        name="create_annotation",
+    ),
+    path(
         "admin-management/",
         views.AdminManagementView.as_view(),
         name="admin-management",
     ),
     path("admin/delete/<int:pk>", views.PerformDelete.as_view(), name="perform-delete"),
+    path(
+        "admin/submit-batch",
+        views.AdminBatchSubmitView.as_view(),
+        name="admin-batch-submit",
+    ),
+    path(
+        "admin/toggle-is-gold/<int:batch_pk>/",
+        views.ToggleIsGoldView.as_view(),
+        name="toggle-is-gold",
+    ),
+    path(
+        "temporary-login",
+        views.TemporaryLogin.as_view(),
+        name="temporary_login",
+    ),
+    path(
+        "temporary-login-template",
+        views.TemporaryLoginTemplate.as_view(),
+        name="temporary_login_template",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(

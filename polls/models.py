@@ -32,12 +32,21 @@ class ExperimentType(models.Model):
         return f"{self.type}"
 
 
+class Experiment(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Batch(models.Model):
+    name = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_gold = models.BooleanField(default=False)
     notes = models.TextField()
-    experiment_type = models.ForeignKey(
-        ExperimentType,
+    experiment = models.ForeignKey(
+        Experiment,
         on_delete=models.CASCADE,
         related_name="batches",
         null=True,
@@ -74,7 +83,7 @@ class Task(models.Model):
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name="tasks")
     reference_url = models.URLField()
     transform_url = models.URLField()
-    transform_metadata = models.JSONField()
+    transform_metadata = models.JSONField(blank=True, null=True)
 
 
 class Annotation(models.Model):
@@ -97,14 +106,6 @@ class Annotation(models.Model):
 
     def __str__(self):
         return f"Annotation by {self.user.username}"
-
-
-class Experiment(models.Model):
-    name = models.CharField(max_length=100)
-    experiment_type = models.ForeignKey(ExperimentType, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class ExperimentTypeTaskPresentation(models.Model):

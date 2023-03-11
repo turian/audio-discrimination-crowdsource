@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block body-block %}
+<div class="mb-5 text-center">
+    <h1 class="mt-5 text-center mb-5">Admin Batch Submit Form </h1>
+    <p>This page allows admin users to create batch of tasks for any of their existing experiment in the database,
+        This is done by pasting a well formated JSON in the text box below.
+    </p>
+</div>
+<form hx-post="{% url 'admin-batch-submit' %}" hx-swap="innerHTML" 
+    hx-target="#body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="mb-3">
+        <label for="Experiments" class="form-label">Select experiment you want to create batch tasks for</label>
+        <select id="select-form" class="form-select mb-3" name="exp_pk">
+            {% for experiment in experiments %}
+                <option value="{{experiment.pk}}" >{{experiment.name}}</option>
+            {% empty %}
+                <option value="empty" selected>There is no available experiment, you need to create one first.</option>
+            {% endfor %}
+    </div>
+    <div>
+        <input type="hidden">
+    </div>
+    <div class="mt-3">
+        <label for="json-data" class="form-label mt-3">Paste JSON</label>
+        <textarea name="json-data" class ="form-control mt-3" rows="10"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Batch</button>
+
+</form>
+
+{% endblock body-block %}
+
+
+

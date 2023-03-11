@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body-block %}
+<div class="mb-5 text-center">
+  <h1 class="mt-5 text-center mb-5">Create a New Experiment</h1>
+  <p>Create a new experiment by selecting an experiment type and giving your experiment a name, 
+    you can then create some batch tasks for the experiment later.</p>
+</div>
+<form hx-post="{% url 'create-experiment' %}" hx-boost="true"
+hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="mb-3">
+      <label for="text-field" class="form-label">Experiment Name</label>
+      <input type="text" class="form-control" id="text-field" name="experiment-name" placeholder="Input experiment name">
+    </div>
+    <div class="mb-3">
+        <label for="Experiment type" class="form-label">What type of experiment do you want to perform?</label>
+        <select id="select-form" class="form-select" name="experiment-type">
+            {% for type in exp_types %}
+                <option value="{{type.pk}}" >{{type.type}}</option>
+            {% empty %}
+                <option value="empty" selected>No experiment type available</option>
+            {% endfor %}
+        </select>
+      </div>
+    <button type="submit" class="btn btn-primary" hx-target="#form-result">Create experiment</button>
+  </form>
+  <div id="form-result"></div>
+{% endblock body-block %}
+
+  

@@ -1,7 +1,10 @@
-from django.contrib.auth import get_user_model
+import json
+
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.db import IntegrityError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
@@ -15,6 +18,7 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
+    Batch,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
@@ -25,6 +29,8 @@ from .serializers import AnnotationSerializer, BatchTaskSerializer
 from .utils import (
     batch_selector,
     check_user_work_permission,
+    create_audio_list,
+    get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
 )
@@ -59,8 +65,10 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request):
         experiments = Experiment.objects.all()
+        batches = Batch.objects.all()
         context = {
             "experiments": experiments,
+            "batches": batches,
         }
         return render(request, self.template_name, context)
 
@@ -74,7 +82,7 @@ class AdminExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, experiment_id):
         try:
             experiment = Experiment.objects.get(id=experiment_id)
-            batches = experiment.experiment_type.batches.all().order_by("-is_gold")
+            batches = experiment.batches.all().order_by("-is_gold")
             data_list = parse_data_for_admin_experiment(batches)
             context = {"experiment": experiment, "data_list": data_list}
         except Experiment.DoesNotExist:
@@ -114,11 +122,26 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
             tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
             task = tasks_for_user.first()
             if task:
-                url, task_presentation = present_task_for_user(task)
+                experiment_type = task.batch.experiment.experiment_type
+                task_annotations = get_task_annotations(experiment_type)
+                audios, task_presentation = present_task_for_user(task)
+                audio_list = create_audio_list(audios, task_presentation)
+
+                # set zipped_list(audios, annotations) and reference audio
+                # according to experiment_type
+                if experiment_type.type == "2AFC":
+                    zipped_list = list(zip(audio_list[1:], task_annotations))
+                    reference_audio = audio_list[0]
+                else:
+                    zipped_list = list(zip(audio_list, task_annotations))
+                    reference_audio = None
+
                 context = {
                     "task": task,
-                    "url": url,
+                    "batch_id": task.batch.id,
                     "task_presentation": task_presentation,
+                    "zipped_list": zipped_list,
+                    "reference_audio": reference_audio,
                 }
         return render(request, self.template_name, context)
 
@@ -137,6 +160,57 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
     def check_user_is_locked(self):
         return self.request.user.is_locked
+
+
+class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
+    template_name = "polls/task_flow_form.html"
+
+    def post(self, request):
+        task_pk = request.POST.get("taskPk")
+        annotation_choice = request.POST.get("annotationOption")
+        batch_id = request.POST.get("batch_id")
+        task_presentation = request.POST.get("taskPresentation")
+
+        if not task_pk:
+            return render(request, self.template_name, {})
+
+        task = get_object_or_404(Task, pk=task_pk)
+        Annotation.objects.create(
+            user=request.user,
+            task=task,
+            annotated_at=timezone.now(),
+            task_presentation=task_presentation,
+            annotations=annotation_choice,
+        )
+
+        current_batch = get_object_or_404(Batch, id=batch_id)
+        tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+        task = tasks_for_user.first()
+
+        context = {}
+        if task:
+            experiment_type = task.batch.experiment.experiment_type
+            task_annotations = get_task_annotations(experiment_type)
+            audios, task_presentation = present_task_for_user(task)
+            audio_list = create_audio_list(audios, task_presentation)
+
+            # set zipped_list(audios, annotations) and reference audio
+            # according to experiment_type
+            if experiment_type.type == "2AFC":
+                zipped_list = list(zip(audio_list[1:], task_annotations))
+                reference_audio = audio_list[0]
+            else:
+                zipped_list = list(zip(audio_list, task_annotations))
+                reference_audio = None
+
+            context = {
+                "task": task,
+                "batch_id": task.batch.id,
+                "task_presentation": task_presentation,
+                "zipped_list": zipped_list,
+                "reference_audio": reference_audio,
+            }
+        return render(request, self.template_name, context)
 
 
 class TokenView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -206,6 +280,7 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
+
 class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         return render(request, "polls/experiment-type-form.html")
@@ -222,9 +297,91 @@ class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, Vie
             create_type.save()
             return HttpResponse("successfully created")
 
+class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiment_type = ExperimentType.objects.all()
+        context = {"exp_types": experiment_type}
+        return render(request, "polls/create-experiment-form.html", context)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("experiment-name")
+        type_pk = request.POST.get("experiment-type")
+        experiment = Experiment.objects.filter(name=name).exists()
+        exp_type = ExperimentType.objects.get(pk=type_pk)
+        if experiment:
+            return HttpResponse("An experiment with this name already exist")
+
+        if exp_type:
+            new_experiment = Experiment.objects.create(
+                name=str(name), experiment_type=exp_type
+            )
+            new_experiment.save()
+            return HttpResponse("successfully created")
+
+        else:
+            return HttpResponse("Please select experiment type from dropdown")
+
     def test_func(self):
         return self.request.user.is_superuser
 
+
+class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiments = Experiment.objects.all()
+        context = {"experiments": experiments}
+        return render(request, "polls/admin-batch-submit.html", context)
+
+    def post(self, request, *args, **kwargs):
+        json_data = request.POST.get("json-data")
+        exp_pk = request.POST.get("exp_pk")
+        experiment_id = Experiment.objects.filter(pk=int(exp_pk))
+        db_data = json.loads(json_data)
+        if experiment_id.exists():
+            experiment = Experiment.objects.get(pk=exp_pk)
+            new_batch = Batch.objects.create(
+                name=db_data["name"] if db_data["name"] else None,
+                is_gold=db_data["is_gold"] if db_data["is_gold"] else False,
+                notes=db_data["notes"] if db_data["notes"] else "",
+                experiment=experiment,
+            )
+            new_batch.save()
+            for task in db_data["tasks"]:
+                new_task = Task.objects.create(
+                    batch=new_batch,
+                    reference_url=task["reference_url"],
+                    transform_url=task["transform_url"],
+                    transform_metadata=task["transform_metadata"]
+                    if task["transform_metadata"]
+                    else None,
+                )
+                new_task.save()
+            return HttpResponseRedirect("admin-dashboard")
+        else:
+            return HttpResponse(
+                "reference experiment does not exist, please choose from drop-down."
+            )
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class ToggleIsGoldView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, batch_pk, *args, **kwargs):
+        batch = get_object_or_404(Batch, pk=batch_pk)
+        if batch.is_gold:
+            batch.is_gold = False
+            batch.save()
+            return HttpResponse("False")
+        else:
+            batch.is_gold = True
+            batch.save()
+            return HttpResponse("True")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+# API Views
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
@@ -272,3 +429,28 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class TemporaryLogin(View):
+    template_name = "polls/temp_login_result.html"
+
+    def post(self, request):
+        context = {"message": "You have been logged in temporarily"}
+        query_email = request.POST.get("email", None)
+        username = query_email.split("@")[0]
+        temp_password = "Asdfghjkl123"
+        try:
+            temp_user = get_user_model().objects.create(
+                username=username, email=query_email
+            )
+            temp_user.set_password(temp_password)
+            temp_user.save()
+            user = authenticate(request, username=username, password=temp_password)
+            login(request, user)
+        except IntegrityError:
+            context["message"] = "A user with this email already exists"
+        return render(request, self.template_name, context)
+
+
+class TemporaryLoginTemplate(TemplateView):
+    template_name = "polls/temp_login_template.html"
