@@ -18,7 +18,7 @@ urlpatterns = [
         name="admin_experiment",
     ),
     path(
-        "admin/experiment-type/create-annotation/",
+        "admin/experiment/create/",
         views.AdminCreateExperimentView.as_view(),
         name="create-experiment",
     ),
@@ -44,7 +44,7 @@ urlpatterns = [
         name="toggle-is-gold",
     ),
     path(
-        "admin/experiment-type/annotations",
+        "admin/experiment-type/create-annotation/",
         views.CreateExperimentTypeAnnotationView.as_view(),
         name="experiment-type-annotation",
     ),
