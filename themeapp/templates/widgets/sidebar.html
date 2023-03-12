@@ -24,5 +24,12 @@
         list-group-item-light p-3" href="#!">
         Empty</a>
     </div>
+    {% endif %}
+    {% if not request.user.is_authenticated %}
+    <div>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url 'temporary_login_template' %}">
+        Temporary Login</a>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
