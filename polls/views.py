@@ -1,7 +1,8 @@
 import json
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -321,6 +322,7 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
         if experiment_id.exists():
             experiment = Experiment.objects.get(pk=exp_pk)
             new_batch = Batch.objects.create(
+                name=db_data["name"] if db_data["name"] else None,
                 is_gold=db_data["is_gold"] if db_data["is_gold"] else False,
                 notes=db_data["notes"] if db_data["notes"] else "",
                 experiment=experiment,
@@ -409,3 +411,28 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class TemporaryLogin(View):
+    template_name = "polls/temp_login_result.html"
+
+    def post(self, request):
+        context = {"message": "You have been logged in temporarily"}
+        query_email = request.POST.get("email", None)
+        username = query_email.split("@")[0]
+        temp_password = "Asdfghjkl123"
+        try:
+            temp_user = get_user_model().objects.create(
+                username=username, email=query_email
+            )
+            temp_user.set_password(temp_password)
+            temp_user.save()
+            user = authenticate(request, username=username, password=temp_password)
+            login(request, user)
+        except IntegrityError:
+            context["message"] = "A user with this email already exists"
+        return render(request, self.template_name, context)
+
+
+class TemporaryLoginTemplate(TemplateView):
+    template_name = "polls/temp_login_template.html"

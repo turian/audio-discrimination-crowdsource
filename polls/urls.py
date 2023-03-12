@@ -43,6 +43,16 @@ urlpatterns = [
         views.ToggleIsGoldView.as_view(),
         name="toggle-is-gold",
     ),
+    path(
+        "temporary-login",
+        views.TemporaryLogin.as_view(),
+        name="temporary_login",
+    ),
+    path(
+        "temporary-login-template",
+        views.TemporaryLoginTemplate.as_view(),
+        name="temporary_login_template",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
