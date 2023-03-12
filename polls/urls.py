@@ -18,7 +18,7 @@ urlpatterns = [
         name="admin_experiment",
     ),
     path(
-        "admin/experiment/create/",
+        "admin/experiment-type/create-annotation/",
         views.AdminCreateExperimentView.as_view(),
         name="create-experiment",
     ),
