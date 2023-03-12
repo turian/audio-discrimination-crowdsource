@@ -44,6 +44,11 @@ urlpatterns = [
         name="toggle-is-gold",
     ),
     path(
+        "admin/experiment-type/annotations",
+        views.CreateExperimentTypeAnnotationView.as_view(),
+        name="experiment-type-annotation",
+    ),
+    path(
         "temporary-login",
         views.TemporaryLogin.as_view(),
         name="temporary_login",
