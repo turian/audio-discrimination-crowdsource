@@ -85,7 +85,7 @@ class LockUserAnnotationListTest(APITestCase):
         expected_output = [
             {
                 "id": 1,
-                "user": self.user.id,
+                "user": self.annotator.id,
                 "task": self.task_1.id,
                 "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "task_presentation": "AAB",
