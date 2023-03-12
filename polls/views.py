@@ -392,7 +392,9 @@ class TemporaryLoginTemplate(TemplateView):
 
 class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        return render(request, "polls/experiment-type-annotation.html")
+        experiment_types = ExperimentType.objects.all()
+        context = {"experiment_types": experiment_types}
+        return render(request, "polls/experiment-type-annotation.html", context)
 
     def post(self, request, *args, **kwargs):
         exp_type = request.POST.get("experiment-type")
