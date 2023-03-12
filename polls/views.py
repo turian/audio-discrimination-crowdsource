@@ -413,7 +413,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
             return HttpResponse("Select experiment type from dropdown")
 
     def test_func(self):
-        return self.request.user.is_admin
+        return self.request.user.is_superuser
 
 
 # API Views
