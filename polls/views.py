@@ -23,6 +23,7 @@ from .models import (
     CurrentBatchGold,
     Experiment,
     ExperimentType,
+    ExperimentTypeAnnotation,
     Task,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
@@ -390,6 +391,22 @@ class TemporaryLoginTemplate(TemplateView):
 
 
 class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, *args, **kwargs):
+        exp_type = request.POST.get("experiment-type")
+        annotation = request.POST.get("annotation")
+        experiment_type = ExperimentType.objects.filter(pk=exp_type)
+
+        if experiment_type.exists():
+            exp_type_annotation = ExperimentTypeAnnotation.objects.create(
+                experiment_type=experiment_type, annotation=str(annotation)
+            )
+            exp_type_annotation.save()
+
+            return HttpResponseRedirect(reverse("admin-dashboard"))
+
+        else:
+            return HttpResponse("Select experiment type from dropdown")
+
     def test_func(self):
         return self.request.user.is_admin
 
