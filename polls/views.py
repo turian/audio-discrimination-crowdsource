@@ -450,9 +450,8 @@ class CreateExperimentTypeTaskPresentationView(
     def post(self, request, *args, **kwargs):
         exp_type = request.POST.get("experiment_type")
         task_presentation = request.POST.get("task_presentaion")
-        experiment_type = ExperimentType.objects.get(pk=exp_type)
-
-        if experiment_type:
+        try:
+            experiment_type = ExperimentType.objects.get(pk=exp_type)
             exp_type_annotation = ExperimentTypeTaskPresentation.objects.create(
                 experiment_type=experiment_type,
                 task_presentation=str(task_presentation),
@@ -461,7 +460,7 @@ class CreateExperimentTypeTaskPresentationView(
 
             return HttpResponseRedirect(reverse("admin_dashboard"))
 
-        else:
+        except ExperimentType.DoesNotExist:
             return HttpResponse("Select experiment type from dropdown")
 
     def test_func(self):
