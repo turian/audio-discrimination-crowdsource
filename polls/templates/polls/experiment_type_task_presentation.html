@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body-block %}
+<div class="mt-5 mb-5 text-center">
+    <h2>Create Experiment-type Annotation</h2>
+    <p></p>
+</div>
+<form hx-post="{% url 'experiment_type_task_presentation' %}" hx-swap="innerHTML" hx-target="#body" hx-boost="true"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    <div class="mb-3">
+        <label for="annotation" class="form-label">Input annotation pattern:</label>
+        <input type="text" id="annotation" class="form-control" name="task_presentaion"
+            placeholder="Input annotation pattern, E.G: AAB/ABA/BAB...">
+
+    </div>
+
+    <div class="mb-3">
+        <label for="Experiment type" class="form-label">Select experiment-type you want to create an annotation
+            for:</label>
+        <select id="select-form" class="form-select" name="experiment_type">
+            {% for type in experiment_types %}
+            <option value="{{type.pk}}">{{type.type}}</option>
+            {% empty %}
+            <option value="empty">No experiment type available</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Experiment-type Annotation</button>
+</form>
+
+{% endblock body-block %}
