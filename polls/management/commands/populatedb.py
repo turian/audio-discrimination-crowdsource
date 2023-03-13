@@ -1,7 +1,8 @@
-from django.core.management.base import BaseCommand
-from django.core.management import call_command
-from django.conf import settings
 import os
+
+from django.conf import settings
+from django.core.management import call_command
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
@@ -16,4 +17,5 @@ class Command(BaseCommand):
 
         for fixture in fixtures:
             self.stdout.write(f"loading fixtures in {fixture}")
+
             call_command("loaddata", os.path.join(directory, "dummydata/", fixture))
