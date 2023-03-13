@@ -86,6 +86,17 @@ class Task(models.Model):
     transform_metadata = models.JSONField(blank=True, null=True)
 
 
+class AnnotatorProfile(models.Model):
+    annotator = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="user"
+    )
+    email = models.EmailField(blank=True)
+    hourly_rate = models.FloatField(default=None, editable=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.email
+
+
 class Annotation(models.Model):
     TASK_PRESENTATION_OPTIONS = (
         ("AAB", "AAB"),
@@ -95,7 +106,7 @@ class Annotation(models.Model):
     )
     ANNOTATION_OPTIONS = (("XXY", "XXY"), ("XYX", "XYX"))
     user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="annotations"
+        AnnotatorProfile, on_delete=models.CASCADE, related_name="annotations"
     )
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     annotated_at = models.DateTimeField()
@@ -105,7 +116,7 @@ class Annotation(models.Model):
     annotations = models.CharField(max_length=3, choices=ANNOTATION_OPTIONS)
 
     def __str__(self):
-        return f"Annotation by {self.user.username}"
+        return f"Annotation by {self.user}"
 
 
 class ExperimentTypeTaskPresentation(models.Model):
@@ -122,14 +133,3 @@ class ExperimentTypeAnnotation(models.Model):
 
     def __str__(self):
         return f"{self.annotation}"
-
-
-class AnnotatorProfile(models.Model):
-    annotator = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="user"
-    )
-    email = models.EmailField(blank=True)
-    hourly_rate = models.FloatField(default=None, editable=True, blank=True, null=True)
-
-    def __str__(self):
-        return self.email

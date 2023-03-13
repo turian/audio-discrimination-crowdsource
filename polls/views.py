@@ -18,6 +18,7 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
+    AnnotatorProfile,
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
@@ -119,7 +120,9 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if current_batch:
-            tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+            tasks_for_user = current_batch.tasks.exclude(
+                annotation__user__annotator=request.user
+            )
             task = tasks_for_user.first()
             if task:
                 experiment_type = task.batch.experiment.experiment_type
@@ -166,6 +169,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
     template_name = "polls/task_flow_form.html"
 
     def post(self, request):
+        annotator = AnnotatorProfile.objects.get(annotator=request.user)
         task_pk = request.POST.get("taskPk")
         annotation_choice = request.POST.get("annotationOption")
         batch_id = request.POST.get("batch_id")
@@ -176,7 +180,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         task = get_object_or_404(Task, pk=task_pk)
         Annotation.objects.create(
-            user=request.user,
+            user=annotator,
             task=task,
             annotated_at=timezone.now(),
             task_presentation=task_presentation,
@@ -184,7 +188,9 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
         )
 
         current_batch = get_object_or_404(Batch, id=batch_id)
-        tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+        tasks_for_user = current_batch.tasks.exclude(
+            annotation__user__annotator=request.user
+        )
         task = tasks_for_user.first()
 
         context = {}
