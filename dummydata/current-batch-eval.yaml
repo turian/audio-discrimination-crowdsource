@@ -1,0 +1,9 @@
+[
+{
+    "model": "polls.currentbatcheval",
+    "pk": 1,
+    "fields": {
+        "current_batch_eval": 16
+    }
+}
+]

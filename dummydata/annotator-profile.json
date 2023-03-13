@@ -1,0 +1,11 @@
+[
+{
+    "model": "polls.annotatorprofile",
+    "pk": 1,
+    "fields": {
+        "annotator": 1,
+        "email": "defidelity6@gmail.com",
+        "hourly_rate": 65.0
+    }
+}
+]

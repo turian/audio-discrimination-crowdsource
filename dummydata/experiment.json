@@ -1,0 +1,18 @@
+[
+{
+    "model": "polls.experiment",
+    "pk": 1,
+    "fields": {
+        "name": "Salt sensitivity experiment",
+        "experiment_type": 1
+    }
+},
+{
+    "model": "polls.experiment",
+    "pk": 2,
+    "fields": {
+        "name": "dolby or not",
+        "experiment_type": 2
+    }
+}
+]
