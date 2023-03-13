@@ -1,0 +1,233 @@
+[
+{
+    "model": "polls.batch",
+    "pk": 1,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T16:54:13.996Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 2,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T16:55:15.100Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 3,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:00:49.338Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 4,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:08:21.238Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 5,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:08:23.481Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 6,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:08:24.139Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 7,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:08:25.297Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 8,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:11:14.842Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 9,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-07T17:14:34.195Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": null
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 10,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T13:20:47.744Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data don't care",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 11,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T13:20:52.341Z",
+        "is_gold": false,
+        "notes": "This is a sample JSON data don't care",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 12,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:23:32.631Z",
+        "is_gold": false,
+        "notes": "This is a sample JSON data don't care",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 13,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:25:25.265Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 14,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:27:39.506Z",
+        "is_gold": false,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 15,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:34:49.491Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 16,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:37:37.833Z",
+        "is_gold": false,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 17,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T14:40:24.255Z",
+        "is_gold": false,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 18,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T15:43:08.873Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 19,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T15:43:13.926Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 20,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T15:43:15.330Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+},
+{
+    "model": "polls.batch",
+    "pk": 21,
+    "fields": {
+        "name": null,
+        "created_at": "2023-03-09T15:43:27.653Z",
+        "is_gold": true,
+        "notes": "This is a sample JSON data",
+        "experiment": 1
+    }
+}
+]

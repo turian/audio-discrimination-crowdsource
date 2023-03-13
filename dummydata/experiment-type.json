@@ -1,0 +1,16 @@
+[
+{
+    "model": "polls.experimenttype",
+    "pk": 1,
+    "fields": {
+        "type": "2AFC"
+    }
+},
+{
+    "model": "polls.experimenttype",
+    "pk": 2,
+    "fields": {
+        "type": "A/B"
+    }
+}
+]
