@@ -1,1 +1,56 @@
-[{"model": "polls.experimenttypetaskpresentation", "pk": 1, "fields": {"task_presentation": "AAB", "experiment_type": 1}}, {"model": "polls.experimenttypetaskpresentation", "pk": 2, "fields": {"task_presentation": "ABA", "experiment_type": 1}}, {"model": "polls.experimenttypetaskpresentation", "pk": 3, "fields": {"task_presentation": "BBA", "experiment_type": 1}}, {"model": "polls.experimenttypetaskpresentation", "pk": 4, "fields": {"task_presentation": "BAB", "experiment_type": 1}}, {"model": "polls.experimenttypetaskpresentation", "pk": 5, "fields": {"task_presentation": "AB", "experiment_type": 2}}, {"model": "polls.experimenttypetaskpresentation", "pk": 6, "fields": {"task_presentation": "BA", "experiment_type": 2}}]
+[
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 1, 
+        "fields": 
+        {
+            "task_presentation": "AAB", 
+            "experiment_type": 1
+        }
+    }, 
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 2, 
+        "fields": 
+        {
+            "task_presentation": "ABA", 
+            "experiment_type": 1
+        }
+    }, 
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 3, 
+        "fields": 
+        {
+            "task_presentation": "BBA", 
+            "experiment_type": 1
+        }
+    }, 
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 4, 
+        "fields": 
+        {
+            "task_presentation": "BAB", 
+            "experiment_type": 1
+        }
+    }, 
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 5, 
+        "fields": 
+        {
+            "task_presentation": "AB", 
+            "experiment_type": 2
+        }
+    }, 
+    {
+        "model": "polls.experimenttypetaskpresentation", 
+        "pk": 6, 
+        "fields": 
+        {
+            "task_presentation": "BA", 
+            "experiment_type": 2
+        }
+    }
+]
