@@ -1,0 +1,9 @@
+[
+{
+    "model": "polls.currentbatchgold",
+    "pk": 1,
+    "fields": {
+        "current_batch_gold": 20
+    }
+}
+]

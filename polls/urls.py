@@ -58,6 +58,11 @@ urlpatterns = [
         views.TemporaryLoginTemplate.as_view(),
         name="temporary_login_template",
     ),
+    path(
+        "admin/experiment-type/create-task-presentation/",
+        views.CreateExperimentTypeTaskPresentationView.as_view(),
+        name="experiment_type_task_presentation",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(

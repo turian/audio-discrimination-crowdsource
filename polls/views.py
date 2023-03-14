@@ -18,11 +18,13 @@ from rest_framework.views import APIView
 from .custom_mixin import CheckUserLockMixin
 from .models import (
     Annotation,
+    AnnotatorProfile,
     Batch,
     CurrentBatchEval,
     CurrentBatchGold,
     Experiment,
     ExperimentType,
+    ExperimentTypeTaskPresentation,
     Task,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
@@ -119,7 +121,9 @@ class TaskFlowView(CheckUserLockMixin, LoginRequiredMixin, View):
 
         context = {}
         if current_batch:
-            tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+            tasks_for_user = current_batch.tasks.exclude(
+                annotation__user__annotator=request.user
+            )
             task = tasks_for_user.first()
             if task:
                 experiment_type = task.batch.experiment.experiment_type
@@ -166,6 +170,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
     template_name = "polls/task_flow_form.html"
 
     def post(self, request):
+        annotator = AnnotatorProfile.objects.get(annotator=request.user)
         task_pk = request.POST.get("taskPk")
         annotation_choice = request.POST.get("annotationOption")
         batch_id = request.POST.get("batch_id")
@@ -176,7 +181,7 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
 
         task = get_object_or_404(Task, pk=task_pk)
         Annotation.objects.create(
-            user=request.user,
+            user=annotator,
             task=task,
             annotated_at=timezone.now(),
             task_presentation=task_presentation,
@@ -184,7 +189,9 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
         )
 
         current_batch = get_object_or_404(Batch, id=batch_id)
-        tasks_for_user = current_batch.tasks.exclude(annotation__user=request.user)
+        tasks_for_user = current_batch.tasks.exclude(
+            annotation__user__annotator=request.user
+        )
         task = tasks_for_user.first()
 
         context = {}
@@ -406,6 +413,33 @@ class TemporaryLoginTemplate(TemplateView):
     template_name = "polls/temp_login_template.html"
 
 
+class CreateExperimentTypeTaskPresentationView(
+    LoginRequiredMixin, UserPassesTestMixin, View
+):
+    def get(self, request):
+        experiment_types = ExperimentType.objects.all()
+        context = {"experiment_types": experiment_types}
+        return render(request, "polls/experiment_type_task_presentation.html", context)
+
+    def post(self, request, *args, **kwargs):
+        exp_type = request.POST.get("experiment_type")
+        task_presentation = request.POST.get("task_presentaion")
+        try:
+            experiment_type = ExperimentType.objects.get(pk=exp_type)
+            exp_type_annotation = ExperimentTypeTaskPresentation.objects.create(
+                experiment_type=experiment_type,
+                task_presentation=str(task_presentation),
+            )
+            exp_type_annotation.save()
+
+            return HttpResponseRedirect(reverse("admin_dashboard"))
+
+        except ExperimentType.DoesNotExist:
+            return HttpResponse("Select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
 # **************** API Views ******************* #
 
 
@@ -455,3 +489,6 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+

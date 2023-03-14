@@ -1,0 +1,314 @@
+[
+{
+    "model": "polls.task",
+    "pk": 1,
+    "fields": {
+        "batch": 8,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 2,
+    "fields": {
+        "batch": 9,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 3,
+    "fields": {
+        "batch": 9,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 4,
+    "fields": {
+        "batch": 10,
+        "reference_url": "https://wwwe.example.com/reference",
+        "transform_url": "https://www.eexample.com/transform",
+        "transform_metadata": {
+            "key1": "value31",
+            "key2": "value32"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 5,
+    "fields": {
+        "batch": 10,
+        "reference_url": "https://www.eexample.com/reference2",
+        "transform_url": "https://www.eexample.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 6,
+    "fields": {
+        "batch": 11,
+        "reference_url": "https://wwwe.example.com/reference",
+        "transform_url": "https://www.eexample.com/transform",
+        "transform_metadata": {
+            "key1": "value31",
+            "key2": "value32"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 7,
+    "fields": {
+        "batch": 11,
+        "reference_url": "https://www.eexample.com/reference2",
+        "transform_url": "https://www.eexample.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 8,
+    "fields": {
+        "batch": 12,
+        "reference_url": "https://wwwe.example.com/reference",
+        "transform_url": "https://www.eexample.com/transform",
+        "transform_metadata": {
+            "key1": "value31",
+            "key2": "value32"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 9,
+    "fields": {
+        "batch": 12,
+        "reference_url": "https://www.eexample.com/reference2",
+        "transform_url": "https://www.eexample.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 10,
+    "fields": {
+        "batch": 13,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 11,
+    "fields": {
+        "batch": 13,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 12,
+    "fields": {
+        "batch": 14,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 13,
+    "fields": {
+        "batch": 14,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 14,
+    "fields": {
+        "batch": 15,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 15,
+    "fields": {
+        "batch": 15,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 16,
+    "fields": {
+        "batch": 16,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 17,
+    "fields": {
+        "batch": 16,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 18,
+    "fields": {
+        "batch": 17,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 19,
+    "fields": {
+        "batch": 17,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 20,
+    "fields": {
+        "batch": 18,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 21,
+    "fields": {
+        "batch": 18,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 22,
+    "fields": {
+        "batch": 19,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 23,
+    "fields": {
+        "batch": 19,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 24,
+    "fields": {
+        "batch": 20,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 25,
+    "fields": {
+        "batch": 20,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 26,
+    "fields": {
+        "batch": 21,
+        "reference_url": "https://www.example.com/reference",
+        "transform_url": "https://www.example.com/transform",
+        "transform_metadata": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    }
+},
+{
+    "model": "polls.task",
+    "pk": 27,
+    "fields": {
+        "batch": 21,
+        "reference_url": "https://www.example.com/reference2",
+        "transform_url": "https://www.example.com/transform2",
+        "transform_metadata": null
+    }
+}
+]
