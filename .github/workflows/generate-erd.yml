@@ -45,7 +45,6 @@ jobs:
             - name: generate erd
               run: |
                   sudo apt-get install graphviz
-                  pip install pydotv
                   pip install pyparsing pydot
                   python manage.py graph_models -a > erd.dot
                   python manage.py graph_models -a
