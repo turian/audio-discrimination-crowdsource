@@ -440,6 +440,7 @@ class CreateExperimentTypeTaskPresentationView(
     def test_func(self):
         return self.request.user.is_superuser
 
+
 # **************** API Views ******************* #
 
 
@@ -489,6 +490,3 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
-
-
-
