@@ -3,7 +3,11 @@
 {% block body-block %}
 
 <div class="mt-5 text-center">
-    <h1>Admin Experiment Details </h1>
+
+    <h1>Admin View Experiment</h1>
+    <p class="btn btn-primary" hx-get="{% url 'experiment-type' %}" 
+        hx-trigger="click" hx-boost="true" hx-target="body">Create new Experiment type</p>
+
 
     {% if error_message %}
 

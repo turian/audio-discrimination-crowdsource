@@ -288,6 +288,23 @@ class PerformDelete(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
+class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "polls/experiment-type-form.html")
+
+    def post(self, request, *args, **kwargs):
+        new_experiment_type = request.POST.get("experiment-type")
+        experiment_types = ExperimentType.objects.all()
+        if new_experiment_type in experiment_types:
+            return HttpResponse("Experiment Type Already Exist")
+        else:
+            create_type = ExperimentType.objects.create(
+                type=str(new_experiment_type).upper()
+            )
+            create_type.save()
+            return HttpResponse("successfully created")
+
+
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         experiment_type = ExperimentType.objects.all()
@@ -451,7 +468,7 @@ class CreateExperimentTypeTaskPresentationView(
         return self.request.user.is_superuser
 
 
-# API Views
+# **************** API Views ******************* #
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
