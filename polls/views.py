@@ -422,6 +422,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
     def test_func(self):
         return self.request.user.is_superuser
 
+
 class TemporaryLogin(View):
     template_name = "polls/temp_login_result.html"
 
@@ -477,6 +478,7 @@ class CreateExperimentTypeTaskPresentationView(
 
 # API Views
 
+
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
@@ -523,6 +525,3 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
-
-
-
