@@ -420,32 +420,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
             return HttpResponse("Select experiment type from dropdown")
 
     def test_func(self):
-        return self.request.user.is_superuser
-
-
-class TemporaryLogin(View):
-    template_name = "polls/temp_login_result.html"
-
-    def post(self, request):
-        context = {"message": "You have been logged in temporarily"}
-        query_email = request.POST.get("email", None)
-        username = query_email.split("@")[0]
-        temp_password = "Asdfghjkl123"
-        try:
-            temp_user = get_user_model().objects.create(
-                username=username, email=query_email
-            )
-            temp_user.set_password(temp_password)
-            temp_user.save()
-            user = authenticate(request, username=username, password=temp_password)
-            login(request, user)
-        except IntegrityError:
-            context["message"] = "A user with this email already exists"
-        return render(request, self.template_name, context)
-
-
-class TemporaryLoginTemplate(TemplateView):
-    template_name = "polls/temp_login_template.html"
+        return self.request.user.is_superuserS
 
 
 class CreateExperimentTypeTaskPresentationView(
@@ -477,8 +452,6 @@ class CreateExperimentTypeTaskPresentationView(
 
 
 # API Views
-
-
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
