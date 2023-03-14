@@ -24,6 +24,7 @@ from .models import (
     CurrentBatchGold,
     Experiment,
     ExperimentType,
+    ExperimentTypeAnnotation,
     ExperimentTypeTaskPresentation,
     Task,
 )
@@ -413,6 +414,32 @@ class TemporaryLoginTemplate(TemplateView):
     template_name = "polls/temp_login_template.html"
 
 
+class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        experiment_types = ExperimentType.objects.all()
+        context = {"experiment_types": experiment_types}
+        return render(request, "polls/experiment-type-annotation.html", context)
+
+    def post(self, request, *args, **kwargs):
+        exp_type = request.POST.get("experiment-type")
+        annotation = request.POST.get("annotation")
+        experiment_type = ExperimentType.objects.filter(pk=exp_type)
+
+        if experiment_type.exists():
+            exp_type_annotation = ExperimentTypeAnnotation.objects.create(
+                experiment_type=experiment_type, annotation=str(annotation)
+            )
+            exp_type_annotation.save()
+
+            return HttpResponseRedirect(reverse("admin-dashboard"))
+
+        else:
+            return HttpResponse("Select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuserS
+
+
 class CreateExperimentTypeTaskPresentationView(
     LoginRequiredMixin, UserPassesTestMixin, View
 ):
@@ -441,8 +468,8 @@ class CreateExperimentTypeTaskPresentationView(
         return self.request.user.is_superuser
 
 
-# **************** API Views ******************* #
 
+# **************** API Views ******************* #
 
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
