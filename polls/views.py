@@ -24,6 +24,7 @@ from .models import (
     CurrentBatchGold,
     Experiment,
     ExperimentType,
+    ExperimentTypeTaskPresentation,
     Task,
 )
 from .serializers import AnnotationSerializer, BatchTaskSerializer
@@ -442,3 +443,31 @@ class TemporaryLogin(View):
 
 class TemporaryLoginTemplate(TemplateView):
     template_name = "polls/temp_login_template.html"
+
+
+class CreateExperimentTypeTaskPresentationView(
+    LoginRequiredMixin, UserPassesTestMixin, View
+):
+    def get(self, request):
+        experiment_types = ExperimentType.objects.all()
+        context = {"experiment_types": experiment_types}
+        return render(request, "polls/experiment_type_task_presentation.html", context)
+
+    def post(self, request, *args, **kwargs):
+        exp_type = request.POST.get("experiment_type")
+        task_presentation = request.POST.get("task_presentaion")
+        try:
+            experiment_type = ExperimentType.objects.get(pk=exp_type)
+            exp_type_annotation = ExperimentTypeTaskPresentation.objects.create(
+                experiment_type=experiment_type,
+                task_presentation=str(task_presentation),
+            )
+            exp_type_annotation.save()
+
+            return HttpResponseRedirect(reverse("admin_dashboard"))
+
+        except ExperimentType.DoesNotExist:
+            return HttpResponse("Select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
