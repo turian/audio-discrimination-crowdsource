@@ -1,0 +1,24 @@
+[
+{
+    "model": "polls.annotation",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "task": 1,
+        "annotated_at": "2023-03-13T13:36:00Z",
+        "task_presentation": "AAB",
+        "annotations": "XXY"
+    }
+},
+{
+    "model": "polls.annotation",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "task": 5,
+        "annotated_at": "2023-03-13T13:36:31Z",
+        "task_presentation": "BAB",
+        "annotations": "XYX"
+    }
+}
+]

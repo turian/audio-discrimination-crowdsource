@@ -1,0 +1,34 @@
+[
+{
+    "model": "polls.experimenttypeannotation",
+    "pk": 1,
+    "fields": {
+        "annotation": "XXY",
+        "experiment_type": 1
+    }
+},
+{
+    "model": "polls.experimenttypeannotation",
+    "pk": 2,
+    "fields": {
+        "annotation": "XYX",
+        "experiment_type": 1
+    }
+},
+{
+    "model": "polls.experimenttypeannotation",
+    "pk": 3,
+    "fields": {
+        "annotation": "X",
+        "experiment_type": 2
+    }
+},
+{
+    "model": "polls.experimenttypeannotation",
+    "pk": 4,
+    "fields": {
+        "annotation": "Y",
+        "experiment_type": 2
+    }
+}
+]

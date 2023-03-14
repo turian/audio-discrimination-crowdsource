@@ -5,7 +5,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Annotation, Batch, Task
+from .models import Annotation, AnnotatorProfile, Batch, Task
 
 
 class TestCheckUserLock(APITestCase):
@@ -53,6 +53,7 @@ class LockUserAnnotationListTest(APITestCase):
         self.user = get_user_model().objects.create(
             username="test_user", password="testpass"
         )
+        self.annotator = AnnotatorProfile.objects.create(annotator=self.user)
         self.admin_user = get_user_model().objects.create(
             username="test_admin", password="testpass", is_staff=True
         )
@@ -64,7 +65,7 @@ class LockUserAnnotationListTest(APITestCase):
             transform_metadata={"test": 1},
         )
         self.annotatation = Annotation.objects.create(
-            user=self.user,
+            user=self.annotator,
             task=self.task_1,
             annotated_at=timezone.now(),
             task_presentation="AAB",
@@ -84,7 +85,7 @@ class LockUserAnnotationListTest(APITestCase):
         expected_output = [
             {
                 "id": 1,
-                "user": self.user.id,
+                "user": self.annotator.id,
                 "task": self.task_1.id,
                 "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "task_presentation": "AAB",
