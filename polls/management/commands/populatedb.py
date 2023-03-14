@@ -15,7 +15,7 @@ class Command(BaseCommand):
             if filename.endswith(".json") or filename.endswith(".yaml"):
                 fixtures.append(filename)
 
-        for fixture in fixtures:
+        for fixture in range(len(fixtures) + 1):
             self.stdout.write(f"loading fixtures in {fixture}")
 
-            call_command("loaddata", os.path.join(directory, "dummydata/", fixture))
+            call_command("loaddata", os.path.join(directory, "dummydata/", fixtures[fixture]))
