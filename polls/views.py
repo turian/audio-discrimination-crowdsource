@@ -304,6 +304,9 @@ class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, Vie
             create_type.save()
             return HttpResponse("successfully created")
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
@@ -437,7 +440,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
             return HttpResponse("Select experiment type from dropdown")
 
     def test_func(self):
-        return self.request.user.is_superuserS
+        return self.request.user.is_superuser
 
 
 class CreateExperimentTypeTaskPresentationView(
