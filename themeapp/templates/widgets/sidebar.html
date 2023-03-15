@@ -21,8 +21,8 @@
         Create Experiment</a>
         
         <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="#!">
-        Empty</a>
+        list-group-item-light p-3" href="{% url "experiment-type-creation" %}">
+        Experiment Type Mgt</a>
     </div>
     {% endif %}
     {% if not request.user.is_authenticated %}

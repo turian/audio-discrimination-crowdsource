@@ -302,7 +302,10 @@ class AdminCreateExperimentTypeView(LoginRequiredMixin, UserPassesTestMixin, Vie
                 type=str(new_experiment_type).upper()
             )
             create_type.save()
-            return HttpResponse("successfully created")
+            return HttpResponse("successfully created new experiment type")
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class AdminCreateExperimentView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -431,13 +434,13 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
             )
             exp_type_annotation.save()
 
-            return HttpResponseRedirect(reverse("admin-dashboard"))
+            return HttpResponse("Successfully created new experiment type annotation")
 
         else:
             return HttpResponse("Select experiment type from dropdown")
 
     def test_func(self):
-        return self.request.user.is_superuserS
+        return self.request.user.is_superuser
 
 
 class CreateExperimentTypeTaskPresentationView(
@@ -459,10 +462,18 @@ class CreateExperimentTypeTaskPresentationView(
             )
             exp_type_annotation.save()
 
-            return HttpResponseRedirect(reverse("admin_dashboard"))
+            return HttpResponse("Successfully added new type task presentation")
 
         except ExperimentType.DoesNotExist:
             return HttpResponse("Select experiment type from dropdown")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class ManageExperimentTypeCreationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "polls/experiment-type-creation-management.html")
 
     def test_func(self):
         return self.request.user.is_superuser
