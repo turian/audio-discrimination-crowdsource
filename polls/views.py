@@ -469,6 +469,9 @@ class CreateExperimentTypeTaskPresentationView(
 
 
 class ManageExperimentTypeCreationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        return render(request, "polls/experiment-type-creation-management.html")
+
     def test_func(self):
         return self.request.user.is_superuser
 
