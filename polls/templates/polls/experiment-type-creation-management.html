@@ -1,19 +1,27 @@
 {% extends 'base.html' %}
-{% endblock css-block%}
 {% block body-block %}
 <div class="mt-5 mb-5 text-center">
     <h2 class="text-bold"> ExperimentType Creation Management</h2>
     <p>Each experiment-type comes with different task presentation and task annotation orientation,
         after creating an experiment type, say A/B, you'll need to create all ExperimentType-task-presentation for it,
-        which for example can look like, AA, AB, BA etc. Also you'll need to create an ExperimentType-task-annotation for it,
+        which for example can look like, AA, AB, BA etc. Also you'll need to create an ExperimentType-annotation for it,
         which can for example look like XX, XY, YX etc. If you don't understand this, headover to the Admin Quickstart page.
     </p>
 </div>
 <div class="container-fluid">
     <div class="row">
-      <div class="col">Column 1</div>
-      <div class="col">Column 2</div>
-      <div class="col">Column 3</div>
+      <div class="col">
+        <p hx-get="{% url "experiment-type" %}" hx-target="#page-result" hx-swap="innerHTML" 
+            class="text-bold">Experiment Type</p>
+      </div>
+      <div class="col">
+        <p hx-get="{% url "experiment-type" %}" hx-target="#page-result" hx-swap="innerHTML" 
+            class="text-bold">ExperimentType Task Presentation</p>
+      </div>
+      <div class="col">
+        <p hx-get="{% url "experiment-type" %}" hx-target="#page-result" hx-swap="innerHTML" 
+            class="text-bold">ExperimentType Annotation</p>
+      </div>
     </div>
   </div>
 <div id="page-result"></div>
