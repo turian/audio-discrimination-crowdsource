@@ -58,9 +58,10 @@ artifacts.
 
 Web service to crowd-source audio discrimination data
 
-### Local Dev
+### Local Dev (Linux ENV)
 
-This is the one time setup:
+This is the one time setup before running the app:
+
 ```
 mkdir .venv
 python3 -m venv .venv
@@ -69,7 +70,8 @@ pip install -r requirements.txt
 pre-commit install
 ```
 
-And this is how you run it locally:
+Follow these steps to run the project on your local machine:
+
 ```
 source .venv/bin/activate
 export DEVELOPMENT_MODE='local'
@@ -84,19 +86,20 @@ DEBUG=True python manage.py runserver
 
 ### Database Population
 
-There is a directory by the name ```fixtures``` in root project directory
+There is a directory by the name `dummydata` in the root directory of the project
 
-It contains initial data for our app in ```initial_data.json``` file.
+It contains initial data for each model in our app, each with either `.json` or `.yaml` file extension.
 
-To load this data execute the following command:
+To load these data into the database, execute the following command:
 
 ```
-python manage.py loaddata fixtures/initial_data.json
+python manage.py populatedb
 ```
 
-This will populate your database with the data inside ```initial_data.json```
+This will populate the database with the all available data inside the `dummydata` directory.
 
-### Deployment to fly.io
+
+## Deployment to fly.io
 
 #### Install flyctl
 
@@ -142,7 +145,7 @@ So that different devs have diff app names, please set an environment
 variable with a unique handle or username in lowercase alphabetic
 characters:
 
-NOTE: replace "{username}" with the name you like fly.io to use as your user name. e.g: export HANDLE=myname
+NOTE: replace "{username}" with the name you like fly.io to use as your username. e.g: export HANDLE=myname
 ```
 export HANDLE={username}
 ```
@@ -179,7 +182,7 @@ flyctl secrets set --app $STAGING_APP_NAME SECRET_KEY="$(python -c 'from django.
 flyctl secrets set --app $PRODUCTION_APP_NAME SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')"
 ```
 
-### fly deployment
+#### fly deployment
 
 This will do all migrations:
 
@@ -210,7 +213,7 @@ flyctl open --app $STAGING_APP_NAME
 flyctl open --app $PRODUCTION_APP_NAME
 ```
 
-### Messed up, start over
+#### Messed up, start over
 
 If you mess up and want to delete EVERY SINGLE fly.io app of yours and try again:
 ```
@@ -242,51 +245,8 @@ flyctl postgres attach --app $STAGING_APP_NAME --config fly-staging.toml $STAGIN
 flyctl postgres attach --app $PRODUCTION_APP_NAME --config fly-production.toml $PRODUCTION_APP_NAME-db
 ```
 
-### Digital Ocean apps
 
-DEPRECATED. We are going to use fly.io
-
-There is a production app and a staging app, set up separately.
-The staging app builds and deploys when there are pushed to `main` branch.
-The production app builds and deploys when there are pushed to
-`prod` branch. (We only selectively merge `main` into `prod`.)
-
-- Create Digital Ocean App
-  - Service Provider: Github
-  
-  - Run command should be:
-  ```
-  $(pyenv which gunicorn) gunicorn --worker-tmp-dir /dev/shm django_app.wsgi
-  ```
-  (This is slightly wrong but appears to work.)
-  - Use the bulk editor to set the values as follows. The last three
-  values should be encrypted.
-  ```
-  DATABASE_URL=${db.DATABASE_URL}
-  DJANGO_ALLOWED_HOSTS=${APP_DOMAIN}
-  DEBUG=[False|True]
-  DEVELOPMENT_MODE=['staging'|'production']
-  DJANGO_SECRET_KEY=********************
-  GOOGLE_CLIENT_ID=********************
-  GOOGLE_CLIENT_SECRET=********************
-  ```
-  - $5.00/mo – Basic 512 MB RAM | 1 vCPU  x  1
-- Create a free static site.
-  - Add another app resource from the same github branch.
-  - Edit the resource type to 'static site'.
-  - HTTP route should be `/static`
-  - Output directory should be `staticfiles`
-- Create a dev postgres database for $7/mo.
-
-- After the first build + deploy
-  - Add domain name in app settings (should be the domain authorized
-  for Google OAuth).
-
-- Run `python manage.py migrate`
-- Run `python manage.py createsuperuser`
-- Run `python manage.py loaddata fixtures/allauth.json` to load fixtures.
-
-### OAuth Setup
+## OAuth Setup
 
 One-time Google OAuth setup:
 - Visit this link: [Google Api](https://console.cloud.google.com/apis/dashboard)
@@ -372,4 +332,4 @@ GRAPH_MODELS ={
  python manage.py graph_models -a
  python manage.py graph_models -a > erd.dot && python manage.py graph_models --pydot -a -g -o erd.png
  ```
- This will create a file by the name *erd.png* with all your database structure
+ This will create a file named *erd.png* with all database structures.
