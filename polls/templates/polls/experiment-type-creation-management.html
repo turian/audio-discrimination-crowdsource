@@ -1,5 +1,6 @@
-{% extends "base.html" %}
-{% block "body-block" %}
+{% extends 'base.html' %}
+{% endblock css-block%}
+{% block body-block %}
 <div class="mt-5 mb-5 text-center">
     <h2 class="text-bold"> ExperimentType Creation Management</h2>
     <p>Each experiment-type comes with different task presentation and task annotation orientation,
@@ -8,6 +9,12 @@
         which can for example look like XX, XY, YX etc. If you don't understand this, headover to the Admin Quickstart page.
     </p>
 </div>
-
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">Column 1</div>
+      <div class="col">Column 2</div>
+      <div class="col">Column 3</div>
+    </div>
+  </div>
 <div id="page-result"></div>
-{% endblock "body-block" %}
+{% endblock body-block %}
