@@ -1,14 +1,18 @@
-{% extends 'base.html' %}
-{% block body-block %}
-<h1 class="page-header">Create new experiment type below</h1>
+<div class="mt-5 mb-5 text-center">
+  <h3>Create new Experiment Type below</h3>
+  <p>Experiment types represent and explains what manner of test do you want to carry out,
+    and depends on ExperimentType-task-presentation and 
+    ExperimentType-annotation to get all credible experiment formatting data, 
+    after creating experiment-type, 
+    you will need to create those in the next tab above.</p>
+</div>
 <form hx-post="{% url 'experiment-type' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="mb-3">
-      <label for="text-field" class="form-label">Experiment Type</label>
-      <input type="text" class="form-control" id="text-field" name="experiment-type" placeholder="eg: AAB/ABB/BAB">
+      <label for="text-field" class="form-label">Experiment Type Code</label>
+      <input type="text" class="form-control" id="text-field" name="experiment-type" placeholder="eg: 2AFC, A/B ...">
     </div>
     <button type="submit" class="btn btn-primary" hx-target="#form-result">Create experiment type</button>
   </form>
-  <div id="form-result"></div>
   
-  
-{% endblock body-block %}
+</form>
+<div id="form-result"></div>
