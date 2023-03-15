@@ -17,6 +17,21 @@ For a particular experiment *type*, there might be multiple experiments with dif
 
 Each experiment has a separate landing page.
 
+
+### A/B experiment type
+A/B test (experiment type) is A or B is better. I might have a "add salt" experiment and then I give annotators dishes A and B but I don't tell them one has more salt and I see which they like better. That's an A/B test.
+
+### 2AFC experiment type
+2AFC test is I give you four dishes. Three don't have salt (A) and one has salt (B). I give you them like this "AAB", "ABA", "BBA", "BAB". I don't explain to you that I'm adding salt. I am experimenting to see how much salt you can detect. Maybe under 1g of salt you cannot taste anymore. You answer "XXY",, which means that you think the first and second dish are the same and the third is different, or you answer "XYX" which means that you think the first and third dish are the same and the second one is different.
+
+Thus an A/B test is for determining what people prefer and 2AFC test is for determining what people can sense or perceive.
+
+However, once you decide to do A/B test in order to create the tastiest dish, you might have "salt experiment", "sugar experiment" e.t.c. The same thing applies to 2AFC when determining people's sensitivity.
+
+### How the tie up with ExperimentTypeTaskPresentation and ExperimentTypeAnnotation?
+
+For every task we need to know how will this task be presented(task presentations) and what options will the user have(annotations). Every task is associated with an Experiment and every Experiment has an ExperimentType. We can get the task presentations for a specific task from ExperimentTypeTaskPresentation and annotations from ExperimentTypeAnnotation via experiment.
+
 ## Workflows
 
 ### User Auth Workflow
