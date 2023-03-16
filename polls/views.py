@@ -36,6 +36,7 @@ from .utils import (
     get_task_annotations,
     parse_data_for_admin_experiment,
     present_task_for_user,
+    set_is_correct,
 )
 
 
@@ -181,13 +182,16 @@ class CreateAnnotation(CheckUserLockMixin, LoginRequiredMixin, View):
             return render(request, self.template_name, {})
 
         task = get_object_or_404(Task, pk=task_pk)
-        Annotation.objects.create(
+
+        anotation_obj = Annotation.objects.create(
             user=annotator,
             task=task,
             annotated_at=timezone.now(),
             task_presentation=task_presentation,
             annotations=annotation_choice,
         )
+
+        set_is_correct(anotation_obj)
 
         current_batch = get_object_or_404(Batch, id=batch_id)
         tasks_for_user = current_batch.tasks.exclude(
