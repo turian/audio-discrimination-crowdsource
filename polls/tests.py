@@ -90,7 +90,7 @@ class LockUserAnnotationListTest(APITestCase):
                 "annotated_at": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "task_presentation": "AAB",
                 "annotations": "XXY",
-                "is_correct": False
+                "is_correct": False,
             }
         ]
         self.client.force_authenticate(user=self.admin_user)
