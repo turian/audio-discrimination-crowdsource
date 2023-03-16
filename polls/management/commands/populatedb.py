@@ -10,12 +10,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         directory = settings.BASE_DIR
-        fixtures = []
-        for filename in os.listdir(os.path.join(directory, "dummydata")):
-            if filename.endswith(".json") or filename.endswith(".yaml"):
-                fixtures.append(filename)
-
-        for fixture in fixtures:
-            self.stdout.write(f"loading fixtures in {fixture}")
-
-            call_command("loaddata", os.path.join(directory, "dummydata/", fixture))
+        call_command("loaddata", os.path.join(directory, "dummydata/all_fixtures.json"))
