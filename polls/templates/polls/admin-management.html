@@ -35,7 +35,7 @@
             <!-- Email column -->
             {% for annotator in annotators %}
                 <td>
-                    <p>{{ annotator.email }}</p>
+                    <a href="{% url 'display_annotations_view' annotator_id=annotator.id %}">{{ annotator.email }}</a>
                 </td>
             {% endfor %}
 

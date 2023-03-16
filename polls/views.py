@@ -530,3 +530,16 @@ class AdminAPIView(APIView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class DisplayAnnotationsView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request, annotator_id):
+        annotations = Annotation.objects.filter(user=annotator_id)
+
+        context = {
+            "annotations": annotations,
+        }
+        return render(request, "polls/annotations.html", context)
+
+    def test_func(self):
+        return self.request.user.is_superuser
