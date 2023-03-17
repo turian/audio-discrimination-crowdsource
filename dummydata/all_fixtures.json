@@ -1,0 +1,740 @@
+[
+    {
+        "fields": {
+            "date_joined": "2023-03-05T16:04:18.460Z",
+            "email": "de@mail.com",
+            "first_name": "",
+            "first_task_of_this_session_performed_at": null,
+            "groups": [],
+            "is_active": true,
+            "is_locked": false,
+            "is_staff": false,
+            "is_superuser": false,
+            "last_login": "2023-03-09T16:12:30.756Z",
+            "last_name": "",
+            "password": "!kO4GmG0pQrGSD7ARhlwpA0uVdmclFD1QH9Bbgyj3",
+            "user_permissions": [],
+            "username": "de"
+        },
+        "model": "polls.user",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "date_joined": "2023-03-10T13:42:04.949Z",
+            "email": "a@mail.com",
+            "first_name": "",
+            "first_task_of_this_session_performed_at": null,
+            "groups": [],
+            "is_active": true,
+            "is_locked": false,
+            "is_staff": true,
+            "is_superuser": true,
+            "last_login": "2023-03-13T13:35:17.054Z",
+            "last_name": "",
+            "password": "pbkdf2_sha256$390000$UtyONmf6ctiwYg86cQhuoe$IQIX3EgjNF48RNWsLZBT3mDkfoOMoNnHzPrTMLf+Cxg=",
+            "user_permissions": [],
+            "username": "a"
+        },
+        "model": "polls.user",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "annotated_at": "2023-03-13T13:36:00Z",
+            "annotations": "XXY",
+            "task": 1,
+            "task_presentation": "AAB",
+            "user": 1
+        },
+        "model": "polls.annotation",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "annotated_at": "2023-03-13T13:36:31Z",
+            "annotations": "XYX",
+            "task": 5,
+            "task_presentation": "BAB",
+            "user": 1
+        },
+        "model": "polls.annotation",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "annotator": 1,
+            "email": "defidelity6@gmail.com",
+            "hourly_rate": 65.0
+        },
+        "model": "polls.annotatorprofile",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T16:54:13.996Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T16:55:15.100Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:00:49.338Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:08:21.238Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:08:23.481Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:08:24.139Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:08:25.297Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 7
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:11:14.842Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-07T17:14:34.195Z",
+            "experiment": null,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T13:20:47.744Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data don't care"
+        },
+        "model": "polls.batch",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T13:20:52.341Z",
+            "experiment": 1,
+            "is_gold": false,
+            "name": null,
+            "notes": "This is a sample JSON data don't care"
+        },
+        "model": "polls.batch",
+        "pk": 11
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:23:32.631Z",
+            "experiment": 1,
+            "is_gold": false,
+            "name": null,
+            "notes": "This is a sample JSON data don't care"
+        },
+        "model": "polls.batch",
+        "pk": 12
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:25:25.265Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 13
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:27:39.506Z",
+            "experiment": 1,
+            "is_gold": false,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 14
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:34:49.491Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 15
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:37:37.833Z",
+            "experiment": 1,
+            "is_gold": false,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 16
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T14:40:24.255Z",
+            "experiment": 1,
+            "is_gold": false,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 17
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T15:43:08.873Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 18
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T15:43:13.926Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 19
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T15:43:15.330Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 20
+    },
+    {
+        "fields": {
+            "created_at": "2023-03-09T15:43:27.653Z",
+            "experiment": 1,
+            "is_gold": true,
+            "name": null,
+            "notes": "This is a sample JSON data"
+        },
+        "model": "polls.batch",
+        "pk": 21
+    },
+    {
+        "fields": {
+            "current_batch_eval": 16
+        },
+        "model": "polls.currentbatcheval",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "current_batch_gold": 20
+        },
+        "model": "polls.currentbatchgold",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "annotation": "XXY",
+            "experiment_type": 1
+        },
+        "model": "polls.experimenttypeannotation",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "annotation": "XYX",
+            "experiment_type": 1
+        },
+        "model": "polls.experimenttypeannotation",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "annotation": "X",
+            "experiment_type": 2
+        },
+        "model": "polls.experimenttypeannotation",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "annotation": "Y",
+            "experiment_type": 2
+        },
+        "model": "polls.experimenttypeannotation",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "experiment_type": 1,
+            "task_presentation": "AAB"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "experiment_type": 1,
+            "task_presentation": "ABA"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "experiment_type": 1,
+            "task_presentation": "BBA"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "experiment_type": 1,
+            "task_presentation": "BAB"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "experiment_type": 2,
+            "task_presentation": "AB"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "experiment_type": 2,
+            "task_presentation": "BA"
+        },
+        "model": "polls.experimenttypetaskpresentation",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "type": "2AFC"
+        },
+        "model": "polls.experimenttype",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "type": "A/B"
+        },
+        "model": "polls.experimenttype",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "experiment_type": 1,
+            "name": "Salt sensitivity experiment"
+        },
+        "model": "polls.experiment",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "experiment_type": 2,
+            "name": "dolby or not"
+        },
+        "model": "polls.experiment",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "batch": 8,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "batch": 9,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "batch": 9,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "batch": 10,
+            "reference_url": "https://wwwe.example.com/reference",
+            "transform_metadata": {
+                "key1": "value31",
+                "key2": "value32"
+            },
+            "transform_url": "https://www.eexample.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "batch": 10,
+            "reference_url": "https://www.eexample.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.eexample.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "batch": 11,
+            "reference_url": "https://wwwe.example.com/reference",
+            "transform_metadata": {
+                "key1": "value31",
+                "key2": "value32"
+            },
+            "transform_url": "https://www.eexample.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "batch": 11,
+            "reference_url": "https://www.eexample.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.eexample.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 7
+    },
+    {
+        "fields": {
+            "batch": 12,
+            "reference_url": "https://wwwe.example.com/reference",
+            "transform_metadata": {
+                "key1": "value31",
+                "key2": "value32"
+            },
+            "transform_url": "https://www.eexample.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "batch": 12,
+            "reference_url": "https://www.eexample.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.eexample.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "batch": 13,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "batch": 13,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 11
+    },
+    {
+        "fields": {
+            "batch": 14,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 12
+    },
+    {
+        "fields": {
+            "batch": 14,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 13
+    },
+    {
+        "fields": {
+            "batch": 15,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 14
+    },
+    {
+        "fields": {
+            "batch": 15,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 15
+    },
+    {
+        "fields": {
+            "batch": 16,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 16
+    },
+    {
+        "fields": {
+            "batch": 16,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 17
+    },
+    {
+        "fields": {
+            "batch": 17,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 18
+    },
+    {
+        "fields": {
+            "batch": 17,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 19
+    },
+    {
+        "fields": {
+            "batch": 18,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 20
+    },
+    {
+        "fields": {
+            "batch": 18,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 21
+    },
+    {
+        "fields": {
+            "batch": 19,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 22
+    },
+    {
+        "fields": {
+            "batch": 19,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 23
+    },
+    {
+        "fields": {
+            "batch": 20,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 24
+    },
+    {
+        "fields": {
+            "batch": 20,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 25
+    },
+    {
+        "fields": {
+            "batch": 21,
+            "reference_url": "https://www.example.com/reference",
+            "transform_metadata": {
+                "key1": "value1",
+                "key2": "value2"
+            },
+            "transform_url": "https://www.example.com/transform"
+        },
+        "model": "polls.task",
+        "pk": 26
+    },
+    {
+        "fields": {
+            "batch": 21,
+            "reference_url": "https://www.example.com/reference2",
+            "transform_metadata": null,
+            "transform_url": "https://www.example.com/transform2"
+        },
+        "model": "polls.task",
+        "pk": 27
+    }
+]
