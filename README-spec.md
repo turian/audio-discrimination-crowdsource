@@ -107,8 +107,26 @@ this Batch) are written to the database. Either
 `CurrentBatch.current_batch_gold` or `CurrentBatch.current_batch_eval`
 with this Batch are written to the database.
 
+
+##### User lock batch job (current implementation)
+The current version of the app does not allow admin user to perform user locking in batch,
+a user-data management table is shown to admin instead and if a user (an annotator) job quality
+is not satisfying to admin as much as he wants, Admin has the flexiblility to click on a column named `lock` in the table
+and he would be prompted with a confirmation message asking if he really want's to lock the user, 
+if admin clicked yes, the user is locked and would not be allowed to perform any task on the platform. 
+Admin can also unlock a locked user by clicking on the toggled value `unlock` in the column 
+(once a user is locked, the `lock` written in the collum is changed to `unlock`) and if he do click to unlock the user, 
+he would be prompted to confirm this action and the user would be unlocked.
+
+Admin can also see overall detail about a user's performance, i.e apart from seeing just the user performance score, 
+admin can view the detail stats of an annotator, with all job ids, the type of batch they belong to (eval or gold), 
+the user's annotation, expected annotation (if it's gold, there is an expected value and if not, 
+we match with the task presentation method used for the user) and a column that shows if the annotation matches or not.
+Through this, admin can manage and do all required jobs on the page.
+
+
 ##### Create tasks batch job (JSON)
-This feature is implemented in such a way that an admin user can upload tasks in batches,
+This feature is implemented in such a way that an admin user can upload tasks in batches, by pasting JSON file,
 while uploading a batch, there are optional fields for an admin to fill out in order to make the batch
 identifiable and to be able to manage the batches, the optional fields are `name` and `notes`, 
 then ther is a field `is_gold`, if it's filled out it would be with the boolean value filled for it, 
