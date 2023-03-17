@@ -66,7 +66,7 @@ jobs:
                       }}
               run: |
                   python manage.py migrate
-            - name: Load Fixtures
+            - name: Populate DB
               env:
                   DEBUG: false
                   DEVELOPMENT_MODE: production
@@ -74,7 +74,7 @@ jobs:
                   DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_DB
                       }}
               run: |
-                  python manage.py loaddata fixtures/initial_data.json
+                  python manage.py populatedb
             - name: Run Tests
         # Step specific environment variables
               env:
