@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block body-block %}
+<div class="mb-5 text-center">
+    <h1 class="mt-5 text-center mb-5">Annotation Results View</h1>
+    <p>This page displays all annotation stats for a specific user</p>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Batch</th>
+            <th scope="col">Batch Type Name</th>
+            <th scope="col">Task Presentation</th>
+            <th scope="col">User Annotation</th>
+            <th scope="col">Correct</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for annotation in annotations %}
+        <tr>
+
+            <td>
+                <p>{{annotation.task.id}}</p>
+            </td>
+
+            <td>
+                <p>{{annotation.task.batch.name}}</p>
+            </td>
+
+            <td>
+                <p>{{annotation.task.batch.is_gold}}</p>
+            </td>
+
+            <td>
+                <p>{{annotation.task_presentation}}</p>
+            </td>
+
+            <td>
+                <p>{{annotation.annotations}}</p>
+            </td>
+
+            <td>
+                <p>
+                    {{annotation.is_correct}}
+                </p>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock body-block %}

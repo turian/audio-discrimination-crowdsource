@@ -155,3 +155,10 @@ def validate_temp_login(query_email):
         error = "Please send a valid email as query param in url"
 
     return error
+
+
+def set_is_correct(instance):
+    annotations_reordered = instance.annotations.replace("X", "A").replace("Y", "B")
+    if instance.task_presentation == annotations_reordered:
+        instance.is_correct = True
+        instance.save()
