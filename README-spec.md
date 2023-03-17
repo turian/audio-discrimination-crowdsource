@@ -107,6 +107,61 @@ this Batch) are written to the database. Either
 `CurrentBatch.current_batch_gold` or `CurrentBatch.current_batch_eval`
 with this Batch are written to the database.
 
+
+##### User lock batch job (current implementation)
+The current version of the app does not allow admin user to perform user locking in batch,
+a user-data management table is shown to admin instead and if a user (an annotator) job quality
+is not satisfying to admin as much as he wants, Admin has the flexiblility to click on a column named `lock` in the table
+and he would be prompted with a confirmation message asking if he really want's to lock the user, 
+if admin clicked yes, the user is locked and would not be allowed to perform any task on the platform. 
+Admin can also unlock a locked user by clicking on the toggled value `unlock` in the column 
+(once a user is locked, the `lock` written in the collum is changed to `unlock`) and if he do click to unlock the user, 
+he would be prompted to confirm this action and the user would be unlocked.
+
+Admin can also see overall detail about a user's performance, i.e apart from seeing just the user performance score, 
+admin can view the detail stats of an annotator, with all job ids, the type of batch they belong to (eval or gold), 
+the user's annotation, expected annotation (if it's gold, there is an expected value and if not, 
+we match with the task presentation method used for the user) and a column that shows if the annotation matches or not.
+Through this, admin can manage and do all required jobs on the page.
+
+
+##### Create tasks batch job (JSON)
+This feature is implemented in such a way that an admin user can upload tasks in batches, by pasting JSON file,
+while uploading a batch, there are optional fields for an admin to fill out in order to make the batch
+identifiable and to be able to manage the batches, the optional fields are `name` and `notes`, 
+then ther is a field `is_gold`, if it's filled out it would be with the boolean value filled for it, 
+and if it's left out empty, it would be assumed `False`, meaning it's batch-eval. 
+The last field for a batch submission that must be filled out is the `experiment` this takes 
+an id of an experiment the batch is referencing so as to link them.
+Then, tasks are attached in numbers, admin has the flexibility to attach any number of tasks required for a batch,
+the tasks has three fields that must be filled which are `refence_url`, `transform_url` and `transform_metadata`.
+
+This batch has to be formated in json and the JSON attached below shows the allowed format of attaching a batch.
+
+```
+{ 
+   "name": "salt-line batch", // signifying batch name 
+   "is_gold": true, // signifies if batch is gold or not 
+   "notes": "This is a sample JSON data", // any note at all or None would be supplied 
+   "tasks": 
+      [ // List of tasks go in here 
+         { # task 1 
+            "reference_url": "https://www.example.com/reference", 
+            "transform_url": "https://www.example.com/transform", 
+            "transform_metadata": { 
+               "key1": "value1", 
+               "key2": "value2" 
+               } 
+            }, // end of task 1 
+            { // Task 2, with example of cases where transform_metadata is not supplied 
+               "reference_url": "https://www.example.com/reference2", 
+               "transform_url": "https://www.example.com/transform2" 
+            } // end of task 2 
+       ] // end tasks list 
+  }
+```
+
+
 ## Admin Dashboard
 
 There are a list of different experiments. (In the first version, we will only have one experiment.) If you click on one, you go to the Admin Experiment View.

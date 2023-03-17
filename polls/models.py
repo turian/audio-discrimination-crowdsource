@@ -114,6 +114,7 @@ class Annotation(models.Model):
         max_length=3, choices=TASK_PRESENTATION_OPTIONS
     )
     annotations = models.CharField(max_length=3, choices=ANNOTATION_OPTIONS)
+    is_correct = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Annotation by {self.user}"

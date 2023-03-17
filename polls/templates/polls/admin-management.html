@@ -34,11 +34,9 @@
 
 
             <!-- Email column -->
-
-            <td>
-                <p>{{ annotator.email }}</p>
-            </td>
-
+                <td>
+                    <a href="{% url 'display_annotations_view' annotator_id=annotator.id %}">{{ annotator.email }}</a>
+                </td>
 
             <!-- Experiment name column -->
 

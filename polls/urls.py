@@ -78,7 +78,12 @@ urlpatterns = [
         views.AdminQuickGuideView.as_view(),
         name="admin-quick-guide",
     ),
-    # ************  API URLs  ************ #
+    path("admin-annotations/<int:annotator_id>/",
+        views.DisplayAnnotationsView.as_view(),
+        name="display_annotations_view",
+    ),
+        # ************  API URLs  ************ #
+        
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
         "api/v1/annotation-list/",
