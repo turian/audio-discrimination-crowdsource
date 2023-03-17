@@ -1,10 +1,10 @@
 import json
-import markdown
 import os
 
+import markdown
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
