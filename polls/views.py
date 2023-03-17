@@ -251,7 +251,7 @@ class ThanksView(TemplateView):
 
 class AdminManagementView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
-        annotators = get_user_model().objects.exclude(is_superuser=True)
+        annotators = AnnotatorProfile.objects.all()
 
         context = {
             "annotators": annotators,

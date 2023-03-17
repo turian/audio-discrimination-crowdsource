@@ -29,14 +29,14 @@
             <!-- Annotator column -->
 
             <td>
-                <p>{{annotator.username}}</p>
+                <p>{{annotator.annotator.username}}</p>
             </td>
 
 
             <!-- Email column -->
-                <td>
-                    <a href="{% url 'display_annotations_view' annotator_id=annotator.id %}">{{ annotator.email }}</a>
-                </td>
+            <td>
+                <a href="{% url 'display_annotations_view' annotator_id=annotator.id %}">{{ annotator.annotator.email}}</a>
+            </td>
 
             <!-- Experiment name column -->
 
@@ -82,7 +82,7 @@
             <!-- Lock column -->
 
             <td>
-                {% if annotator.is_locked %}
+                {% if annotator.annotator.is_locked %}
                 <p hx-post="{% url 'lock-user' request.user.pk %}" hx-trigger="click" hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-confirm="Are you sure you want to unlock this user?" class="bg-danger">Unlock</p>
