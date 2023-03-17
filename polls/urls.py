@@ -73,7 +73,12 @@ urlpatterns = [
         views.ManageExperimentTypeCreationView.as_view(),
         name="experiment-type-creation",
     ),
-    # APIs
+    path(
+        "admin/admin-quickguide/",
+        views.AdminQuickGuideView.as_view(),
+        name="admin-quick-guide",
+    ),
+    # ************  API URLs  ************ #
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
         "api/v1/annotation-list/",

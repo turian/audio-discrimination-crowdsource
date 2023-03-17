@@ -478,6 +478,10 @@ class ManageExperimentTypeCreationView(LoginRequiredMixin, UserPassesTestMixin, 
     def test_func(self):
         return self.request.user.is_superuser
 
+class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
+    
+    def test_func(self):
+        return self.request.user.is_superuser
 
 # **************** API Views ******************* #
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
