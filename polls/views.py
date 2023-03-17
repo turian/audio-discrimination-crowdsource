@@ -487,8 +487,11 @@ class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
         file_path = os.path.join(settings.BASE_DIR, "admin-quickstart.MD")
         with open(file_path, "r") as file:
             content = file.read()
-            print(content, file)
-            return HttpResponse("okay")
+            page_html = markdown.markdown(content)
+
+            return render(
+                request, "polls/admin-quickguide.html", {"page_html": page_html}
+            )
 
     def test_func(self):
         return self.request.user.is_superuser
