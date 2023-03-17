@@ -23,6 +23,9 @@
         <a class="list-group-item list-group-item-action 
         list-group-item-light p-3" href="{% url "experiment-type-creation" %}">
         Experiment Type Mgt</a>
+        <a class="list-group-item list-group-item-action 
+        list-group-item-light p-3" href="{% url "admin-quick-guide" %}">
+        Quickstart</a>
     </div>
     {% endif %}
     {% if not request.user.is_authenticated %}
