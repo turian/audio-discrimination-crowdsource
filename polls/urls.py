@@ -73,6 +73,11 @@ urlpatterns = [
         views.ManageExperimentTypeCreationView.as_view(),
         name="experiment-type-creation",
     ),
+    path(
+        "admin-annotations/<int:annotator_id>/",
+        views.DisplayAnnotationsView.as_view(),
+        name="display_annotations_view",
+    ),
     # APIs
     path("api/v1/admin-api/", views.AdminAPIView.as_view(), name="admin-api-url"),
     path(
