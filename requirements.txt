@@ -8,7 +8,7 @@ gunicorn==20.1.0
 psycopg2-binary==2.9.5
 sqlparse==0.4.3
 djangorestframework==3.14.0
-
+mackdown==0.0.1
 django-bootstrap-v5
 pre-commit==3.1.1
 ## For audio transforms
