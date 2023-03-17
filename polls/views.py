@@ -1,7 +1,10 @@
 import json
+import markdown
+import os
 
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -478,10 +481,18 @@ class ManageExperimentTypeCreationView(LoginRequiredMixin, UserPassesTestMixin, 
     def test_func(self):
         return self.request.user.is_superuser
 
+
 class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
-    
+    def get(self, request):
+        file_path = os.path.join(settings.BASE_DIR, "admin-quickstart.MD")
+        with open(file_path, "r") as file:
+            content = file.read()
+            print(content, file)
+            return HttpResponse("okay")
+
     def test_func(self):
         return self.request.user.is_superuser
+
 
 # **************** API Views ******************* #
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
