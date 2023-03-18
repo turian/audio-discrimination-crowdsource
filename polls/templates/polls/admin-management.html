@@ -29,14 +29,20 @@
             <!-- Annotator column -->
 
             <td>
-                <p>{{annotator.username}}</p>
+                <p hx-get="{% url 'display_annotations_view' annotator_id=annotator.id %}"
+                hx-target="#body" hx-boost="true" class="needpoint text-info">
+                    {{annotator.username}}
+                </p>
             </td>
 
 
             <!-- Email column -->
                 <td>
-                    <a href="{% url 'display_annotations_view' annotator_id=annotator.id %}">{{ annotator.email }}</a>
+                    <p>
+                        {{ annotator.email }}
+                    </p>
                 </td>
+
 
             <!-- Experiment name column -->
 
@@ -85,11 +91,11 @@
                 {% if annotator.is_locked %}
                 <p hx-post="{% url 'lock-user' request.user.pk %}" hx-trigger="click" hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-confirm="Are you sure you want to unlock this user?" class="bg-danger">Unlock</p>
+                    hx-confirm="Are you sure you want to unlock this user?" class="text-warning needpoint">Unlock</p>
                 {% else %}
                 <p hx-post="{% url 'lock-user' request.user.pk %}" hx-trigger="click" hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-confirm="Are you sure you want to lock this user?">Lock</p>
+                    hx-confirm="Are you sure you want to lock this user?" class="text-danger needpoint">Lock</p>
                 {% endif %}
             </td>
 
@@ -99,7 +105,8 @@
             <td>
                 <p hx-trigger="click" hx-post="{% url 'perform-delete' request.user.id %}" hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-confirm="Are you sure you want to delete this user's history?">
+                    hx-confirm="Are you sure you want to delete this user's history?"
+                    class="needpoint text-danger">
                     Delete User
                 </p>
             </td>
