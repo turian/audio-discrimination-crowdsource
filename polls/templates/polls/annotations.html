@@ -31,7 +31,11 @@
             </td>
 
             <td>
-                <p>{{annotation.task.batch.is_gold}}</p>
+                {% if annotation.task.batch.is_gold %}
+                    <p>Gold Batch</p>
+                {% else %}
+                    <p>Eval Batch</p>
+                {% endif %}
             </td>
 
             <td>

@@ -30,7 +30,8 @@
 
             <td>
                 <p hx-get="{% url 'display_annotations_view' annotator_id=annotator.id %}"
-                hx-target="#body" hx-boost="true" class="needpoint text-info">
+                    hx-target="#body" 
+                    hx-boost="true" class="needpoint text-info">
                     {{annotator.username}}
                 </p>
             </td>
