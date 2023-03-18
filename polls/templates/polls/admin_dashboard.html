@@ -12,7 +12,7 @@
         {% for experiment in experiments %}
         <li class="text-align-left text-bold h4 " hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" 
         hx-target="#body">
-            <h4 class="text-primary">{{experiment.name}}</h4>
+            <h4 class="text-primary needpoint">{{experiment.name}}</h4>
         </li>
     </ol>
             <table class="table table-striped">
@@ -34,9 +34,9 @@
                                 <td hx-post="{% url "toggle-is-gold" batch.id%}" hx-swap="innerHTML" 
                                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-confirm="Are you sure you want to toggle is_gold?">
                                 {% if batch.is_gold %}
-                                    <p class="text-success">{{batch.is_gold}}</p>
+                                    <p class="text-success needpoint">{{batch.is_gold}}</p>
                                 {% else %}
-                                    <p class="text-warning">{{batch.is_gold}}</p>
+                                    <p class="text-warning needpoint">{{batch.is_gold}}</p>
                                 {% endif %}
                                 </td>
                             </tr>

@@ -13,8 +13,13 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <script src="https://unpkg.com/htmx.org@1.8.5"></script>
-        {% block css-block %}
-        {% endblock %}
+        <style>
+            .needpoint:hover {
+                cursor: pointer;
+              }
+            {% block css-block %}
+            {% endblock %}
+        </style>
     </head>
     <body id="body">
         <div class="d-flex" id="wrapper">
