@@ -5,7 +5,10 @@
     <p>Each experiment-type comes with different task presentation and task annotation orientation,
         after creating an experiment type, say A/B, you'll need to create all ExperimentType-task-presentation for it,
         which for example can look like, AA, AB, BA etc. Also you'll need to create an ExperimentType-annotation for it,
-        which can for example look like XX, XY, YX etc. If you don't understand this, headover to the Admin Quickstart page.
+        which can for example look like XX, XY, YX etc. If you don't understand this, headover to the 
+          <qoute hx-get="{% url 'admin-quick-guide' %}" hx-target="#body" 
+          hx-swap="innerHTML" hx-swap-url="{% url 'admin-quick-guide' %}" 
+          class="text-primary">Admin Quickstart page.</qoute>
     </p>
 </div>
 <div class="container-fluid">
