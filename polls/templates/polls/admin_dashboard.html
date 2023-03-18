@@ -10,8 +10,9 @@
     </div>
     <ol class="">
         {% for experiment in experiments %}
-        <li class="text-align-left text-bold h4 " hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" 
-        hx-target="#body">
+        <li class="text-align-left text-bold h4 " 
+            hx-get="{% url 'admin_experiment' experiment_id=experiment.id%}" 
+            hx-target="#body" hx-push-url="{% url 'admin_experiment' experiment.id %}">
             <h4 class="text-primary needpoint">{{experiment.name}}</h4>
         </li>
     </ol>
