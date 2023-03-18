@@ -1,5 +1,8 @@
 import json
+import os
 
+import markdown
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db import IntegrityError
@@ -478,6 +481,21 @@ class CreateExperimentTypeTaskPresentationView(
 class ManageExperimentTypeCreationView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         return render(request, "polls/experiment-type-creation-management.html")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request):
+        file_path = os.path.join(settings.BASE_DIR, "admin-quickstart.MD")
+        with open(file_path, "r") as file:
+            content = file.read()
+            page_html = markdown.markdown(content)
+
+            return render(
+                request, "polls/admin-quickguide.html", {"page_html": page_html}
+            )
 
     def test_func(self):
         return self.request.user.is_superuser
