@@ -36,7 +36,7 @@
     {% if not request.user.is_authenticated %}
     <div>
         <p class="list-group-item list-group-item-action list-group-item-light p-3" 
-        hx-get="{% url 'temporary_login_template' %}" hx-target="innerHTML" hx-swap="innerHTML" 
+        hx-get="{% url 'temporary_login_template' %}" hx-target="#body" hx-swap="innerHTML" 
         hx-boost="true" hx-push-url="{% url 'temporary_login_template' %}">
         Temporary Login</p>
     </div>
