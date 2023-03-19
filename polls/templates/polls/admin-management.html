@@ -32,7 +32,7 @@
                 <p hx-get="{% url 'display_annotations_view' annotator_id=annotator.id %}"
                     hx-target="#body" hx-push-url="{% url 'display_annotations_view' annotator.id %}"
                     hx-boost="true" class="needpoint text-info">
-                    {{annotator.username}}
+                    {{annotator.annotator.username}}
                 </p>
             </td>
 
@@ -89,7 +89,7 @@
             <!-- Lock column -->
 
             <td>
-                {% if annotator.is_locked %}
+                {% if annotator.annotator.is_locked %}
                 <p hx-post="{% url 'lock-user' request.user.pk %}" hx-trigger="click" hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                     hx-confirm="Are you sure you want to unlock this user?" class="text-warning needpoint">Unlock</p>
