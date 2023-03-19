@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class SingletonModel(models.Model):
@@ -134,3 +136,22 @@ class ExperimentTypeAnnotation(models.Model):
 
     def __str__(self):
         return f"{self.annotation}"
+
+
+CustomUser = get_user_model()
+
+
+@receiver(post_save, sender=CustomUser)
+def update_user_profile(sender, instance, created, **kwargs):
+    """
+    Signals the Profile about temp User creation.
+    """
+    if created:
+        profile = AnnotatorProfile.objects.create(annotator=instance)
+        profile.save()
+
+
+@receiver(post_save, sender=CustomUser)
+def save_profile(sender, instance, **kwargs):
+    profile = AnnotatorProfile.objects.create(annotator=instance)
+    profile.save()
