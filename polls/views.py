@@ -438,7 +438,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
         if experiment_type.exists():
             expe_type = ExperimentType.objects.get(pk=exp_type)
             exp_type_annotation = ExperimentTypeAnnotation.objects.create(
-                experiment_type=expe_type, annotation=str(annotation)
+                experiment_type=experiment_type, annotation=str(annotation)
             )
             exp_type_annotation.save()
 
@@ -502,6 +502,20 @@ class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
 
+class DisplayAnnotationsView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def get(self, request, annotator_id):
+        annotations = Annotation.objects.filter(user=annotator_id)
+        annotator = AnnotatorProfile.objects.get(annotator=annotator_id)
+        context = {
+            "annotator": annotator,
+            "annotations": annotations,
+        }
+        return render(request, "polls/annotations.html", context)
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
 # **************** API Views ******************* #
 class AnnotationListAPI(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Annotation.objects.all()
@@ -546,19 +560,6 @@ class AdminAPIView(APIView):
 
     def get(self, request):
         return Response({"data": "hello"}, status.HTTP_200_OK)
-
-    def test_func(self):
-        return self.request.user.is_superuser
-
-
-class DisplayAnnotationsView(LoginRequiredMixin, UserPassesTestMixin, View):
-    def get(self, request, annotator_id):
-        annotations = Annotation.objects.filter(user=annotator_id)
-
-        context = {
-            "annotations": annotations,
-        }
-        return render(request, "polls/annotations.html", context)
 
     def test_func(self):
         return self.request.user.is_superuser
