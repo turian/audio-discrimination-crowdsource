@@ -438,7 +438,7 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
         if experiment_type.exists():
             expe_type = ExperimentType.objects.get(pk=exp_type)
             exp_type_annotation = ExperimentTypeAnnotation.objects.create(
-                experiment_type=experiment_type, annotation=str(annotation)
+                experiment_type=expe_type, annotation=str(annotation)
             )
             exp_type_annotation.save()
 
