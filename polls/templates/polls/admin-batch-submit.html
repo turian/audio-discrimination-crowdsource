@@ -7,7 +7,8 @@
     </p>
 </div>
 <form hx-post="{% url 'admin-batch-submit' %}" hx-swap="innerHTML" 
-    hx-target="#body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    hx-target="#body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+    hx-push-url="{% url 'admin_dashboard' %}">
     <div class="mb-3">
         <label for="Experiments" class="form-label">Select experiment you want to create batch tasks for</label>
         <select id="select-form" class="form-select mb-3" name="exp_pk">

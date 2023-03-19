@@ -373,7 +373,7 @@ class AdminBatchSubmitView(LoginRequiredMixin, UserPassesTestMixin, View):
                     else None,
                 )
                 new_task.save()
-            return HttpResponseRedirect("admin-dashboard")
+            return HttpResponseRedirect(reverse("admin_dashboard"))
         else:
             return HttpResponse(
                 "reference experiment does not exist, please choose from drop-down."
@@ -436,8 +436,9 @@ class CreateExperimentTypeAnnotationView(LoginRequiredMixin, UserPassesTestMixin
         experiment_type = ExperimentType.objects.filter(pk=exp_type)
 
         if experiment_type.exists():
+            expe_type = ExperimentType.objects.get(pk=exp_type)
             exp_type_annotation = ExperimentTypeAnnotation.objects.create(
-                experiment_type=experiment_type, annotation=str(annotation)
+                experiment_type=expe_type, annotation=str(annotation)
             )
             exp_type_annotation.save()
 

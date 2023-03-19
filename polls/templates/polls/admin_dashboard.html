@@ -15,7 +15,6 @@
             hx-target="#body" hx-push-url="{% url 'admin_experiment' experiment.id %}">
             <h4 class="text-primary needpoint">{{experiment.name}}</h4>
         </li>
-    </ol>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -47,6 +46,7 @@
                 </tbody>
             </table>
         {% endfor %}
+    </ol>
     <h5>Go to admin panel: <a href="/admin">admin</a></h5>
 </div>
 {% endblock %}
