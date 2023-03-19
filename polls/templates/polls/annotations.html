@@ -3,8 +3,8 @@
 
 {% block body-block %}
 <div class="mb-5 text-center">
-    <h1 class="mt-5 text-center mb-5">Annotation Results View</h1>
-    <p>This page displays all annotation stats for a specific user</p>
+    <h1 class="mt-5 text-center mb-5">Annotator's Results Detail</h1>
+    <p>This page displays all annotation statistics for annotator {{annotator.annotator|title}}</p>
 </div>
 
 <table class="table table-striped">
@@ -12,7 +12,7 @@
         <tr>
             <th scope="col">Task</th>
             <th scope="col">Batch</th>
-            <th scope="col">Batch Type Name</th>
+            <th scope="col">Batch Type</th>
             <th scope="col">Task Presentation</th>
             <th scope="col">User Annotation</th>
             <th scope="col">Correct</th>
@@ -31,7 +31,11 @@
             </td>
 
             <td>
-                <p>{{annotation.task.batch.is_gold}}</p>
+                {% if annotation.task.batch.is_gold %}
+                    <p>Gold Batch</p>
+                {% else %}
+                    <p>Eval Batch</p>
+                {% endif %}
             </td>
 
             <td>

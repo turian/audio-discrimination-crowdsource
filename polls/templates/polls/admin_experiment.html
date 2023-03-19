@@ -5,15 +5,14 @@
 <div class="mt-5 text-center">
 
     <h1>Admin View Experiment</h1>
-    <p class="btn btn-primary" hx-get="{% url 'experiment-type' %}" 
-        hx-trigger="click" hx-boost="true" hx-target="body">Create new Experiment type</p>
-
 
     {% if error_message %}
 
     <p>{{error_message}}</p>
 
     {% else %}
+    <p>This is detailed outline of all batches in an experiment, 
+      displaying each tasks in the batch with their subsequent data.</p>
 
     <p><strong>Experiment Name: </strong> {{experiment.name}}</p>
     <p><strong>Experiment Type: </strong> {{experiment.experiment_type}}</p>
@@ -21,9 +20,9 @@
 
     {% for item in data_list %}
     {% if item.is_gold == True %}
-      <h5 class="mt-5">Batch(Gold): {{item.batch}}</h5>
+      <h5 class="mt-5">Batch Type Gold: ID-{{item.batch}}</h5>
     {% else %}
-      <h5 class="mt-5">Batch: {{item.batch}}</h5>
+      <h5 class="mt-5">Batch Type Eval: ID-{{item.batch}}</h5>
     {% endif %}
   
     <div class="table-responsive">
@@ -42,7 +41,7 @@
           {% for task in item.tasks %}
             <tr>
               <th scope="row">{{task.id}}</th>
-              <td>{{task.annotations.count}}</td>
+              <td>{{task.annotation.count}}</td>
               <td>0</td>
               <td>{{task.reference_url}}</td>
               <td>{{task.transform_url}}</td>
