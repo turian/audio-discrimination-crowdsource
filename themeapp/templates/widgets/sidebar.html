@@ -7,32 +7,38 @@
     </div>
     {% if request.user.is_superuser %}
     <div class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url 'admin_dashboard' %}">
-        Dashboard</a>
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url 'admin-management' %}">
-        User Management</a>
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url 'admin-batch-submit' %}">
-        Batch Submit</a>
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url 'create-experiment' %}">
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url 'admin_dashboard' %}" hx-target="#body" hx-swap="innerHTML" 
+        hx-boost="true" hx-push-url="{% url 'admin_dashboard' %}">
+        Dashboard</p>
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url 'admin-management' %}" hx-target="#body" hx-swap="innerHTML" 
+        hx-boost="true" hx-push-url="{% url 'admin-management' %}">
+        User Management</p>
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url 'admin-batch-submit' %}" hx-target="#body" hx-swap="innerHTML"
+        hx-boost="true" hx-push-url="admin-batch-submit">
+        Batch Submit</p>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" 
+        href="{% url 'create-experiment' %}">
         Create Experiment</a>
         
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url "experiment-type-creation" %}">
-        Experiment Type Mgt</a>
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url "admin-quick-guide" %}">
-        Quickstart</a>
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url "experiment-type-creation" %}" hx-target="#body" hx-swap="innerHTML" 
+        hx-boost="true" hx-push-url="{% url 'experiment-type-creation' %}">
+        Experiment Type Mgt</p>
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url "admin-quick-guide" %}" hx-target="#body" hx-swap="innerHTML" 
+        hx-boost="true" hx-push-url="{% url 'admin-quick-guide' %}">
+        Quickstart</p>
     </div>
     {% endif %}
     {% if not request.user.is_authenticated %}
     <div>
-        <a class="list-group-item list-group-item-action 
-        list-group-item-light p-3" href="{% url 'temporary_login_template' %}">
-        Temporary Login</a>
+        <p class="list-group-item list-group-item-action list-group-item-light p-3" 
+        hx-get="{% url 'temporary_login_template' %}" hx-target="innerHTML" hx-swap="innerHTML" 
+        hx-boost="true" hx-push-url="{% url 'temporary_login_template' %}">
+        Temporary Login</p>
     </div>
     {% endif %}
 </div>
