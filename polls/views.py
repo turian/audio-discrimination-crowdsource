@@ -408,10 +408,9 @@ class TemporaryLogin(View):
         username = query_email.split("@")[0]
         temp_password = "Asdfghjkl123"
         try:
-            temp_user = get_user_model().objects.create(
-                username=username, email=query_email
+            temp_user = get_user_model().objects.create_user(
+                username=username, email=query_email, password=temp_password
             )
-            temp_user.set_password(temp_password)
             temp_user.save()
             user = authenticate(request, username=username, password=temp_password)
             login(request, user)
