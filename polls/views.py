@@ -504,9 +504,7 @@ class AdminQuickGuideView(LoginRequiredMixin, UserPassesTestMixin, View):
 class DisplayAnnotationsView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, annotator_id):
         annotations = Annotation.objects.filter(user=annotator_id)
-        annotator = AnnotatorProfile.objects.get(annotator=annotator_id)
         context = {
-            "annotator": annotator,
             "annotations": annotations,
         }
         return render(request, "polls/annotations.html", context)

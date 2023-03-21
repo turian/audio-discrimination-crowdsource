@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th scope="col">Task</th>
+            <th scope="col">Experiment type</th>
             <th scope="col">Batch</th>
             <th scope="col">Batch Type</th>
             <th scope="col">Task Presentation</th>
@@ -27,14 +28,18 @@
             </td>
 
             <td>
+                <p>{{annotation.task.batch.experiment.experiment_type}}</p>
+            </td>
+
+            <td>
                 <p>{{annotation.task.batch.name}}</p>
             </td>
 
             <td>
                 {% if annotation.task.batch.is_gold %}
-                    <p>Gold Batch</p>
+                <p>Gold Batch</p>
                 {% else %}
-                    <p>Eval Batch</p>
+                <p>Eval Batch</p>
                 {% endif %}
             </td>
 
