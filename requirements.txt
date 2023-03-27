@@ -10,7 +10,7 @@ sqlparse==0.4.3
 djangorestframework==3.14.0
 markdown==3.4.1
 django-bootstrap-v5
-pre-commit==3.2.0
+pre-commit==3.2.1
 ## For audio transforms
 #sox
 #pydub
