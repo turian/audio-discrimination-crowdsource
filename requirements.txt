@@ -1,12 +1,12 @@
 asgiref==3.5.2
 #backports.zoneinfo==0.2.1
 dj-database-url==1.0.0
-Django==4.1.1
+Django==4.2.27
 django-allauth==0.53.1
 django-extensions==3.2.1 
 gunicorn==20.1.0
 psycopg2-binary==2.9.5
-sqlparse==0.4.3
+sqlparse==0.5.4
 djangorestframework==3.14.0
 markdown==3.4.1
 django-bootstrap-v5
@@ -24,3 +24,4 @@ setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerabil
 
 python-dotenv>=0.21.0
 whitenoise==6.4.0 # to serve static files in production
+urllib3>=2.6.0 # not directly required, pinned by Snyk to avoid a vulnerability
